@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+            consumerProguardFiles 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    // Specify the annotations here so our clients don't have to include it.
+    compile project(':postman-annotations')
+    compile deps.supportAnnotations
+
+
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
