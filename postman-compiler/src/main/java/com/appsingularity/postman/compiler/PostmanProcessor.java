@@ -3,6 +3,7 @@ package com.appsingularity.postman.compiler;
 import android.support.annotation.NonNull;
 
 import com.appsingularity.postman.compiler.handlers.AttributeHandler;
+import com.appsingularity.postman.compiler.handlers.GenericArrayHandler;
 import com.appsingularity.postman.compiler.handlers.BooleanPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.BytePrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.DoublePrimitiveHandler;
@@ -93,6 +94,16 @@ public class PostmanProcessor extends AbstractProcessor {
         mAttributeHandlers.add(new ParcelableHandler());
         mAttributeHandlers.add(new SerializableHandler());
         mAttributeHandlers.add(new GenericObjectHandler("android.os.Bundle"));
+
+        mAttributeHandlers.add(new GenericArrayHandler("int[]", "int", "Int"));
+        mAttributeHandlers.add(new GenericArrayHandler("long[]", "long", "Long"));
+        mAttributeHandlers.add(new GenericArrayHandler("byte[]", "byte", "Byte"));
+        mAttributeHandlers.add(new GenericArrayHandler("float[]", "float", "Float"));
+        mAttributeHandlers.add(new GenericArrayHandler("double[]", "double", "Double"));
+        mAttributeHandlers.add(new GenericArrayHandler("boolean[]", "boolean", "Boolean"));
+        mAttributeHandlers.add(new GenericArrayHandler("char[]", "char", "Char"));
+
+        mAttributeHandlers.add(new GenericArrayHandler("java.lang.String[]", "String"));
 
         mAttributeHandlersSize = mAttributeHandlers.size();
         // TODO: Add Binders
