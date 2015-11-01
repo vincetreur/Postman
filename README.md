@@ -3,7 +3,8 @@ Postman
 
 Automated Parceling for Android.
 
-<<TBD>>
+Generate the boilerplate code that is needed for supporting Parcelable.
+
 
 License
 -------
