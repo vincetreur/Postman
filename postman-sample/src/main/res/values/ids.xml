@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="description" type="id" />
+    <item name="code_subclass" type="id" />
+    <item name="code_superclass" type="id" />
+    <item name="found_parcelable" type="id" />
+    <item name="found_attribute_1" type="id" />
+    <item name="found_attribute_2" type="id" />
+
+</resources>

@@ -1,0 +1,147 @@
+<resources>
+    <string name="app_name">Postman Sample</string>
+
+    <string name="btn_send">Send</string>
+    <string name="code_subclass_title">Subclass</string>
+    <string name="code_superclass_title">Superclass</string>
+
+    <string name="full_auto_title">Full auto</string>
+    <string name="full_auto_result_title">Full auto result</string>
+    <string name="full_auto_description">Test Postman where everything is handled by the Postman compiler.</string>
+    <string name="full_auto_result_found_parcelable">Found dog</string>
+    <string name="full_auto_result_found_attr_1">Dog has correct name</string>
+    <string name="full_auto_result_found_attr_2">Dog has tail</string>
+    <string name="full_auto_code_subclass">"@PostmanEnabled
+public class Dog extends Animal {
+    boolean mHasTail = false;
+
+    // ...
+
+    protected Dog(Parcel in) {
+        // Let the superclass handle it's own parceling
+        super(in);
+        Postman.receive(Dog.class, this, in);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        // Let the superclass handle it's own parceling
+        super.writeToParcel(dest, flags);
+        Postman.ship(Dog.class, this, dest, flags);
+    }
+
+    // ...
+
+}
+"</string>
+    <string name="full_auto_code_superclass">"@PostmanEnabled
+public abstract class Animal implements Parcelable {
+    String mName;
+
+    // ...
+
+    protected Animal(Parcel in) {
+        Postman.receive(Animal.class, this, in);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        Postman.ship(Animal.class, this, dest, flags);
+    }
+
+    // ...
+
+}
+"</string>
+
+    <string name="semi_auto_title">Semi auto</string>
+    <string name="semi_auto_result_title">Semi auto result</string>
+    <string name="semi_auto_description">Test Postman where only the subclass is handled by the Postman compiler.\nThe superclass is Parcelable.</string>
+    <string name="semi_auto_result_found_parcelable">Found apple</string>
+    <string name="semi_auto_result_found_attr_1">Apple has correct color</string>
+    <string name="semi_auto_result_found_attr_2">Apple is tasty</string>
+    <string name="semi_auto_code_subclass">"@PostmanEnabled
+public class Apple extends Fruit {
+    boolean mTasty = false;
+
+    // ...
+
+    protected Apple(Parcel in) {
+        // Let the superclass handle it's own parceling
+        // (which is hand coded)
+        super(in);
+        Postman.receive(Apple.class, this, in);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        // Let the superclass handle it's own parceling
+        // (which is hand coded)
+        super.writeToParcel(dest, flags);
+        Postman.ship(Apple.class, this, dest, flags);
+    }
+
+    // ...
+
+}
+"</string>
+    <string name="semi_auto_code_superclass">"public class Fruit implements Parcelable {
+    String mColor = "Green";
+
+    // ...
+
+    protected Fruit(Parcel in) {
+        mColor = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mColor);
+    }
+
+    // ...
+
+}
+"</string>
+
+    <string name="manual_title">Manual</string>
+    <string name="manual_result_title">Manual result</string>
+    <string name="manual_description">Test Postman where only the subclass is handled by the Postman compiler.\nThe superclass is not Parcelable.</string>
+    <string name="manual_result_found_parcelable">Found car</string>
+    <string name="manual_result_found_attr_1">Car has correct color</string>
+    <string name="manual_result_found_attr_2">Car has correct type</string>
+    <string name="manual_code_subclass">"@PostmanEnabled
+public class Car extends Vehicle implements Parcelable {
+    String mColor;
+
+    // ...
+
+
+    protected Car(Parcel in) {
+        Postman.receive(Car.class, this, in);
+        // Manually process attributes from the superclass
+        // since it is not parcelable
+        mType = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        Postman.ship(Car.class, this, dest, flags);
+        // Manually process attributes from the superclass
+        // since it is not parcelable
+        dest.writeString(mType);
+    }
+
+    // ...
+
+}
+"</string>
+    <string name="manual_code_superclass">"public class Vehicle {
+    String mType;
+
+    // ...
+
+}
+"</string>
+
+</resources>

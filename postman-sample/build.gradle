@@ -1,0 +1,38 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+        targetCompatibility rootProject.ext.targetCompatibilityVersion
+    }
+
+    defaultConfig {
+        applicationId "com.appsingularity.postmansample"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    buildTypes {
+        debug {
+            // The Postman library already specifies the needed proguard rules
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+       }
+    }
+}
+
+dependencies {
+    apt project(':postman-compiler')
+    compile project(':postman')
+    compile deps.appCompat
+    compile deps.supportAnnotations
+
+
+    compile 'com.google.android:android:2.1.2'
+}

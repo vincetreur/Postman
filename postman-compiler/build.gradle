@@ -1,0 +1,36 @@
+apply plugin: 'java'
+
+def logger = new com.android.build.gradle.internal.LoggerWrapper(project.logger)
+def sdkHandler = new com.android.build.gradle.internal.SdkHandler(project, logger)
+for (File file : sdkHandler.sdkLoader.repositories) {
+    repositories.maven {
+        url = file.toURI()
+    }
+}
+
+
+dependencies {
+    compile project(':postman-annotations')
+    compile 'com.google.auto.service:auto-service:1.0-rc2'
+    compile 'com.squareup:javapoet:1.3.0'
+    compile deps.supportAnnotations
+
+    testCompile project(":postman")
+    testCompile project(':postman-annotations')
+    testCompile deps.junit
+    testCompile deps.truth
+//    testCompile deps.robolectric
+    testCompile deps.compiletesting
+
+    testCompile deps.android
+    testCompile files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+}
+
+checkstyle {
+    configFile rootProject.file('checkstyle.xml')
+    showViolations true
+    //Remove this when tests are less verbose, i.e. using JavaPoet
+    sourceSets = [sourceSets.main]
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
