@@ -9,28 +9,54 @@
     android:padding="@dimen/keyline"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/full_auto_description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/full_auto_title"
+        android:layout_margin="8dp"
         android:onClick="testFullAuto"
+        android:text="@string/btn_test"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline"
+        android:text="@string/semi_auto_description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/semi_auto_title"
+        android:layout_margin="8dp"
         android:onClick="testSemiAuto"
+        android:text="@string/btn_test"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/keyline"
+        android:text="@string/manual_description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/manual_title"
+        android:layout_margin="8dp"
         android:onClick="testManual"
+        android:text="@string/btn_test"
         />
 
 </LinearLayout>

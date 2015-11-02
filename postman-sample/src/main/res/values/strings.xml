@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Postman Sample</string>
 
-    <string name="btn_send">Send</string>
+    <string name="btn_test">Test</string>
     <string name="code_subclass_title">Subclass</string>
     <string name="code_superclass_title">Superclass</string>
+    <string name="result_found_parcelable">Found instance</string>
+    <string name="result_found_attr_subclass">Subclass attribute has correct value</string>
+    <string name="result_found_attr_superclass">Superclass attribute has correct value</string>
 
     <string name="full_auto_title">Full auto</string>
     <string name="full_auto_result_title">Full auto result</string>
     <string name="full_auto_description">Test Postman where everything is handled by the Postman compiler.</string>
-    <string name="full_auto_result_found_parcelable">Found dog</string>
-    <string name="full_auto_result_found_attr_1">Dog has correct name</string>
-    <string name="full_auto_result_found_attr_2">Dog has tail</string>
     <string name="full_auto_code_subclass">"@PostmanEnabled
 public class Dog extends Animal {
     boolean mHasTail = false;
@@ -57,9 +57,6 @@ public abstract class Animal implements Parcelable {
     <string name="semi_auto_title">Semi auto</string>
     <string name="semi_auto_result_title">Semi auto result</string>
     <string name="semi_auto_description">Test Postman where only the subclass is handled by the Postman compiler.\nThe superclass is Parcelable.</string>
-    <string name="semi_auto_result_found_parcelable">Found apple</string>
-    <string name="semi_auto_result_found_attr_1">Apple has correct color</string>
-    <string name="semi_auto_result_found_attr_2">Apple is tasty</string>
     <string name="semi_auto_code_subclass">"@PostmanEnabled
 public class Apple extends Fruit {
     boolean mTasty = false;
@@ -107,9 +104,6 @@ public class Apple extends Fruit {
     <string name="manual_title">Manual</string>
     <string name="manual_result_title">Manual result</string>
     <string name="manual_description">Test Postman where only the subclass is handled by the Postman compiler.\nThe superclass is not Parcelable.</string>
-    <string name="manual_result_found_parcelable">Found car</string>
-    <string name="manual_result_found_attr_1">Car has correct color</string>
-    <string name="manual_result_found_attr_2">Car has correct type</string>
     <string name="manual_code_subclass">"@PostmanEnabled
 public class Car extends Vehicle implements Parcelable {
     String mColor;

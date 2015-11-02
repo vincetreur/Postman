@@ -26,9 +26,9 @@ public class ReceivingSemiAutoActivity extends AppCompatActivity {
         TextView foundParcelableView = (TextView) findViewById(R.id.found_parcelable);
         TextView foundAttribute1View = (TextView) findViewById(R.id.found_attribute_1);
         TextView foundAttribute2View = (TextView) findViewById(R.id.found_attribute_2);
-        foundParcelableView.setText(R.string.semi_auto_result_found_parcelable);
-        foundAttribute1View.setText(R.string.semi_auto_result_found_attr_1);
-        foundAttribute2View.setText(R.string.semi_auto_result_found_attr_2);
+        foundParcelableView.setText(R.string.result_found_parcelable);
+        foundAttribute1View.setText(R.string.result_found_attr_subclass);
+        foundAttribute2View.setText(R.string.result_found_attr_superclass);
         DrawableHelper.setMarker(this, foundParcelableView, false);
         DrawableHelper.setMarker(this, foundAttribute1View, false);
         DrawableHelper.setMarker(this, foundAttribute2View, false);
@@ -38,10 +38,10 @@ public class ReceivingSemiAutoActivity extends AppCompatActivity {
         Apple apple = extras.getParcelable(SemiAutoConst.KEY);
         if (apple != null) {
             DrawableHelper.setMarker(this, foundParcelableView, true);
-            if (SemiAutoConst.COLOR.equals(apple.mColor)) {
+            if (SemiAutoConst.IS_TASTY == apple.mTasty) {
                 DrawableHelper.setMarker(this, foundAttribute1View, true);
             }
-            if (SemiAutoConst.IS_TASTY == apple.mTasty) {
+            if (SemiAutoConst.COLOR.equals(apple.mColor)) {
                 DrawableHelper.setMarker(this, foundAttribute2View, true);
             }
         }
