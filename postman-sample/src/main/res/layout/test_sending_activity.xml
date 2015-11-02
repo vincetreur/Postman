@@ -43,7 +43,7 @@
         android:layout_gravity="center"
         android:layout_margin="8dp"
         android:onClick="testNonPrimitivesArrays"
-        android:text="Primitive Arrays"
+        android:text="Non Primitives Arrays"
         />
 
 

@@ -16,6 +16,7 @@ import com.appsingularity.postman.compiler.handlers.LongPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.ParcelableHandler;
 import com.appsingularity.postman.compiler.handlers.SerializableHandler;
 import com.appsingularity.postman.annotations.PostmanEnabled;
+import com.appsingularity.postman.compiler.handlers.ShortPrimitiveArrayHandler;
 import com.appsingularity.postman.compiler.handlers.ShortPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.StringListHandler;
 import com.appsingularity.postman.compiler.handlers.TypedObjectHandler;
@@ -108,6 +109,7 @@ public class PostmanProcessor extends AbstractProcessor {
         mAttributeHandlers.add(new GenericArrayHandler("boolean[]", "boolean", "Boolean"));
         mAttributeHandlers.add(new GenericArrayHandler("char[]", "char", "Char"));
         mAttributeHandlers.add(new GenericArrayHandler("byte[]", "byte", "Byte"));
+        mAttributeHandlers.add(new ShortPrimitiveArrayHandler());
         mAttributeHandlers.add(new GenericArrayHandler("int[]", "int", "Int"));
         mAttributeHandlers.add(new GenericArrayHandler("float[]", "float", "Float"));
         mAttributeHandlers.add(new GenericArrayHandler("long[]", "long", "Long"));

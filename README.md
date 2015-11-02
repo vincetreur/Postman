@@ -28,7 +28,7 @@ Right now Postman supports:
 - ```boolean```, ```Boolean```, ```boolean[]```, ```Boolean[]```, ```List<Boolean>``` and ```ArrayList<Boolean>```
 - ```char```, ```Character```, ```char[]```, ```Character[]```, ```List<Character>``` and ```ArrayList<Character>```
 - ```byte```, ```Byte```, ```byte[]```, ```Byte[]```, ```List<Byte>``` and ```ArrayList<Byte>```
-- ```short```, ```Short```, ```Short[]```, ```List<Short>``` and ```ArrayList<Short>```
+- ```short```, ```Short```, ```short[]```, ```Short[]```, ```List<Short>``` and ```ArrayList<Short>```
 - ```int```, ```Integer```, ```int[]```, ```Integer[]```, ```List<Integer>``` and ```ArrayList<Integer>```
 - ```long```, ```Long```, ```long[]```, ```Long[]```, ```List<Long>``` and ```ArrayList<Long>```
 - ```float```, ```Float```, ```float[]```, ```Float[]```, ```List<Float>``` and ```ArrayList<Float>```
