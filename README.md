@@ -55,7 +55,7 @@ import android.os.Parcel;
 import com.appsingularity.postman.Postman;
 import com.appsingularity.postman.annotations.PostmanEnabled;
 
-
+@PostmanEnabled
 public class Dog implements Parcelable  {
 	// Add your methods and attributes here.
 	
