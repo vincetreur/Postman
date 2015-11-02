@@ -7,13 +7,16 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:padding="@dimen/keyline"
-    tools:context=".MainActivity">
+    tools:context=".test.TestSendingActivity">
 
-    <TextView
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/full_auto_description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:onClick="testPrimitives"
+        android:text="Primitives"
         />
 
     <Button
@@ -21,16 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        android:onClick="testFullAuto"
-        android:text="@string/btn_test"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline"
-        android:text="@string/semi_auto_description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:onClick="testNonPrimitives"
+        android:text="Non Primitives"
         />
 
     <Button
@@ -38,16 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        android:onClick="testSemiAuto"
-        android:text="@string/btn_test"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/keyline"
-        android:text="@string/manual_description"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:onClick="testPrimitivesArrays"
+        android:text="Primitives Arrays"
         />
 
     <Button
@@ -55,8 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="8dp"
-        android:onClick="testManual"
-        android:text="@string/btn_test"
+        android:onClick="testNonPrimitivesArrays"
+        android:text="Primitive Arrays"
         />
+
 
 </LinearLayout>

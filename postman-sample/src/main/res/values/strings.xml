@@ -138,4 +138,8 @@ public class Car extends Vehicle implements Parcelable {
 }
 "</string>
 
+    <string name="test_description">Test Postman.</string>
+    <string name="test_title">Test</string>
+    <string name="test_result_title">Test Results</string>
+
 </resources>

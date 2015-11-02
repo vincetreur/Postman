@@ -21,7 +21,7 @@ android {
     buildTypes {
         debug {
             // The Postman library already specifies the needed proguard rules
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt')
        }
     }

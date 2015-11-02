@@ -3,6 +3,7 @@ package com.appsingularity.postman.compiler;
 import android.support.annotation.NonNull;
 
 import com.appsingularity.postman.compiler.handlers.AttributeHandler;
+import com.appsingularity.postman.compiler.handlers.CharPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.GenericArrayHandler;
 import com.appsingularity.postman.compiler.handlers.BooleanPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.BytePrimitiveHandler;
@@ -10,11 +11,15 @@ import com.appsingularity.postman.compiler.handlers.DoublePrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.FloatPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.GenericObjectHandler;
 import com.appsingularity.postman.compiler.handlers.IntPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.BasicListHandler;
 import com.appsingularity.postman.compiler.handlers.LongPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.ParcelableHandler;
 import com.appsingularity.postman.compiler.handlers.SerializableHandler;
-import com.appsingularity.postman.compiler.handlers.StringHandler;
 import com.appsingularity.postman.annotations.PostmanEnabled;
+import com.appsingularity.postman.compiler.handlers.ShortPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.StringListHandler;
+import com.appsingularity.postman.compiler.handlers.TypedObjectHandler;
+import com.appsingularity.postman.compiler.handlers.BasicArrayHandler;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
@@ -75,11 +80,20 @@ public class PostmanProcessor extends AbstractProcessor {
         mAttributeHandlers.add(new BooleanPrimitiveHandler());
         mAttributeHandlers.add(new GenericObjectHandler("java.lang.Boolean"));
 
+        mAttributeHandlers.add(new CharPrimitiveHandler());
+        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Character"));
+
+        mAttributeHandlers.add(new ShortPrimitiveHandler());
+        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Short"));
+
         mAttributeHandlers.add(new BytePrimitiveHandler());
         mAttributeHandlers.add(new GenericObjectHandler("java.lang.Byte"));
 
         mAttributeHandlers.add(new IntPrimitiveHandler());
         mAttributeHandlers.add(new GenericObjectHandler("java.lang.Integer"));
+
+        mAttributeHandlers.add(new FloatPrimitiveHandler());
+        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Float"));
 
         mAttributeHandlers.add(new LongPrimitiveHandler());
         mAttributeHandlers.add(new GenericObjectHandler("java.lang.Long"));
@@ -87,30 +101,33 @@ public class PostmanProcessor extends AbstractProcessor {
         mAttributeHandlers.add(new DoublePrimitiveHandler());
         mAttributeHandlers.add(new GenericObjectHandler("java.lang.Double"));
 
-        mAttributeHandlers.add(new FloatPrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Float"));
-
-        mAttributeHandlers.add(new StringHandler());
-        mAttributeHandlers.add(new ParcelableHandler());
-        mAttributeHandlers.add(new SerializableHandler());
+        mAttributeHandlers.add(new TypedObjectHandler("java.lang.String", "String"));
+        mAttributeHandlers.add(new StringListHandler());
         mAttributeHandlers.add(new GenericObjectHandler("android.os.Bundle"));
 
-        mAttributeHandlers.add(new GenericArrayHandler("int[]", "int", "Int"));
-        mAttributeHandlers.add(new GenericArrayHandler("long[]", "long", "Long"));
-        mAttributeHandlers.add(new GenericArrayHandler("byte[]", "byte", "Byte"));
-        mAttributeHandlers.add(new GenericArrayHandler("float[]", "float", "Float"));
-        mAttributeHandlers.add(new GenericArrayHandler("double[]", "double", "Double"));
         mAttributeHandlers.add(new GenericArrayHandler("boolean[]", "boolean", "Boolean"));
         mAttributeHandlers.add(new GenericArrayHandler("char[]", "char", "Char"));
+        mAttributeHandlers.add(new GenericArrayHandler("byte[]", "byte", "Byte"));
+        mAttributeHandlers.add(new GenericArrayHandler("int[]", "int", "Int"));
+        mAttributeHandlers.add(new GenericArrayHandler("float[]", "float", "Float"));
+        mAttributeHandlers.add(new GenericArrayHandler("long[]", "long", "Long"));
+        mAttributeHandlers.add(new GenericArrayHandler("double[]", "double", "Double"));
 
         mAttributeHandlers.add(new GenericArrayHandler("java.lang.String[]", "String"));
 
-        mAttributeHandlersSize = mAttributeHandlers.size();
-        // TODO: Add Binders
-        // TODO: Add FileDescriptor
-        // TODO: Add untyped arrays
-        // TODO: Add typed arrays
+        // Lollipop+
+        mAttributeHandlers.add(new TypedObjectHandler("android.util.Size", "Size"));
+        mAttributeHandlers.add(new TypedObjectHandler("android.util.SizeF", "SizeF"));
 
+        // Last resort handlers
+        mAttributeHandlers.add(new ParcelableHandler());
+        mAttributeHandlers.add(new SerializableHandler());
+
+        mAttributeHandlers.add(new BasicListHandler());
+        // Process any sort of array with native types, such as Integer, Short and Byte. But not Object/Serializable/etc
+        mAttributeHandlers.add(new BasicArrayHandler());
+
+        mAttributeHandlersSize = mAttributeHandlers.size();
     }
 
     @Override public Set<String> getSupportedAnnotationTypes() {
@@ -276,7 +293,7 @@ public class PostmanProcessor extends AbstractProcessor {
                 return true;
             }
         }
-        warn("Attribute " + element + " of type " + typeKind + " is not supported yet!");
+        warn("Attribute " + element + " of type " + element.asType().toString() + "/" + typeKind + " is not supported yet!");
         return false;
     }
 
