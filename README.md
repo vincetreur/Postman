@@ -38,8 +38,7 @@ Right now Postman supports:
 - ```Serializable```
 - ```Bundle```
 
-
-	>```List``` will always be returned as ```ArrayList```.
+```List``` will always be returned as ```ArrayList```.
 
 
 For Lollipop and higher Postman also supports:
