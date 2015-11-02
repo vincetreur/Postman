@@ -19,17 +19,32 @@ Postman plays well with ProGuard. If you use the ```postman```-module you don't 
 ###Good to know
 -  Attributes must be ```public```, ```protected``` or package protected. Private attributes cannot be accessed from the generated code and will not be parcelled.
 - ```static``` attributes are ignored since they belong to the class not the instance.
-- If you want to exclude an attribute mark it as ```transient```. 
+- You can also exclude an attribute by marking it as ```transient```.
 - Annotation only works on classes, not on interfaces.
 
 ##Supported types
 Right now Postman supports:
 
-- ```boolean```, ```byte```, ```int```, ```long```, ```float``` and ```double```.
-- ```Boolean```, ```Byte```, ```Integer```, ```Long```, ```Float``` and ```Double```.
-- ``` boolean[]```, ```char[]```, ```byte[]```, ```int[]```, ```long[]```, ```float[]``` and ```double[]```.
-- ```String```, ```Parcelable```, ```Serializable``` and ```Bundle```.
-- ```String[]```.
+- ```boolean```, ```Boolean```, ```boolean[]```, ```Boolean[]```, ```List<Boolean>``` and ```ArrayList<Boolean>```
+- ```char```, ```Character```, ```char[]```, ```Character[]```, ```List<Character>``` and ```ArrayList<Character>```
+- ```byte```, ```Byte```, ```byte[]```, ```Byte[]```, ```List<Byte>``` and ```ArrayList<Byte>```
+- ```short```, ```Short```, ```Short[]```, ```List<Short>``` and ```ArrayList<Short>```
+- ```int```, ```Integer```, ```int[]```, ```Integer[]```, ```List<Integer>``` and ```ArrayList<Integer>```
+- ```long```, ```Long```, ```long[]```, ```Long[]```, ```List<Long>``` and ```ArrayList<Long>```
+- ```float```, ```Float```, ```float[]```, ```Float[]```, ```List<Float>``` and ```ArrayList<Float>```
+- ```double```, ```Double```, ```double[]```, ```Double[]```, ```List<Double>``` and ```ArrayList<Double>```
+- ```String```, ```String[]```, ```List<String>``` and ```ArrayList<String>```
+- ```Parcelable```
+- ```Serializable```
+- ```Bundle```
+
+
+	>```List``` will always be returned as ```ArrayList```.
+
+
+For Lollipop and higher Postman also supports:
+
+- ```Size``` and ```SizeF```.
 
 
 ##How to use
@@ -78,11 +93,7 @@ Don't foget to setup annotation processing in your ```build.gradle```.
 
 
 ##Yet to do
-- Support more attribute types, such as
-	- Typed arrays
-	- Untyped arrays
-	- Binders
-	- FileDescriptor
+- Support more attribute types.
 - More automated tests.
 
 #License

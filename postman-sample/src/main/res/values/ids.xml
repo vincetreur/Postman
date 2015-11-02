@@ -8,4 +8,7 @@
     <item name="found_attribute_1" type="id" />
     <item name="found_attribute_2" type="id" />
 
+    <item name="title" type="id" />
+    <item name="results" type="id" />
+
 </resources>

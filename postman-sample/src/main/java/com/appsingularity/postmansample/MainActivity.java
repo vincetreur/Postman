@@ -8,6 +8,7 @@ import android.view.View;
 import com.appsingularity.postmansample.fullauto.SendingFullAutoActivity;
 import com.appsingularity.postmansample.manual.SendingManualActivity;
 import com.appsingularity.postmansample.semiauto.SendingSemiAutoActivity;
+import com.appsingularity.postmansample.test.TestSendingActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
     }
 
@@ -29,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void testManual(View view) {
         startActivity(new Intent(this, SendingManualActivity.class));
+    }
+
+    public void test(View view) {
+        startActivity(new Intent(this, TestSendingActivity.class));
     }
 
 

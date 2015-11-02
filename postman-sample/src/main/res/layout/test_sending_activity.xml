@@ -7,30 +7,44 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:padding="@dimen/keyline"
-    tools:context=".MainActivity">
+    tools:context=".test.TestSendingActivity">
+
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/full_auto_title"
-        android:onClick="testFullAuto"
+        android:layout_margin="8dp"
+        android:onClick="testPrimitives"
+        android:text="Primitives"
         />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/semi_auto_title"
-        android:onClick="testSemiAuto"
+        android:layout_margin="8dp"
+        android:onClick="testNonPrimitives"
+        android:text="Non Primitives"
         />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/manual_title"
-        android:onClick="testManual"
+        android:layout_margin="8dp"
+        android:onClick="testPrimitivesArrays"
+        android:text="Primitives Arrays"
         />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:onClick="testNonPrimitivesArrays"
+        android:text="Primitive Arrays"
+        />
+
 
 </LinearLayout>
