@@ -113,6 +113,21 @@ Inheritance is not a problem for Postman and it can even handle third-prty class
 <h2>
 <a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h2>
 
+<p>Configure your <code>build.gradle</code></p>
+
+<div class="highlight highlight-source-groovy"><pre>buildscript {
+  dependencies {
+    classpath <span class="pl-s"><span class="pl-pds">'</span>com.neenbedankt.gradle.plugins:android-apt:1.8<span class="pl-pds">'</span></span>
+  }
+}
+
+apply <span class="pl-c1">plugin</span>: <span class="pl-s"><span class="pl-pds">'</span>com.neenbedankt.android-apt<span class="pl-pds">'</span></span>
+
+dependencies {
+  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:0.9.1<span class="pl-pds">'</span></span>
+  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:0.9.1<span class="pl-pds">'</span></span>
+}</pre></div>
+
 <p>Annotate your model classes and delegate the tedious boilerplate coding to the Postman.</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">android.os.Parcel</span>;
