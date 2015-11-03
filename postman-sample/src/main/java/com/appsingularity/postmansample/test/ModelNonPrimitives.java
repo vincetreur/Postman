@@ -25,7 +25,9 @@ public class ModelNonPrimitives extends Model {
     }
 
     @NonNull @Override
-    public String getName() { return "Non Primitives"; }
+    public String getName() {
+        return "Non Primitives";
+    }
 
 
     @Override
@@ -35,7 +37,7 @@ public class ModelNonPrimitives extends Model {
         mByte = 2;
         mShort = 3;
         mInt = 4;
-        mLong = 5l;
+        mLong = 5L;
         mFloat = 6f;
         mDouble = 7d;
     }

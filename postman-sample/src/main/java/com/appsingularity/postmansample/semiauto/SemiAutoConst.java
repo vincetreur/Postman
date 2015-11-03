@@ -1,6 +1,6 @@
 package com.appsingularity.postmansample.semiauto;
 
-public class SemiAutoConst {
+public abstract class SemiAutoConst {
     public static final String KEY = "KEY";
 
     public static final String COLOR = "Red";

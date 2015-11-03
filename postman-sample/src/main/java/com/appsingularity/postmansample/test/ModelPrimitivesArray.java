@@ -2,7 +2,6 @@ package com.appsingularity.postmansample.test;
 
 import android.content.Context;
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -22,22 +21,23 @@ public class ModelPrimitivesArray extends Model {
     double[] mDouble;
 
     public ModelPrimitivesArray() {
-
     }
 
     @NonNull @Override
-    public String getName() { return "Primitive Array"; }
+    public String getName() {
+        return "Primitive Array";
+    }
 
 
     @Override
     public void setup() {
-        mBoolean = new boolean[] { true, false };
+        mBoolean = new boolean[] {true, false };
         mChar = new char[] {'c', 'd'};
         mByte = new byte[] {2, 3};
         mShort = new short[] {4, 5};
         mInt = new int[] {6, 7};
         mLong = new long[] {8, 9};
-        mFloat = new float[] { 10, 11};
+        mFloat = new float[] {10, 11};
         mDouble = new double[] {12, 13};
     }
 

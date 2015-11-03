@@ -1,6 +1,6 @@
 package com.appsingularity.postmansample.manual;
 
-public class ManualConst {
+public abstract class ManualConst {
     public static final String KEY = "KEY";
 
     public static final String COLOR = "Blue";

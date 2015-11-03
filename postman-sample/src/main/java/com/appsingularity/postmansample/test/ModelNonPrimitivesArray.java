@@ -21,22 +21,23 @@ public class ModelNonPrimitivesArray extends Model {
     Double[] mDouble;
 
     public ModelNonPrimitivesArray() {
-
     }
 
     @NonNull @Override
-    public String getName() { return "Primitive Array"; }
+    public String getName() {
+        return "Primitive Array";
+    }
 
 
     @Override
     public void setup() {
-        mBoolean = new Boolean[] { true, false };
+        mBoolean = new Boolean[] {true, false };
         mChar = new Character[] {Character.valueOf('c'), Character.valueOf('d')};
         mByte = new Byte[] {2, 3};
         mShort = new Short[] {4, 5};
         mInt = new Integer[] {6, 7};
-        mLong = new Long[] {8l, 9l};
-        mFloat = new Float[] { 10f, 11f};
+        mLong = new Long[] {8L, 9L};
+        mFloat = new Float[] {10f, 11f};
         mDouble = new Double[] {12d, 13d};
     }
 

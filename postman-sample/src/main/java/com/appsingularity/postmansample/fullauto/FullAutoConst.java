@@ -1,6 +1,6 @@
 package com.appsingularity.postmansample.fullauto;
 
-public class FullAutoConst {
+public abstract class FullAutoConst {
     public static final String KEY = "KEY";
 
     public static final String NAME = "Spot";

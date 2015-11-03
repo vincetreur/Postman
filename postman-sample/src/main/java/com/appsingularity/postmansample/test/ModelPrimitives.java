@@ -21,11 +21,12 @@ public class ModelPrimitives extends Model {
     double mDouble;
 
     public ModelPrimitives() {
-
     }
 
     @NonNull @Override
-    public String getName() { return "Primitives"; }
+    public String getName() {
+        return "Primitives";
+    }
 
 
     @Override
