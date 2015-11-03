@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Postman by vincetreur</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Postman</h1>
+          <h2>Automated Parceling for Android</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/vincetreur/Postman/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/vincetreur/Postman/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/vincetreur/Postman" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="postman" class="anchor" href="#postman" aria-hidden="true"><span class="octicon octicon-link"></span></a>Postman</h1>
+
+<p>Automated Parceling for Android.</p>
+
+<p>Generate the boilerplate code that is needed for supporting Parcelable.</p>
+
+<p>Postman generates the code that you would normally write in the <code>writeToParcel</code> and constructor methods. 
+You only need to add the <code>@PostmanEnabled</code> annotation. And delegate to the <code>Postman</code> in your own code.</p>
+
+<h3>
+<a id="third-party-classes" class="anchor" href="#third-party-classes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Third-party classes</h3>
+
+<p>You can go all in with Postman, or mix it with hand crafted <code>Parcelable</code> classes.
+Inheritance is not a problem for Postman and it can even handle third-prty classes that are not designed to work with Postman. (See the sample project for some examples.)</p>
+
+<h3>
+<a id="proguard" class="anchor" href="#proguard" aria-hidden="true"><span class="octicon octicon-link"></span></a>ProGuard</h3>
+
+<p>Postman plays well with ProGuard. If you use the <code>postman</code>-module you don't need to worry about ProGuard &amp; Postman.</p>
+
+<h3>
+<a id="good-to-know" class="anchor" href="#good-to-know" aria-hidden="true"><span class="octicon octicon-link"></span></a>Good to know</h3>
+
+<ul>
+<li> Attributes must be <code>public</code>, <code>protected</code> or package protected. Private attributes cannot be accessed from the generated code and will not be parcelled.</li>
+<li>
+<code>static</code> attributes are ignored since they belong to the class not the instance.</li>
+<li>You can also exclude an attribute by marking it as <code>transient</code>.</li>
+<li>Annotation only works on classes, not on interfaces.</li>
+</ul>
+
+<h2>
+<a id="supported-types" class="anchor" href="#supported-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported types</h2>
+
+<p>Right now Postman supports:</p>
+
+<ul>
+<li>
+<code>boolean</code>, <code>Boolean</code>, <code>boolean[]</code>, <code>Boolean[]</code>, <code>List&lt;Boolean&gt;</code> and <code>ArrayList&lt;Boolean&gt;</code>
+</li>
+<li>
+<code>char</code>, <code>Character</code>, <code>char[]</code>, <code>Character[]</code>, <code>List&lt;Character&gt;</code> and <code>ArrayList&lt;Character&gt;</code>
+</li>
+<li>
+<code>byte</code>, <code>Byte</code>, <code>byte[]</code>, <code>Byte[]</code>, <code>List&lt;Byte&gt;</code> and <code>ArrayList&lt;Byte&gt;</code>
+</li>
+<li>
+<code>short</code>, <code>Short</code>, <code>short[]</code>, <code>Short[]</code>, <code>List&lt;Short&gt;</code> and <code>ArrayList&lt;Short&gt;</code>
+</li>
+<li>
+<code>int</code>, <code>Integer</code>, <code>int[]</code>, <code>Integer[]</code>, <code>List&lt;Integer&gt;</code> and <code>ArrayList&lt;Integer&gt;</code>
+</li>
+<li>
+<code>long</code>, <code>Long</code>, <code>long[]</code>, <code>Long[]</code>, <code>List&lt;Long&gt;</code> and <code>ArrayList&lt;Long&gt;</code>
+</li>
+<li>
+<code>float</code>, <code>Float</code>, <code>float[]</code>, <code>Float[]</code>, <code>List&lt;Float&gt;</code> and <code>ArrayList&lt;Float&gt;</code>
+</li>
+<li>
+<code>double</code>, <code>Double</code>, <code>double[]</code>, <code>Double[]</code>, <code>List&lt;Double&gt;</code> and <code>ArrayList&lt;Double&gt;</code>
+</li>
+<li>
+<code>String</code>, <code>String[]</code>, <code>List&lt;String&gt;</code> and <code>ArrayList&lt;String&gt;</code>
+</li>
+<li><code>Parcelable</code></li>
+<li><code>Serializable</code></li>
+<li><code>Bundle</code></li>
+</ul>
+
+<p><code>List</code> will always be returned as <code>ArrayList</code>.</p>
+
+<p>For Lollipop and higher Postman also supports:</p>
+
+<ul>
+<li>
+<code>Size</code> and <code>SizeF</code>.</li>
+</ul>
+
+<h2>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h2>
+
+<p>Annotate your model classes and delegate the tedious boilerplate coding to the Postman.</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">android.os.Parcel</span>;
+
+<span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.Postman</span>;
+<span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.annotations.PostmanEnabled</span>;
+
+@<span class="pl-smi">PostmanEnabled</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Dog</span> <span class="pl-k">implements</span> <span class="pl-e">Parcelable</span>  {
+    <span class="pl-c">// Add your methods and attributes here.</span>
+
+    <span class="pl-k">protected</span> <span class="pl-en">Dog</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">in</span>) {
+        <span class="pl-smi">Postman</span><span class="pl-k">.</span>receive(<span class="pl-smi">Dog</span><span class="pl-k">.</span>class, <span class="pl-v">this</span>, in);
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">writeToParcel</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">dest</span>, <span class="pl-k">int</span> <span class="pl-v">flags</span>) {
+        <span class="pl-smi">Postman</span><span class="pl-k">.</span>ship(<span class="pl-smi">Dog</span><span class="pl-k">.</span>class, <span class="pl-v">this</span>, dest, flags);
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">describeContents</span>() {
+        <span class="pl-k">return</span> <span class="pl-c1">0</span>;
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">Creator&lt;<span class="pl-smi">Dog</span>&gt;</span> <span class="pl-c1">CREATOR</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">Creator&lt;<span class="pl-smi">Dog</span>&gt;</span>() {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-smi">Dog</span> <span class="pl-en">createFromParcel</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">in</span>) {
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Dog</span>(in);
+        }
+
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Dog</span>[] <span class="pl-en">newArray</span>(<span class="pl-k">int</span> <span class="pl-v">size</span>) {
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Dog</span>[size];
+        }
+    };
+}</pre></div>
+
+<p>Don't foget to setup annotation processing in your <code>build.gradle</code>.
+(See the sample project.)</p>
+
+<h2>
+<a id="yet-to-do" class="anchor" href="#yet-to-do" aria-hidden="true"><span class="octicon octicon-link"></span></a>Yet to do</h2>
+
+<ul>
+<li>Support more attribute types.</li>
+<li>More automated tests.</li>
+</ul>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+
+<pre><code>Copyright 2015 Vince M. Treur
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+        </section>
+
+        <footer>
+          Postman is maintained by <a href="https://github.com/vincetreur">vincetreur</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
