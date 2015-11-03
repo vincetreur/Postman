@@ -19,7 +19,7 @@ public class DrawableHelper {
         int colorResId = ok ? R.color.green_500 : R.color.red_500;
         Drawable d = ContextCompat.getDrawable(context, iconResId);
         Drawable wrappedD = DrawableCompat.wrap(d);
-        DrawableCompat.setTint(wrappedD, ContextCompat.getColor(context,colorResId));
+        DrawableCompat.setTint(wrappedD, ContextCompat.getColor(context, colorResId));
         textView.setCompoundDrawablesWithIntrinsicBounds(wrappedD, null, null, null);
     }
 

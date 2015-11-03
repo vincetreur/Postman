@@ -47,6 +47,23 @@ For Lollipop and higher Postman also supports:
 
 
 ##How to use
+Configure your ```build.gradle```
+
+```groovy
+buildscript {
+  dependencies {
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+  }
+}
+
+apply plugin: 'com.neenbedankt.android-apt'
+
+dependencies {
+  compile 'com.appsingularity:postman:0.9.1'
+  apt 'com.appsingularity:postman-compiler:0.9.1'
+}
+```
+
 Annotate your model classes and delegate the tedious boilerplate coding to the Postman.
 
 ```java
