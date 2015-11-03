@@ -121,13 +121,13 @@ public class PostmanProcessor extends AbstractProcessor {
         mAttributeHandlers.add(new TypedObjectHandler("android.util.Size", "Size"));
         mAttributeHandlers.add(new TypedObjectHandler("android.util.SizeF", "SizeF"));
 
-        // Last resort handlers
-        mAttributeHandlers.add(new ParcelableHandler());
-        mAttributeHandlers.add(new SerializableHandler());
-
         mAttributeHandlers.add(new BasicListHandler());
         // Process any sort of array with native types, such as Integer, Short and Byte. But not Object/Serializable/etc
         mAttributeHandlers.add(new BasicArrayHandler());
+
+        // Last resort handlers
+        mAttributeHandlers.add(new ParcelableHandler());
+        mAttributeHandlers.add(new SerializableHandler());
 
         mAttributeHandlersSize = mAttributeHandlers.size();
     }

@@ -15,8 +15,6 @@ public class StringListHandler extends AbsAttributeHandler {
     @Override
     public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
         if (typeKind == TypeKind.DECLARED) {
-
-            System.err.println(element.asType().toString());
             if ("java.util.List<java.lang.String>".equals(element.asType().toString())) {
                 return true;
             }

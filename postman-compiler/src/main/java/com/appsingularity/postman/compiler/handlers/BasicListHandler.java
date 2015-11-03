@@ -72,23 +72,22 @@ public class BasicListHandler extends AbsAttributeHandler {
     @Override
     protected boolean shipMethod(@NonNull MethodSpec.Builder shipMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
         String attr = element.getSimpleName().toString();
-        shipMethod.addStatement("if (source.$L != null) {", attr);
-        shipMethod.addStatement("  dest.writeByte((byte) 1)");
-        shipMethod.addStatement("  dest.writeList(source.$L)", attr);
-        shipMethod.addStatement("} else {");
-        shipMethod.addStatement("  dest.writeByte((byte) 0)");
-        shipMethod.addStatement("}");
+        shipMethod.beginControlFlow("if (source.$L != null)", attr);
+        shipMethod.addStatement("dest.writeByte((byte) 1)");
+        shipMethod.addStatement("dest.writeList(source.$L)", attr);
+        shipMethod.nextControlFlow("else");
+        shipMethod.addStatement("dest.writeByte((byte) 0)");
+        shipMethod.endControlFlow();
         return true;
     }
 
     @Override
     protected boolean reveiveMethod(@NonNull MethodSpec.Builder receiveMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
         String attr = element.getSimpleName().toString();
-        String type = element.asType().toString();
-        receiveMethod.addStatement("if (in.readByte() == 1) {");
-        receiveMethod.addStatement("  target.$L = new java.util.ArrayList<>()", attr);
-        receiveMethod.addStatement("  in.readList(target.$L, java.util.List.class.getClassLoader())", attr);
-        receiveMethod.addStatement("}");
+        receiveMethod.beginControlFlow("if (in.readByte() == 1)");
+        receiveMethod.addStatement("target.$L = new java.util.ArrayList<>()", attr);
+        receiveMethod.addStatement("in.readList(target.$L, java.util.List.class.getClassLoader())", attr);
+        receiveMethod.endControlFlow();
         return true;
     }
 
