@@ -66,9 +66,8 @@ import static javax.tools.Diagnostic.Kind.WARNING;
 
 @AutoService(Processor.class)
 public class PostmanProcessor extends AbstractProcessor {
-    private Elements elementUtils;
-    private Types types;
-    private Filer filer;
+    private Elements mElements;
+    private Filer mFiler;
 
     private List<AttributeHandler> mAttributeHandlers;
     private int mAttributeHandlersSize;
@@ -78,46 +77,46 @@ public class PostmanProcessor extends AbstractProcessor {
 
     @Override public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
-        elementUtils = env.getElementUtils();
-        types = env.getTypeUtils();
-        filer = env.getFiler();
+        mElements = env.getElementUtils();
+        Types types = env.getTypeUtils();
+        mFiler = env.getFiler();
 
         mAttributeHandlers = new ArrayList<>();
-        mAttributeHandlers.add(new BooleanPrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new CharPrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new ShortPrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new BytePrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new IntPrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new FloatPrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new LongPrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new DoublePrimitiveHandler(types, elementUtils));
-        mAttributeHandlers.add(new GenericObjectHandler(types, elementUtils));
+        mAttributeHandlers.add(new BooleanPrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new CharPrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new ShortPrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new BytePrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new IntPrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new FloatPrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new LongPrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new DoublePrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new GenericObjectHandler(types, mElements));
 
-        mAttributeHandlers.add(new TypedObjectHandler(types, elementUtils, "java.lang.String", "String"));
-        mAttributeHandlers.add(new StringListHandler(types, elementUtils));
+        mAttributeHandlers.add(new TypedObjectHandler(types, mElements, "java.lang.String", "String"));
+        mAttributeHandlers.add(new StringListHandler(types, mElements));
 
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "boolean[]", "Boolean"));
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "char[]", "Char"));
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "byte[]", "Byte"));
-        mAttributeHandlers.add(new ShortPrimitiveArrayHandler(types, elementUtils));
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "int[]", "Int"));
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "float[]", "Float"));
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "long[]", "Long"));
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "double[]", "Double"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "boolean[]", "Boolean"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "char[]", "Char"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "byte[]", "Byte"));
+        mAttributeHandlers.add(new ShortPrimitiveArrayHandler(types, mElements));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "int[]", "Int"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "float[]", "Float"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "long[]", "Long"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "double[]", "Double"));
 
-        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "java.lang.String[]", "String"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "java.lang.String[]", "String"));
 
         // Lollipop+
-        mAttributeHandlers.add(new TypedObjectHandler(types, elementUtils, "android.util.Size", "Size"));
-        mAttributeHandlers.add(new TypedObjectHandler(types, elementUtils, "android.util.SizeF", "SizeF"));
+        mAttributeHandlers.add(new TypedObjectHandler(types, mElements, "android.util.Size", "Size"));
+        mAttributeHandlers.add(new TypedObjectHandler(types, mElements, "android.util.SizeF", "SizeF"));
 
-        mAttributeHandlers.add(new BasicListHandler(types, elementUtils));
+        mAttributeHandlers.add(new BasicListHandler(types, mElements));
         // Process any sort of array with native types, such as Integer, Short and Byte. But not Object/Serializable/etc
-        mAttributeHandlers.add(new BasicArrayHandler(types, elementUtils));
+        mAttributeHandlers.add(new BasicArrayHandler(types, mElements));
 
         // Last resort handlers
-        mAttributeHandlers.add(new ParcelableHandler(types, elementUtils));
-        mAttributeHandlers.add(new SerializableHandler(types, elementUtils));
+        mAttributeHandlers.add(new ParcelableHandler(types, mElements));
+        mAttributeHandlers.add(new SerializableHandler(types, mElements));
 
         mAttributeHandlersSize = mAttributeHandlers.size();
     }
@@ -182,11 +181,11 @@ public class PostmanProcessor extends AbstractProcessor {
                 // Generate unparcel method
                 classBuilder.addMethod(createReceiveMethodSpec(simpleClassName, PARCEL_TYPE_NAME, attributeList));
 
-                packageName = elementUtils.getPackageOf(collectedClass).getQualifiedName().toString();
+                packageName = mElements.getPackageOf(collectedClass).getQualifiedName().toString();
                 javaFile = JavaFile.builder(packageName, classBuilder.build())
                         .addFileComment("Generated code from Postman. Do not modify!")
                         .build();
-                javaFile.writeTo(filer);
+                javaFile.writeTo(mFiler);
             } catch (IOException e) {
                 error(collectedClass, "Unable to write code for type %s: %s", collectedClass,
                         e.getMessage());

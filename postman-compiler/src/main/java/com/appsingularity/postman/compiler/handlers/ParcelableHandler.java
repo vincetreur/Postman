@@ -38,7 +38,8 @@ public class ParcelableHandler extends AbsAttributeHandler {
 
     @Override
     protected boolean reveiveMethod(@NonNull MethodSpec.Builder receiveMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
-        receiveMethod.addStatement("target.$L = in.readParcelable($L.class.getClassLoader())", element.getSimpleName().toString(), element.asType().toString());
+        receiveMethod.addStatement("target.$L = in.readParcelable($L.class.getClassLoader())"
+            , element.getSimpleName().toString(), element.asType().toString());
         return true;
     }
 
