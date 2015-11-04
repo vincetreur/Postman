@@ -1,17 +1,24 @@
-package com.appsingularity.postman.compiler.handlers;
+package com.appsingularity.postman.compiler.handlers.primitives;
 
 import android.support.annotation.NonNull;
 
+import com.appsingularity.postman.compiler.handlers.AbsAttributeHandler;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
-public class CharPrimitiveHandler extends AbsAttributeHandler {
+public class ShortPrimitiveHandler extends AbsAttributeHandler {
+
+    public ShortPrimitiveHandler(@NonNull Types types, @NonNull Elements elements) {
+        super(types, elements);
+    }
 
     @Override
     public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
-        return (typeKind == TypeKind.CHAR);
+        return (typeKind == TypeKind.SHORT);
     }
 
     @Override
@@ -22,7 +29,7 @@ public class CharPrimitiveHandler extends AbsAttributeHandler {
 
     @Override
     protected boolean reveiveMethod(@NonNull MethodSpec.Builder receiveMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
-        receiveMethod.addStatement("target.$L = (char) in.readInt()", element.getSimpleName().toString());
+        receiveMethod.addStatement("target.$L = (short) in.readInt()", element.getSimpleName().toString());
         return true;
     }
 

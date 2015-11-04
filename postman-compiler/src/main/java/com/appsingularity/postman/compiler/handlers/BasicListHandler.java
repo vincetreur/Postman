@@ -6,11 +6,13 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class BasicListHandler extends AbsListHandler {
 
-    public BasicListHandler() {
-        super();
+    public BasicListHandler(@NonNull Types types, @NonNull Elements elements) {
+        super(types, elements);
         mSupportedArgumentTypes.add("java.lang.Boolean");
         mSupportedArgumentTypes.add("java.lang.Character");
         mSupportedArgumentTypes.add("java.lang.Byte");
@@ -19,6 +21,8 @@ public class BasicListHandler extends AbsListHandler {
         mSupportedArgumentTypes.add("java.lang.Long");
         mSupportedArgumentTypes.add("java.lang.Float");
         mSupportedArgumentTypes.add("java.lang.Double");
+        mSupportedArgumentTypes.add("android.os.Parcelable");
+        mSupportedArgumentTypes.add("java.io.Serializable");
     }
 
 
@@ -37,9 +41,10 @@ public class BasicListHandler extends AbsListHandler {
     @Override
     protected boolean reveiveMethod(@NonNull MethodSpec.Builder receiveMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
         String attr = element.getSimpleName().toString();
+        String enclosedType = getArgument(element);
         receiveMethod.beginControlFlow("if (in.readByte() == 1)");
         receiveMethod.addStatement("target.$L = new java.util.ArrayList<>()", attr);
-        receiveMethod.addStatement("in.readList(target.$L, java.util.List.class.getClassLoader())", attr);
+        receiveMethod.addStatement("in.readList(target.$L, $L.class.getClassLoader())", attr, enclosedType);
         receiveMethod.endControlFlow();
         return true;
     }

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.squareup.javapoet.MethodSpec;
 
-
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 

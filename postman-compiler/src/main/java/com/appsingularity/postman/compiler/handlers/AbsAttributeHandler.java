@@ -1,20 +1,29 @@
 package com.appsingularity.postman.compiler.handlers;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.squareup.javapoet.MethodSpec;
 
 import java.util.List;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public abstract class AbsAttributeHandler implements AttributeHandler {
+    @NonNull
+    protected final Types mTypes;
+    @NonNull
+    protected final Elements mElements;
 
-
+    public AbsAttributeHandler(@NonNull Types types, @NonNull Elements elements) {
+        mTypes = types;
+        mElements = elements;
+    }
 
     @Override
     public final boolean addShipMethod(@NonNull final MethodSpec.Builder shipMethod
@@ -40,45 +49,17 @@ public abstract class AbsAttributeHandler implements AttributeHandler {
     protected abstract boolean reveiveMethod(@NonNull final MethodSpec.Builder receiveMethod
             , @NonNull final Element element, @NonNull final TypeKind typeKind);
 
-
-    protected boolean isSubtypeOfType(@NonNull TypeMirror typeMirror, @NonNull String otherType) {
-        if (otherType.equals(typeMirror.toString())) {
-            return true;
-        }
-        if (typeMirror.getKind() != TypeKind.DECLARED) {
-            return false;
-        }
+    @Nullable
+    protected String getArgument(@NonNull Element element) {
+        TypeMirror typeMirror = element.asType();
         DeclaredType declaredType = (DeclaredType) typeMirror;
         List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
-        if (typeArguments.size() > 0) {
-            StringBuilder typeString = new StringBuilder(declaredType.asElement().toString());
-            typeString.append('<');
-            for (int i = 0; i < typeArguments.size(); i++) {
-                if (i > 0) {
-                    typeString.append(',');
-                }
-                typeString.append('?');
-            }
-            typeString.append('>');
-            if (typeString.toString().equals(otherType)) {
-                return true;
-            }
+        String enclosedType = null;
+        if (typeArguments != null && !typeArguments.isEmpty()) {
+            TypeMirror typeArgument = typeArguments.get(0);
+            enclosedType = typeArgument.toString();
         }
-        Element element = declaredType.asElement();
-        if (!(element instanceof TypeElement)) {
-            return false;
-        }
-        TypeElement typeElement = (TypeElement) element;
-        TypeMirror superType = typeElement.getSuperclass();
-        if (isSubtypeOfType(superType, otherType)) {
-            return true;
-        }
-        for (TypeMirror interfaceType : typeElement.getInterfaces()) {
-            if (isSubtypeOfType(interfaceType, otherType)) {
-                return true;
-            }
-        }
-        return false;
+        return enclosedType;
     }
 
 }

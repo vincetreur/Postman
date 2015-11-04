@@ -4,14 +4,15 @@ import android.support.annotation.NonNull;
 
 import com.squareup.javapoet.MethodSpec;
 
-
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class StringListHandler extends AbsListHandler {
 
-    public StringListHandler() {
-        super();
+    public StringListHandler(@NonNull Types types, @NonNull Elements elements) {
+        super(types, elements);
         mSupportedArgumentTypes.add("java.lang.String");
     }
 

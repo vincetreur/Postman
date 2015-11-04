@@ -5,10 +5,17 @@ import android.support.annotation.NonNull;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class ParcelableHandler extends AbsAttributeHandler {
     private static final String CLASSNAME = "android.os.Parcelable";
+
+    public ParcelableHandler(@NonNull Types types, @NonNull Elements elements) {
+        super(types, elements);
+    }
 
     @Override
     public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
@@ -17,7 +24,8 @@ public class ParcelableHandler extends AbsAttributeHandler {
                 return true;
             }
             // Look for superclasses that implement Parcelable
-            return (isSubtypeOfType(element.asType(), CLASSNAME));
+            TypeElement typeElement = mElements.getTypeElement(CLASSNAME);
+            return (mTypes.isAssignable(element.asType(), typeElement.asType()));
         }
         return false;
     }

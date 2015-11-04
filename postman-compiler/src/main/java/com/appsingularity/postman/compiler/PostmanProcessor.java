@@ -4,23 +4,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.appsingularity.postman.compiler.handlers.AttributeHandler;
-import com.appsingularity.postman.compiler.handlers.CharPrimitiveHandler;
-import com.appsingularity.postman.compiler.handlers.GenericArrayHandler;
-import com.appsingularity.postman.compiler.handlers.BooleanPrimitiveHandler;
-import com.appsingularity.postman.compiler.handlers.BytePrimitiveHandler;
-import com.appsingularity.postman.compiler.handlers.DoublePrimitiveHandler;
-import com.appsingularity.postman.compiler.handlers.FloatPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.CharPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.TypedArrayHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.BooleanPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.BytePrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.DoublePrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.FloatPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.GenericObjectHandler;
-import com.appsingularity.postman.compiler.handlers.IntPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.IntPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.BasicListHandler;
-import com.appsingularity.postman.compiler.handlers.LongPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.LongPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.ParcelableHandler;
-import com.appsingularity.postman.compiler.handlers.ParcelableListHandler;
 import com.appsingularity.postman.compiler.handlers.SerializableHandler;
 import com.appsingularity.postman.annotations.PostmanEnabled;
-import com.appsingularity.postman.compiler.handlers.SerializableListHandler;
 import com.appsingularity.postman.compiler.handlers.ShortPrimitiveArrayHandler;
-import com.appsingularity.postman.compiler.handlers.ShortPrimitiveHandler;
+import com.appsingularity.postman.compiler.handlers.primitives.ShortPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.StringListHandler;
 import com.appsingularity.postman.compiler.handlers.TypedObjectHandler;
 import com.appsingularity.postman.compiler.handlers.BasicArrayHandler;
@@ -85,58 +83,41 @@ public class PostmanProcessor extends AbstractProcessor {
         filer = env.getFiler();
 
         mAttributeHandlers = new ArrayList<>();
-        mAttributeHandlers.add(new BooleanPrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Boolean"));
+        mAttributeHandlers.add(new BooleanPrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new CharPrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new ShortPrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new BytePrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new IntPrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new FloatPrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new LongPrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new DoublePrimitiveHandler(types, elementUtils));
+        mAttributeHandlers.add(new GenericObjectHandler(types, elementUtils));
 
-        mAttributeHandlers.add(new CharPrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Character"));
+        mAttributeHandlers.add(new TypedObjectHandler(types, elementUtils, "java.lang.String", "String"));
+        mAttributeHandlers.add(new StringListHandler(types, elementUtils));
 
-        mAttributeHandlers.add(new ShortPrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Short"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "boolean[]", "Boolean"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "char[]", "Char"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "byte[]", "Byte"));
+        mAttributeHandlers.add(new ShortPrimitiveArrayHandler(types, elementUtils));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "int[]", "Int"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "float[]", "Float"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "long[]", "Long"));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "double[]", "Double"));
 
-        mAttributeHandlers.add(new BytePrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Byte"));
-
-        mAttributeHandlers.add(new IntPrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Integer"));
-
-        mAttributeHandlers.add(new FloatPrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Float"));
-
-        mAttributeHandlers.add(new LongPrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Long"));
-
-        mAttributeHandlers.add(new DoublePrimitiveHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("java.lang.Double"));
-
-        mAttributeHandlers.add(new TypedObjectHandler("java.lang.String", "String"));
-        mAttributeHandlers.add(new StringListHandler());
-        mAttributeHandlers.add(new GenericObjectHandler("android.os.Bundle"));
-
-        mAttributeHandlers.add(new GenericArrayHandler("boolean[]", "boolean", "Boolean"));
-        mAttributeHandlers.add(new GenericArrayHandler("char[]", "char", "Char"));
-        mAttributeHandlers.add(new GenericArrayHandler("byte[]", "byte", "Byte"));
-        mAttributeHandlers.add(new ShortPrimitiveArrayHandler());
-        mAttributeHandlers.add(new GenericArrayHandler("int[]", "int", "Int"));
-        mAttributeHandlers.add(new GenericArrayHandler("float[]", "float", "Float"));
-        mAttributeHandlers.add(new GenericArrayHandler("long[]", "long", "Long"));
-        mAttributeHandlers.add(new GenericArrayHandler("double[]", "double", "Double"));
-
-        mAttributeHandlers.add(new GenericArrayHandler("java.lang.String[]", "String"));
-        mAttributeHandlers.add(new ParcelableListHandler(types, elementUtils));
-        mAttributeHandlers.add(new SerializableListHandler(types, elementUtils));
+        mAttributeHandlers.add(new TypedArrayHandler(types, elementUtils, "java.lang.String[]", "String"));
 
         // Lollipop+
-        mAttributeHandlers.add(new TypedObjectHandler("android.util.Size", "Size"));
-        mAttributeHandlers.add(new TypedObjectHandler("android.util.SizeF", "SizeF"));
+        mAttributeHandlers.add(new TypedObjectHandler(types, elementUtils, "android.util.Size", "Size"));
+        mAttributeHandlers.add(new TypedObjectHandler(types, elementUtils, "android.util.SizeF", "SizeF"));
 
-        mAttributeHandlers.add(new BasicListHandler());
+        mAttributeHandlers.add(new BasicListHandler(types, elementUtils));
         // Process any sort of array with native types, such as Integer, Short and Byte. But not Object/Serializable/etc
-        mAttributeHandlers.add(new BasicArrayHandler());
+        mAttributeHandlers.add(new BasicArrayHandler(types, elementUtils));
 
         // Last resort handlers
-        mAttributeHandlers.add(new ParcelableHandler());
-        mAttributeHandlers.add(new SerializableHandler());
+        mAttributeHandlers.add(new ParcelableHandler(types, elementUtils));
+        mAttributeHandlers.add(new SerializableHandler(types, elementUtils));
 
         mAttributeHandlersSize = mAttributeHandlers.size();
     }

@@ -6,22 +6,18 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
-public class GenericArrayHandler extends AbsAttributeHandler {
+public class TypedArrayHandler extends AbsAttributeHandler {
     @NonNull
     final private String mFQName;
     @NonNull
-    final private String mName;
-    @NonNull
     final private String mNameCapitalized;
 
-    public GenericArrayHandler(@NonNull final String fqName, @NonNull final String name) {
-        this(fqName, name, name);
-    }
-
-    public GenericArrayHandler(@NonNull final String fqName, @NonNull final String name, @NonNull final String nameCapitalized) {
+    public TypedArrayHandler(@NonNull Types types, @NonNull Elements elements, @NonNull final String fqName, @NonNull final String nameCapitalized) {
+        super(types, elements);
         mFQName = fqName;
-        mName = name;
         mNameCapitalized = nameCapitalized;
     }
 

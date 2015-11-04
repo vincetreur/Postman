@@ -1,13 +1,20 @@
-package com.appsingularity.postman.compiler.handlers;
+package com.appsingularity.postman.compiler.handlers.primitives;
 
 import android.support.annotation.NonNull;
 
+import com.appsingularity.postman.compiler.handlers.AbsAttributeHandler;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class IntPrimitiveHandler extends AbsAttributeHandler {
+
+    public IntPrimitiveHandler(@NonNull Types types, @NonNull Elements elements) {
+        super(types, elements);
+    }
 
     @Override
     public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {

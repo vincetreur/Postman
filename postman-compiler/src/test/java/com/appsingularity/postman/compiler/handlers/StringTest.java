@@ -18,7 +18,7 @@ public class StringTest {
 
 
     @Test
-    public void testStringAndStringArray() {
+    public void testString() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -31,7 +31,6 @@ public class StringTest {
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
                         "   String mString;",
-                        "   String[] mStrings;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -72,12 +71,82 @@ public class StringTest {
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
                         "      dest.writeString(source.mString);",
-                        "      dest.writeStringArray(source.mStrings);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "      target.mString = in.readString();",
+                        "   }",
+                        "}"
+                ));
+
+
+        assertAbout(javaSource()).that(source)
+                .processedWith(new PostmanProcessor())
+                .compilesWithoutError()
+                .and()
+                .generatesSources(expectedSource);
+    }
+
+
+    @Test
+    public void testStringArray() {
+        JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
+                Joiner.on('\n').join(
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.Postman;",
+                        "import com.appsingularity.postman.annotations.PostmanEnabled;",
+                        "import android.os.Parcel;",
+                        "import android.os.Parcelable;",
+                        "",
+                        "@PostmanEnabled",
+                        "public class Model implements Parcelable {",
+                        "   String[] mStrings;",
+                        "",
+                        "   protected Model(Parcel in) {",
+                        "     Postman.receive(this, in);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public void writeToParcel(Parcel dest, int flags) {",
+                        "    Postman.ship(this, dest, flags);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public int describeContents() {",
+                        "    return 0;",
+                        "  }",
+                        "",
+                        "  public static final Parcelable.Creator<Model> CREATOR = new Parcelable.Creator<Model>() {",
+                        "    @Override",
+                        "    public Model createFromParcel(Parcel in) {",
+                        "      return new Model(in);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public Model[] newArray(int size) {",
+                        "      return new Model[size];",
+                        "    }",
+                        "  };",
+                        "}"
+                ));
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
+                Joiner.on('\n').join(
+                        "// Generated code from Postman. Do not modify!",
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.internal.BasePostman;",
+                        "import java.lang.Override;",
+                        "",
+                        "public final class Model$$Postman extends BasePostman<Model> {",
+                        "   @Override",
+                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
+                        "      dest.writeStringArray(source.mStrings);",
+                        "   }",
+                        "",
+                        "   @Override",
+                        "   public void receive(final Model target, final android.os.Parcel in) {",
                         "      target.mStrings = in.createStringArray();",
                         "   }",
                         "}"
@@ -100,13 +169,83 @@ public class StringTest {
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
                         "import java.util.List;",
+                        "import android.os.Parcel;",
+                        "import android.os.Parcelable;",
+                        "",
+                        "@PostmanEnabled",
+                        "public class Model implements Parcelable {",
+                        "   List<String> mStrings;",
+                        "",
+                        "   protected Model(Parcel in) {",
+                        "     Postman.receive(this, in);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public void writeToParcel(Parcel dest, int flags) {",
+                        "    Postman.ship(this, dest, flags);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public int describeContents() {",
+                        "    return 0;",
+                        "  }",
+                        "",
+                        "  public static final Parcelable.Creator<Model> CREATOR = new Parcelable.Creator<Model>() {",
+                        "    @Override",
+                        "    public Model createFromParcel(Parcel in) {",
+                        "      return new Model(in);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public Model[] newArray(int size) {",
+                        "      return new Model[size];",
+                        "    }",
+                        "  };",
+                        "}"
+                ));
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
+                Joiner.on('\n').join(
+                        "// Generated code from Postman. Do not modify!",
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.internal.BasePostman;",
+                        "import java.lang.Override;",
+                        "",
+                        "public final class Model$$Postman extends BasePostman<Model> {",
+                        "   @Override",
+                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
+                        "      dest.writeStringList(source.mStrings);",
+                        "   }",
+                        "",
+                        "   @Override",
+                        "   public void receive(final Model target, final android.os.Parcel in) {",
+                        "      target.mStrings = in.createStringArrayList();",
+                        "   }",
+                        "}"
+                ));
+
+
+        assertAbout(javaSource()).that(source)
+                .processedWith(new PostmanProcessor())
+                .compilesWithoutError()
+                .and()
+                .generatesSources(expectedSource);
+    }
+
+    @Test
+    public void testStringArrayList() {
+        JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
+                Joiner.on('\n').join(
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.Postman;",
+                        "import com.appsingularity.postman.annotations.PostmanEnabled;",
                         "import java.util.ArrayList;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   List<String> mString;",
                         "   ArrayList<String> mStrings;",
                         "",
                         "   protected Model(Parcel in) {",
@@ -147,13 +286,11 @@ public class StringTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeStringList(source.mString);",
                         "      dest.writeStringList(source.mStrings);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mString = in.createStringArrayList();",
                         "      target.mStrings = in.createStringArrayList();",
                         "   }",
                         "}"
@@ -166,6 +303,5 @@ public class StringTest {
                 .and()
                 .generatesSources(expectedSource);
     }
-
 
 }

@@ -6,6 +6,8 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class TypedObjectHandler extends AbsAttributeHandler {
     @NonNull
@@ -13,7 +15,8 @@ public class TypedObjectHandler extends AbsAttributeHandler {
     @NonNull
     final private String mName;
 
-    public TypedObjectHandler(@NonNull final String fqName, @NonNull final String name) {
+    public TypedObjectHandler(@NonNull Types types, @NonNull Elements elements, @NonNull final String fqName, @NonNull final String name) {
+        super(types, elements);
         mFQName = fqName;
         mName = name;
     }

@@ -6,11 +6,15 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 public class ShortPrimitiveArrayHandler extends AbsAttributeHandler {
 
-    public ShortPrimitiveArrayHandler() {
+    public ShortPrimitiveArrayHandler(@NonNull Types types, @NonNull Elements elements) {
+        super(types, elements);
     }
+
 
     @Override
     public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
