@@ -35,7 +35,7 @@ Right now Postman supports:
 - ```double```, ```Double```, ```double[]```, ```Double[]```, ```List<Double>``` and ```ArrayList<Double>```
 - ```String```, ```String[]```, ```List<String>``` and ```ArrayList<String>```
 - ```Parcelable```, ```List<Parcelable>``` and ```ArrayList<Parcelable>```
-- ```Serializable```
+- ```Serializable```, ```List<Serializable>``` and ```ArrayList<Serializable>```
 - ```Bundle```
 
 ```List``` will always be returned as ```ArrayList```.

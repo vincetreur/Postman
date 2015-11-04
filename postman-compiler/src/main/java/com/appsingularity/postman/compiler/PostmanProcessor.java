@@ -18,6 +18,7 @@ import com.appsingularity.postman.compiler.handlers.ParcelableHandler;
 import com.appsingularity.postman.compiler.handlers.ParcelableListHandler;
 import com.appsingularity.postman.compiler.handlers.SerializableHandler;
 import com.appsingularity.postman.annotations.PostmanEnabled;
+import com.appsingularity.postman.compiler.handlers.SerializableListHandler;
 import com.appsingularity.postman.compiler.handlers.ShortPrimitiveArrayHandler;
 import com.appsingularity.postman.compiler.handlers.ShortPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.StringListHandler;
@@ -123,6 +124,7 @@ public class PostmanProcessor extends AbstractProcessor {
 
         mAttributeHandlers.add(new GenericArrayHandler("java.lang.String[]", "String"));
         mAttributeHandlers.add(new ParcelableListHandler(types, elementUtils));
+        mAttributeHandlers.add(new SerializableListHandler(types, elementUtils));
 
         // Lollipop+
         mAttributeHandlers.add(new TypedObjectHandler("android.util.Size", "Size"));
