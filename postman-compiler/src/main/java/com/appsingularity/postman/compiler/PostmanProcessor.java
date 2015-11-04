@@ -1,6 +1,7 @@
 package com.appsingularity.postman.compiler;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.appsingularity.postman.compiler.handlers.AttributeHandler;
 import com.appsingularity.postman.compiler.handlers.CharPrimitiveHandler;
@@ -34,6 +35,7 @@ import com.squareup.javapoet.TypeVariableName;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -147,8 +149,8 @@ public class PostmanProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         // Here is where we store all attributes per class that we need to generate code for.
-        Map<Element, List<Element>> collectedElements = new HashMap<>();
-        List<Element> attributes;
+        Map<Element, Map<Element, AttributeHandler>> collectedElements = new HashMap<>();
+        Map<Element, AttributeHandler> attributes;
         for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(PostmanEnabled.class)) {
             // Filter out everything but the classes
             if (annotatedElement.getKind() != ElementKind.CLASS) {
@@ -156,7 +158,7 @@ public class PostmanProcessor extends AbstractProcessor {
                 continue;
             }
 
-            attributes = new ArrayList<>();
+            attributes = new LinkedHashMap<>();
             collectedElements.put(annotatedElement, attributes);
 
             List<? extends Element> children = annotatedElement.getEnclosedElements();
@@ -166,16 +168,16 @@ public class PostmanProcessor extends AbstractProcessor {
                 }
                 TypeMirror typeMirror = child.asType();
                 TypeKind typeKind = typeMirror.getKind();
-                if (!isProcessableTypeKind(child, typeKind)) {
-                    continue;
+                AttributeHandler handler = findHandlerForTypeKind(child, typeKind);
+                if (handler != null) {
+                    attributes.put(child, handler);
                 }
-                attributes.add(child);
             }
         }
         // Generate code
         TypeVariableName simpleClassName;
         TypeSpec.Builder classBuilder;
-        List<Element> attributeList;
+        Map<Element, AttributeHandler> attributeList;
         String packageName;
         JavaFile javaFile;
         for (Element collectedClass : collectedElements.keySet()) {
@@ -207,44 +209,38 @@ public class PostmanProcessor extends AbstractProcessor {
 
     @NonNull
     private MethodSpec createShipMethodSpec(@NonNull final TypeVariableName typeName
-            , @NonNull final TypeVariableName parcelTypeName, @NonNull final List<Element> attributes) {
+            , @NonNull final TypeVariableName parcelTypeName, @NonNull final Map<Element, AttributeHandler> attributes) {
         ParameterSpec paramsSpec = ParameterSpec.builder(TypeName.INT, "flags").build();
-        MethodSpec.Builder pareldMethod = MethodSpec.methodBuilder("ship")
+        MethodSpec.Builder shipMethodBuilder = MethodSpec.methodBuilder("ship")
                 .addModifiers(PUBLIC).addAnnotation(Override.class)
                 .addParameter(typeName, "source", FINAL)
                 .addParameter(parcelTypeName, "dest", FINAL)
                 .addParameter(paramsSpec);
-        for (Element attribute : attributes) {
-            TypeMirror typeMirror = attribute.asType();
-            TypeKind typeKind = typeMirror.getKind();
-            for (int i = 0; i < mAttributeHandlersSize; i++) {
-                AttributeHandler handler = mAttributeHandlers.get(i);
-                if (handler.addShipMethod(pareldMethod, attribute, typeKind)) {
-                    break;
-                }
-            }
+        AttributeHandler handler;
+        TypeMirror typeMirror;
+        for (Element attribute : attributes.keySet()) {
+            handler = attributes.get(attribute);
+            typeMirror = attribute.asType();
+            handler.addShipMethod(shipMethodBuilder, attribute, typeMirror.getKind());
         }
-        return pareldMethod.build();
+        return shipMethodBuilder.build();
     }
 
     @NonNull
     private MethodSpec createReceiveMethodSpec(@NonNull final TypeVariableName typeName
-            , @NonNull final TypeVariableName parcelTypeName, @NonNull final List<Element> attributes) {
-        MethodSpec.Builder unpareldMethod = MethodSpec.methodBuilder("receive")
+            , @NonNull final TypeVariableName parcelTypeName, @NonNull final Map<Element, AttributeHandler> attributes) {
+        MethodSpec.Builder receiveMethodBuilder = MethodSpec.methodBuilder("receive")
                 .addModifiers(PUBLIC).addAnnotation(Override.class)
                 .addParameter(typeName, "target", FINAL)
                 .addParameter(parcelTypeName, "in", FINAL);
-        for (Element attribute : attributes) {
-            TypeMirror typeMirror = attribute.asType();
-            TypeKind typeKind = typeMirror.getKind();
-            for (int i = 0; i < mAttributeHandlersSize; i++) {
-                AttributeHandler handler = mAttributeHandlers.get(i);
-                if (handler.addReveiveMethod(unpareldMethod, attribute, typeKind)) {
-                    break;
-                }
-            }
+        AttributeHandler handler;
+        TypeMirror typeMirror;
+        for (Element attribute : attributes.keySet()) {
+            handler = attributes.get(attribute);
+            typeMirror = attribute.asType();
+            handler.addReveiveMethod(receiveMethodBuilder, attribute, typeMirror.getKind());
         }
-        return unpareldMethod.build();
+        return receiveMethodBuilder.build();
     }
 
     private void error(final Element element, String message, final Object... args) {
@@ -288,15 +284,16 @@ public class PostmanProcessor extends AbstractProcessor {
         return true;
     }
 
-    private boolean isProcessableTypeKind(@NonNull Element element, @NonNull TypeKind typeKind) {
+    @Nullable
+    private AttributeHandler findHandlerForTypeKind(@NonNull Element element, @NonNull TypeKind typeKind) {
         for (int i = 0; i < mAttributeHandlersSize; i++) {
             AttributeHandler handler = mAttributeHandlers.get(i);
             if (handler.isProcessableTypeKind(element, typeKind)) {
-                return true;
+                return handler;
             }
         }
         warn("Attribute " + element + " of type " + element.asType().toString() + "/" + typeKind + " is not supported yet!");
-        return false;
+        return null;
     }
 
 }
