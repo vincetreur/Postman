@@ -4,25 +4,15 @@ import android.support.annotation.NonNull;
 
 import com.squareup.javapoet.MethodSpec;
 
+
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 
-public class StringListHandler extends AbsAttributeHandler {
+public class StringListHandler extends AbsListHandler {
 
     public StringListHandler() {
-    }
-
-    @Override
-    public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
-        if (typeKind == TypeKind.DECLARED) {
-            if ("java.util.List<java.lang.String>".equals(element.asType().toString())) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.String>".equals(element.asType().toString())) {
-                return true;
-            }
-        }
-        return false;
+        super();
+        mSupportedArgumentTypes.add("java.lang.String");
     }
 
     @Override

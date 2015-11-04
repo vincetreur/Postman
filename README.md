@@ -34,7 +34,7 @@ Right now Postman supports:
 - ```float```, ```Float```, ```float[]```, ```Float[]```, ```List<Float>``` and ```ArrayList<Float>```
 - ```double```, ```Double```, ```double[]```, ```Double[]```, ```List<Double>``` and ```ArrayList<Double>```
 - ```String```, ```String[]```, ```List<String>``` and ```ArrayList<String>```
-- ```Parcelable```
+- ```Parcelable```, ```List<Parcelable>``` and ```ArrayList<Parcelable>```
 - ```Serializable```
 - ```Bundle```
 
@@ -110,6 +110,7 @@ Don't foget to setup annotation processing in your ```build.gradle```.
 
 ##Yet to do
 - Support more attribute types.
+- Support for user specific types.
 - More automated tests.
 
 #License

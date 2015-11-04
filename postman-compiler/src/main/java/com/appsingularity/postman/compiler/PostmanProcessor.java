@@ -15,6 +15,7 @@ import com.appsingularity.postman.compiler.handlers.IntPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.BasicListHandler;
 import com.appsingularity.postman.compiler.handlers.LongPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.ParcelableHandler;
+import com.appsingularity.postman.compiler.handlers.ParcelableListHandler;
 import com.appsingularity.postman.compiler.handlers.SerializableHandler;
 import com.appsingularity.postman.annotations.PostmanEnabled;
 import com.appsingularity.postman.compiler.handlers.ShortPrimitiveArrayHandler;
@@ -54,6 +55,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 import static javax.tools.Diagnostic.Kind.ERROR;
 
@@ -66,6 +68,7 @@ import static javax.tools.Diagnostic.Kind.WARNING;
 @AutoService(Processor.class)
 public class PostmanProcessor extends AbstractProcessor {
     private Elements elementUtils;
+    private Types types;
     private Filer filer;
 
     private List<AttributeHandler> mAttributeHandlers;
@@ -77,6 +80,7 @@ public class PostmanProcessor extends AbstractProcessor {
     @Override public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
         elementUtils = env.getElementUtils();
+        types = env.getTypeUtils();
         filer = env.getFiler();
 
         mAttributeHandlers = new ArrayList<>();
@@ -118,6 +122,7 @@ public class PostmanProcessor extends AbstractProcessor {
         mAttributeHandlers.add(new GenericArrayHandler("double[]", "double", "Double"));
 
         mAttributeHandlers.add(new GenericArrayHandler("java.lang.String[]", "String"));
+        mAttributeHandlers.add(new ParcelableListHandler(types, elementUtils));
 
         // Lollipop+
         mAttributeHandlers.add(new TypedObjectHandler("android.util.Size", "Size"));

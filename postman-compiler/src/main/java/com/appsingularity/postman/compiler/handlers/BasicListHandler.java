@@ -7,67 +7,20 @@ import com.squareup.javapoet.MethodSpec;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 
-public class BasicListHandler extends AbsAttributeHandler {
+public class BasicListHandler extends AbsListHandler {
 
     public BasicListHandler() {
+        super();
+        mSupportedArgumentTypes.add("java.lang.Boolean");
+        mSupportedArgumentTypes.add("java.lang.Character");
+        mSupportedArgumentTypes.add("java.lang.Byte");
+        mSupportedArgumentTypes.add("java.lang.Short");
+        mSupportedArgumentTypes.add("java.lang.Integer");
+        mSupportedArgumentTypes.add("java.lang.Long");
+        mSupportedArgumentTypes.add("java.lang.Float");
+        mSupportedArgumentTypes.add("java.lang.Double");
     }
 
-
-    @Override
-    public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
-        if (typeKind == TypeKind.DECLARED) {
-            String type = element.asType().toString();
-            if ("java.util.List<java.lang.Boolean>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Boolean>".equals(type)) {
-                return true;
-            }
-            if ("java.util.List<java.lang.Character>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Character>".equals(type)) {
-                return true;
-            }
-            if ("java.util.List<java.lang.Byte>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Byte>".equals(type)) {
-                return true;
-            }
-            if ("java.util.List<java.lang.Short>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Short>".equals(type)) {
-                return true;
-            }
-            if ("java.util.List<java.lang.Integer>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Integer>".equals(type)) {
-                return true;
-            }
-            if ("java.util.List<java.lang.Long>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Long>".equals(type)) {
-                return true;
-            }
-            if ("java.util.List<java.lang.Float>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Float>".equals(type)) {
-                return true;
-            }
-            if ("java.util.List<java.lang.Double>".equals(type)) {
-                return true;
-            }
-            if ("java.util.ArrayList<java.lang.Double>".equals(type)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     protected boolean shipMethod(@NonNull MethodSpec.Builder shipMethod, @NonNull Element element, @NonNull TypeKind typeKind) {

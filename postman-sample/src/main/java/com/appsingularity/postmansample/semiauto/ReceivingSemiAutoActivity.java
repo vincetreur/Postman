@@ -49,7 +49,4 @@ public class ReceivingSemiAutoActivity extends AppCompatActivity {
     }
 
 
-
-
-
 }
