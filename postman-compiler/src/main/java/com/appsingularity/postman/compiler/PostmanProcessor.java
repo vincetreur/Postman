@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.appsingularity.postman.compiler.handlers.AttributeHandler;
 import com.appsingularity.postman.compiler.handlers.ParcelableArrayHandler;
+import com.appsingularity.postman.compiler.handlers.PrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.primitives.CharPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.TypedArrayHandler;
 import com.appsingularity.postman.compiler.handlers.primitives.BooleanPrimitiveHandler;
@@ -83,14 +84,7 @@ public class PostmanProcessor extends AbstractProcessor {
         mFiler = env.getFiler();
 
         mAttributeHandlers = new ArrayList<>();
-        mAttributeHandlers.add(new BooleanPrimitiveHandler(types, mElements));
-        mAttributeHandlers.add(new CharPrimitiveHandler(types, mElements));
-        mAttributeHandlers.add(new ShortPrimitiveHandler(types, mElements));
-        mAttributeHandlers.add(new BytePrimitiveHandler(types, mElements));
-        mAttributeHandlers.add(new IntPrimitiveHandler(types, mElements));
-        mAttributeHandlers.add(new FloatPrimitiveHandler(types, mElements));
-        mAttributeHandlers.add(new LongPrimitiveHandler(types, mElements));
-        mAttributeHandlers.add(new DoublePrimitiveHandler(types, mElements));
+        mAttributeHandlers.add(new PrimitiveHandler(types, mElements));
         mAttributeHandlers.add(new GenericObjectHandler(types, mElements));
 
         mAttributeHandlers.add(new TypedObjectHandler(types, mElements, "java.lang.String", "String"));
