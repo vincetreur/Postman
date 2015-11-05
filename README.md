@@ -36,7 +36,7 @@ Right now Postman supports:
 - ```String```, ```String[]```, ```List<String>``` and ```ArrayList<String>```
 - ```Parcelable```, ```Parcelable[]```, ```List<Parcelable>``` and ```ArrayList<Parcelable>```
 - ```Serializable```, ```List<Serializable>``` and ```ArrayList<Serializable>```
-- ```Bundle```, ```List<Bundle>``` and ```ArrayList<Bundle>```
+- ```Bundle```, ```Bundle[]```, ```List<Bundle>``` and ```ArrayList<Bundle>```
 
 ```List``` will always be returned as ```ArrayList```.
 
