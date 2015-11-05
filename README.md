@@ -34,7 +34,7 @@ Right now Postman supports:
 - ```float```, ```Float```, ```float[]```, ```Float[]```, ```List<Float>``` and ```ArrayList<Float>```
 - ```double```, ```Double```, ```double[]```, ```Double[]```, ```List<Double>``` and ```ArrayList<Double>```
 - ```String```, ```String[]```, ```List<String>``` and ```ArrayList<String>```
-- ```Parcelable```, ```List<Parcelable>``` and ```ArrayList<Parcelable>```
+- ```Parcelable```, ```Parcelable[]```, ```List<Parcelable>``` and ```ArrayList<Parcelable>```
 - ```Serializable```, ```List<Serializable>``` and ```ArrayList<Serializable>```
 - ```Bundle```, ```List<Bundle>``` and ```ArrayList<Bundle>```
 

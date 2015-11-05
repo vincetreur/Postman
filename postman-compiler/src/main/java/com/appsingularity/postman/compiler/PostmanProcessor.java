@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.appsingularity.postman.compiler.handlers.AttributeHandler;
+import com.appsingularity.postman.compiler.handlers.ParcelableArrayHandler;
 import com.appsingularity.postman.compiler.handlers.primitives.CharPrimitiveHandler;
 import com.appsingularity.postman.compiler.handlers.TypedArrayHandler;
 import com.appsingularity.postman.compiler.handlers.primitives.BooleanPrimitiveHandler;
@@ -105,6 +106,7 @@ public class PostmanProcessor extends AbstractProcessor {
         mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "double[]", "Double"));
 
         mAttributeHandlers.add(new TypedArrayHandler(types, mElements, "java.lang.String[]", "String"));
+        mAttributeHandlers.add(new ParcelableArrayHandler(types, mElements));
 
         // Lollipop+
         mAttributeHandlers.add(new TypedObjectHandler(types, mElements, "android.util.Size", "Size"));
