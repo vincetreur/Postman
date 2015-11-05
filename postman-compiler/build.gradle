@@ -13,7 +13,9 @@ dependencies {
     compile project(':postman-annotations')
     compile 'com.google.auto.service:auto-service:1.0-rc2'
     compile 'com.squareup:javapoet:1.3.0'
+    compile 'org.apache.commons:commons-lang3:3.4'
     compile deps.supportAnnotations
+    compile deps.android
 
     testCompile project(":postman")
     testCompile project(':postman-annotations')

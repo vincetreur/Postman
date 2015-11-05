@@ -1,44 +1,22 @@
-package com.appsingularity.postman.compiler.handlers;
+package com.appsingularity.postman.compiler.writers.fields;
 
 import android.support.annotation.NonNull;
 
+import com.appsingularity.postman.compiler.writers.AbsCollectedFieldWriter;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 
-public class PrimitiveHandler extends AbsAttributeHandler {
+public class PrinitiveDataTypeFieldWriter extends AbsCollectedFieldWriter {
 
-    public PrimitiveHandler(@NonNull Types types, @NonNull Elements elements) {
-        super(types, elements);
+    public PrinitiveDataTypeFieldWriter(@NonNull Element element) {
+        super(element);
     }
 
     @Override
-    public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
-        boolean ok = false;
-        switch (typeKind) {
-            case BOOLEAN:
-            case CHAR:
-            case BYTE:
-            case SHORT:
-            case INT:
-            case FLOAT:
-            case LONG:
-            case DOUBLE:
-                ok = true;
-                break;
-
-            default:
-        }
-        return ok;
-    }
-
-    @Override
-    protected boolean shipMethod(@NonNull MethodSpec.Builder shipMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
-        String name = element.getSimpleName().toString();
-        switch (typeKind) {
+    public boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
+        String name = mElement.getSimpleName().toString();
+        switch (mElement.asType().getKind()) {
             case BOOLEAN:
                 shipMethod.addStatement("dest.writeByte((byte) (source.$L ? 1 : 0))", name);
                 break;
@@ -78,9 +56,9 @@ public class PrimitiveHandler extends AbsAttributeHandler {
     }
 
     @Override
-    protected boolean reveiveMethod(@NonNull MethodSpec.Builder receiveMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
-        String name = element.getSimpleName().toString();
-        switch (typeKind) {
+    public boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
+        String name = mElement.getSimpleName().toString();
+        switch (mElement.asType().getKind()) {
             case BOOLEAN:
                 receiveMethod.addStatement("target.$L = in.readByte() != 0", name);
                 break;
@@ -118,5 +96,4 @@ public class PrimitiveHandler extends AbsAttributeHandler {
         }
         return true;
     }
-
 }

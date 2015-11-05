@@ -46,7 +46,7 @@ public class ModelNonPrimitives extends Model {
     public void showResults(@NonNull Context context, @NonNull ViewGroup layout) {
         LayoutInflater inflater = LayoutInflater.from(context);
         addNewRow(context, inflater, layout, "Boolean", mBoolean);
-        addNewRow(context, inflater, layout, "Character", mChar.equals(new Character('c')));
+        addNewRow(context, inflater, layout, "Character", mChar.equals(Character.valueOf('c')));
         addNewRow(context, inflater, layout, "Byte", mByte == 2);
         addNewRow(context, inflater, layout, "Short", mShort == 3);
         addNewRow(context, inflater, layout, "Integer", mInt == 4);

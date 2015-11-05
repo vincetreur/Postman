@@ -1,34 +1,21 @@
-package com.appsingularity.postman.compiler.handlers;
+package com.appsingularity.postman.compiler.writers.fields;
 
 import android.support.annotation.NonNull;
 
+import com.appsingularity.postman.compiler.writers.AbsCollectedFieldWriter;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 
-public class ShortPrimitiveArrayHandler extends AbsAttributeHandler {
+public class ShortPrinitiveArrayFieldWriter extends AbsCollectedFieldWriter {
 
-    public ShortPrimitiveArrayHandler(@NonNull Types types, @NonNull Elements elements) {
-        super(types, elements);
-    }
-
-
-    @Override
-    public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
-        if (typeKind == TypeKind.ARRAY) {
-            if ("short[]".equals(element.asType().toString())) {
-                return true;
-            }
-        }
-        return false;
+    public ShortPrinitiveArrayFieldWriter(@NonNull Element element) {
+        super(element);
     }
 
     @Override
-    protected boolean shipMethod(@NonNull MethodSpec.Builder shipMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
-        String attr = element.getSimpleName().toString();
+    public boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
+        String attr = mElement.getSimpleName().toString();
         shipMethod.beginControlFlow("if (source.$L != null)", attr);
         shipMethod.addStatement("dest.writeByte((byte) 1)");
         shipMethod.addStatement("int[] $L_copy = new int[source.$L.length]", attr, attr);
@@ -43,8 +30,8 @@ public class ShortPrimitiveArrayHandler extends AbsAttributeHandler {
     }
 
     @Override
-    protected boolean reveiveMethod(@NonNull MethodSpec.Builder receiveMethod, @NonNull Element element, @NonNull TypeKind typeKind) {
-        String attr = element.getSimpleName().toString();
+    public boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
+        String attr = mElement.getSimpleName().toString();
         receiveMethod.addStatement("// Read $L", attr);
         receiveMethod.beginControlFlow("if (in.readByte() == 1)");
         receiveMethod.addStatement("int[] $L_copy = in.createIntArray()", attr);

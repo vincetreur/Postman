@@ -1,6 +1,11 @@
-package com.appsingularity.postman.compiler.handlers;
+package com.appsingularity.postman.compiler.model.fields;
 
 import android.support.annotation.NonNull;
+
+import com.appsingularity.postman.compiler.model.CollectedField;
+import com.appsingularity.postman.compiler.model.ModelUtils;
+import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
+import com.appsingularity.postman.compiler.writers.fields.StringListFieldWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +18,21 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public abstract class AbsListHandler extends AbsAttributeHandler {
-    protected List<String> mSupportedArgumentTypes;
+public class StringListField implements CollectedField {
+    @NonNull
+    private final Element mElement;
+    protected static List<String> mSupportedArgumentTypes;
 
-    public AbsListHandler(@NonNull Types types, @NonNull Elements elements) {
-        super(types, elements);
-        mSupportedArgumentTypes = new ArrayList<>();
-    }
+    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+        if (!ModelUtils.isProcessableAttribute(element)) {
+            return false;
+        }
+        if (mSupportedArgumentTypes == null) {
+            mSupportedArgumentTypes = new ArrayList<>();
+            mSupportedArgumentTypes.add("java.lang.String");
+        }
+        TypeKind typeKind = element.asType().getKind();
 
-    @Override
-    public boolean isProcessableTypeKind(@NonNull final Element element, @NonNull final TypeKind typeKind) {
         if (typeKind == TypeKind.DECLARED) {
             // First check if it is a List or ArrayList
             TypeMirror typeMirror = element.asType();
@@ -39,8 +49,8 @@ public abstract class AbsListHandler extends AbsAttributeHandler {
 
                     // Does it implement/extend or is any of the supported argument types?
                     for (String supportedType : mSupportedArgumentTypes) {
-                        TypeElement typeElement = mElements.getTypeElement(supportedType);
-                        if (mTypes.isAssignable(typeArgument, typeElement.asType())) {
+                        TypeElement typeElement = elements.getTypeElement(supportedType);
+                        if (types.isAssignable(typeArgument, typeElement.asType())) {
                             return true;
                         }
                     }
@@ -48,6 +58,15 @@ public abstract class AbsListHandler extends AbsAttributeHandler {
             }
         }
         return false;
+    }
+
+    public StringListField(@NonNull Element element) {
+        mElement = element;
+    }
+
+    @NonNull @Override
+    public CollectedFieldWriter getWriter() {
+        return new StringListFieldWriter(mElement);
     }
 
 }
