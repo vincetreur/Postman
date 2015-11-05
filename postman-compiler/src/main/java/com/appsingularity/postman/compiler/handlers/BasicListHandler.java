@@ -23,6 +23,7 @@ public class BasicListHandler extends AbsListHandler {
         mSupportedArgumentTypes.add("java.lang.Double");
         mSupportedArgumentTypes.add("android.os.Parcelable");
         mSupportedArgumentTypes.add("java.io.Serializable");
+        mSupportedArgumentTypes.add("android.os.Bundle");
     }
 
 
