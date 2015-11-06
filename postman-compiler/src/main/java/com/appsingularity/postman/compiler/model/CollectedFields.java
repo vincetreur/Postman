@@ -10,6 +10,7 @@ import com.appsingularity.postman.compiler.model.fields.ParcelableField;
 import com.appsingularity.postman.compiler.model.fields.PrimitiveDataTypeField;
 import com.appsingularity.postman.compiler.model.fields.SerializableField;
 import com.appsingularity.postman.compiler.model.fields.ShortPrimitiveArrayField;
+import com.appsingularity.postman.compiler.model.fields.SparseArrayField;
 import com.appsingularity.postman.compiler.model.fields.SparseBooleanArrayField;
 import com.appsingularity.postman.compiler.model.fields.StringListField;
 import com.appsingularity.postman.compiler.model.fields.GenericArrayField;
@@ -47,6 +48,8 @@ public class CollectedFields {
             field = new TypedObjectField(element);
         } else if (SparseBooleanArrayField.canProcessElement(types, elements, element)) {
             field = new SparseBooleanArrayField(element);
+        } else if (SparseArrayField.canProcessElement(types, elements, element)) {
+            field = new SparseArrayField(element);
         } else if (ParcelableArrayField.canProcessElement(types, elements, element)) {
             field = new ParcelableArrayField(element);
         } else if (ParcelableField.canProcessElement(types, elements, element)) {

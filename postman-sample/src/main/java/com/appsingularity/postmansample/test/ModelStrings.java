@@ -32,7 +32,7 @@ public class ModelStrings extends Model {
     @Override
     public void setup() {
         mString = "Some string";
-        mStringArray = new String[] { "string 1", null, "string 3"};
+        mStringArray = new String[] {"string 1", null, "string 3"};
         mStringList = new ArrayList<>();
         mStringList.add("string 1");
         mStringList.add(null);
