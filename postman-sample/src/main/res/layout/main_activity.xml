@@ -25,7 +25,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:onClick="testFullAuto"
-            android:text="@string/btn_test"
+            android:text="@string/btn_show"
             />
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:onClick="testSemiAuto"
-            android:text="@string/btn_test"
+            android:text="@string/btn_show"
             />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:onClick="testManual"
-            android:text="@string/btn_test"
+            android:text="@string/btn_show"
             />
 
         <TextView

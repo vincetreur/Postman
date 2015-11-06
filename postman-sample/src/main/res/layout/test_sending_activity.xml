@@ -19,7 +19,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:onClick="testPrimitives"
-            android:text="Primitives"
+            android:text="Send primitives"
             />
 
         <Button
@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:onClick="testNonPrimitives"
-            android:text="Non Primitives"
+            android:text="Send non primitives"
             />
 
         <Button
@@ -37,7 +37,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:onClick="testPrimitivesArrays"
-            android:text="Primitives Arrays"
+            android:text="Send primitives arrays"
             />
 
         <Button
@@ -46,7 +46,16 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:onClick="testNonPrimitivesArrays"
-            android:text="Non Primitives Arrays"
+            android:text="Send non primitives arrays"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:onClick="testStrings"
+            android:text="Send strings"
             />
 
 

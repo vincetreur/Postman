@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Postman Sample</string>
 
+    <string name="btn_show">Show</string>
     <string name="btn_test">Test</string>
     <string name="code_subclass_title">Subclass</string>
     <string name="code_superclass_title">Superclass</string>

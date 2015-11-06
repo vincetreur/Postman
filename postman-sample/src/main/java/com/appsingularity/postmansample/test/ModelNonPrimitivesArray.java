@@ -25,7 +25,7 @@ public class ModelNonPrimitivesArray extends Model {
 
     @NonNull @Override
     public String getName() {
-        return "Primitive Array";
+        return "Non Primitive Arrays";
     }
 
 

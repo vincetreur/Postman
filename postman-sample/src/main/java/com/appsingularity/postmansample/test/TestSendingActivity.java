@@ -38,6 +38,10 @@ public class TestSendingActivity extends AppCompatActivity {
         send(new ModelNonPrimitivesArray());
     }
 
+    public void testStrings(View view) {
+        send(new ModelStrings());
+    }
+
     private void send(@NonNull Model model) {
         model.setup();
         Intent intent = new Intent(this, TestReceivingActivity.class);

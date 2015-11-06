@@ -28,7 +28,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/keyline"
             android:onClick="send"
-            android:text="@string/btn_test"
+            android:text="@string/btn_show"
             />
 
         <TextView
