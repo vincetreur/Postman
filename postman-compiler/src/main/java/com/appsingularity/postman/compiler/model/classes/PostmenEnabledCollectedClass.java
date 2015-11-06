@@ -58,4 +58,8 @@ public class PostmenEnabledCollectedClass implements CollectedClass {
         return new PostmenEnbaledCollectedClassWriter(this);
     }
 
+    @Override
+    public String toString() {
+        return mClassElement.toString();
+    }
 }
