@@ -10,7 +10,7 @@ You only need to add the ```@PostmanEnabled``` annotation. And delegate to the `
 
 ###Third-party classes
 You can go all in with Postman, or mix it with hand crafted ```Parcelable``` classes.
-Inheritance is not a problem for Postman and it can even handle third-prty classes that are not designed to work with Postman. (See the sample project for some examples.)
+It can even handle third-party classes that are not designed to work with Postman. (See the sample project for some examples.)
 
 ###ProGuard
 Postman plays well with ProGuard. If you use the ```postman```-module you don't need to worry about ProGuard & Postman.
@@ -59,8 +59,8 @@ buildscript {
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-  compile 'com.appsingularity:postman:0.9.1'
-  apt 'com.appsingularity:postman-compiler:0.9.1'
+  compile 'com.appsingularity:postman:0.9.2'
+  apt 'com.appsingularity:postman-compiler:0.9.2'
 }
 ```
 
