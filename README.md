@@ -43,7 +43,8 @@ Right now Postman supports:
 
 For Lollipop and higher Postman also supports:
 
-- ```Size``` and ```SizeF```.
+- ```Size``` and ```SizeF```
+- ```PersistableBundle```
 
 
 ##How to use

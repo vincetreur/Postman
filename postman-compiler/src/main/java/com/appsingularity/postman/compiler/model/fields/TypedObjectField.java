@@ -29,6 +29,7 @@ public class TypedObjectField implements CollectedField {
                 mSupportedArgumentTypes.add("java.lang.String");
                 mSupportedArgumentTypes.add("android.util.Size");
                 mSupportedArgumentTypes.add("android.util.SizeF");
+                mSupportedArgumentTypes.add("android.os.PersistableBundle");
             }
             if (element.asType().getKind() == TypeKind.DECLARED) {
                 return (mSupportedArgumentTypes.contains(element.asType().toString()));
