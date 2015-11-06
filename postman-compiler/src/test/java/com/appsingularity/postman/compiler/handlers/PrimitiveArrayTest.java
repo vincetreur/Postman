@@ -12,13 +12,13 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 /**
- * Make sure we can process primitives and their object counter parts
+ * Make sure we can process primitive arrays
  */
-public class PrimitiveAttributeTest {
+public class PrimitiveArrayTest {
 
 
     @Test
-    public void testPrimitiveBooleanAttribute() {
+    public void testPrimitiveBooleanArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -30,7 +30,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   boolean mBoolean;",
+                        "   boolean[] mBoolean;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -70,12 +70,12 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeByte((byte) (source.mBoolean ? 1 : 0));",
+                        "      dest.writeBooleanArray(source.mBoolean);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mBoolean = in.readByte() != 0;",
+                        "      target.mBoolean = in.createBooleanArray();",
                         "   }",
                         "}"
                 ));
@@ -88,8 +88,9 @@ public class PrimitiveAttributeTest {
                 .generatesSources(expectedSource);
     }
 
+
     @Test
-    public void testPrimitiveCharacterAttribute() {
+    public void testPrimitiveCharacterArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -101,7 +102,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   char mChar;",
+                        "   char[] mChar;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -141,12 +142,12 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeInt(source.mChar);",
+                        "      dest.writeCharArray(source.mChar);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mChar = (char) in.readInt();",
+                        "      target.mChar = in.createCharArray();",
                         "   }",
                         "}"
                 ));
@@ -160,7 +161,7 @@ public class PrimitiveAttributeTest {
     }
 
     @Test
-    public void testPrimitiveByteAttribute() {
+    public void testPrimitiveByteArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -172,7 +173,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   byte mByte;",
+                        "   byte[] mByte;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -212,12 +213,12 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeByte(source.mByte);",
+                        "      dest.writeByteArray(source.mByte);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mByte = in.readByte();",
+                        "      target.mByte = in.createByteArray();",
                         "   }",
                         "}"
                 ));
@@ -231,7 +232,7 @@ public class PrimitiveAttributeTest {
     }
 
     @Test
-    public void testPrimitiveShortAttribute() {
+    public void testPrimitiveShortArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -243,7 +244,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   short mShort;",
+                        "   short[] mShort;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -283,12 +284,28 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeInt(source.mShort);",
+                        "      if (source.mShort != null) {",
+                        "         dest.writeByte((byte) 1);",
+                        "         int[] mShort_copy = new int[source.mShort.length];",
+                        "         for (int i = 0; i < source.mShort.length; i++) {",
+                        "           mShort_copy[i] = source.mShort[i];",
+                        "         }",
+                        "         dest.writeIntArray(mShort_copy);",
+                        "      } else {",
+                        "         dest.writeByte((byte) 0);",
+                        "      }",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mShort = (short) in.readInt();",
+                        "      // Read mShort;",
+                        "      if (in.readByte() == 1) {",
+                        "        int[] mShort_copy = in.createIntArray();",
+                        "        target.mShort = new short[mShort_copy.length];",
+                        "        for (int i = 0; i < mShort_copy.length; i++) {",
+                        "          target.mShort[i] = (short) mShort_copy[i];",
+                        "        }",
+                        "      }",
                         "   }",
                         "}"
                 ));
@@ -302,7 +319,7 @@ public class PrimitiveAttributeTest {
     }
 
     @Test
-    public void testPrimitiveIntegerAttribute() {
+    public void testPrimitiveIntegerArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -314,7 +331,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   int mInt;",
+                        "   int[] mInt;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -354,12 +371,12 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeInt(source.mInt);",
+                        "      dest.writeIntArray(source.mInt);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mInt = in.readInt();",
+                        "      target.mInt = in.createIntArray();",
                         "   }",
                         "}"
                 ));
@@ -373,7 +390,7 @@ public class PrimitiveAttributeTest {
     }
 
     @Test
-    public void testPrimitiveLongAttribute() {
+    public void testPrimitiveLongArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -385,7 +402,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   long mLong;",
+                        "   long[] mLong;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -425,12 +442,12 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeLong(source.mLong);",
+                        "      dest.writeLongArray(source.mLong);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mLong = in.readLong();",
+                        "      target.mLong = in.createLongArray();",
                         "   }",
                         "}"
                 ));
@@ -444,7 +461,7 @@ public class PrimitiveAttributeTest {
     }
 
     @Test
-    public void testPrimitiveFloatAttribute() {
+    public void testPrimitiveFloatArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -456,7 +473,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   float mFloat;",
+                        "   float[] mFloat;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -496,12 +513,12 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeFloat(source.mFloat);",
+                        "      dest.writeFloatArray(source.mFloat);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mFloat = in.readFloat();",
+                        "      target.mFloat = in.createFloatArray();",
                         "   }",
                         "}"
                 ));
@@ -515,7 +532,7 @@ public class PrimitiveAttributeTest {
     }
 
     @Test
-    public void testPrimitiveDoubleAttribute() {
+    public void testPrimitiveDoubleArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -527,7 +544,7 @@ public class PrimitiveAttributeTest {
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   double mDouble;",
+                        "   double[] mDouble;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -567,12 +584,12 @@ public class PrimitiveAttributeTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeDouble(source.mDouble);",
+                        "      dest.writeDoubleArray(source.mDouble);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mDouble = in.readDouble();",
+                        "      target.mDouble = in.createDoubleArray();",
                         "   }",
                         "}"
                 ));
@@ -584,5 +601,6 @@ public class PrimitiveAttributeTest {
                 .and()
                 .generatesSources(expectedSource);
     }
+
 
 }

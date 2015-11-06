@@ -15,8 +15,7 @@
         style="@style/ResultTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:drawableLeft="@drawable/ic_check_black_24dp"
-        tools:text="@string/full_auto_result_found_parcelable"/>
+        tools:drawableLeft="@drawable/ic_check_black_24dp"/>
 
     <TextView
         android:id="@id/found_attribute_1"
@@ -24,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:drawableLeft="@drawable/ic_check_black_24dp"
-        tools:text="@string/full_auto_result_found_attr_1"
         />
 
     <TextView
@@ -33,6 +31,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:drawableLeft="@drawable/ic_check_black_24dp"
-        tools:text="@string/full_auto_result_found_attr_2"
         />
 </LinearLayout>

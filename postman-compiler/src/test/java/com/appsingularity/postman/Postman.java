@@ -3,6 +3,9 @@ package com.appsingularity.postman;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+/**
+ * This dummy class is here so the tests compile
+ */
 public class Postman {
 
     @SuppressWarnings("unchecked")

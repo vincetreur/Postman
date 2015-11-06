@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Postman Sample</string>
 
+    <string name="btn_show">Show</string>
     <string name="btn_test">Test</string>
     <string name="code_subclass_title">Subclass</string>
     <string name="code_superclass_title">Superclass</string>
@@ -15,7 +16,7 @@
 public class Dog extends Animal {
     boolean mHasTail = false;
 
-    // ...
+    // &#8230;
 
     protected Dog(Parcel in) {
         // Let the superclass handle it's own parceling
@@ -30,7 +31,7 @@ public class Dog extends Animal {
         Postman.ship(Dog.class, this, dest, flags);
     }
 
-    // ...
+    // &#8230;
 
 }
 "</string>
@@ -38,7 +39,7 @@ public class Dog extends Animal {
 public abstract class Animal implements Parcelable {
     String mName;
 
-    // ...
+    // &#8230;
 
     protected Animal(Parcel in) {
         Postman.receive(Animal.class, this, in);
@@ -49,7 +50,7 @@ public abstract class Animal implements Parcelable {
         Postman.ship(Animal.class, this, dest, flags);
     }
 
-    // ...
+    // &#8230;
 
 }
 "</string>
@@ -61,7 +62,7 @@ public abstract class Animal implements Parcelable {
 public class Apple extends Fruit {
     boolean mTasty = false;
 
-    // ...
+    // &#8230;
 
     protected Apple(Parcel in) {
         // Let the superclass handle it's own parceling
@@ -78,14 +79,14 @@ public class Apple extends Fruit {
         Postman.ship(Apple.class, this, dest, flags);
     }
 
-    // ...
+    // &#8230;
 
 }
 "</string>
     <string name="semi_auto_code_superclass">"public class Fruit implements Parcelable {
     String mColor = "Green";
 
-    // ...
+    // &#8230;
 
     protected Fruit(Parcel in) {
         mColor = in.readString();
@@ -96,7 +97,7 @@ public class Apple extends Fruit {
         dest.writeString(mColor);
     }
 
-    // ...
+    // &#8230;
 
 }
 "</string>
@@ -108,7 +109,7 @@ public class Apple extends Fruit {
 public class Car extends Vehicle implements Parcelable {
     String mColor;
 
-    // ...
+    // &#8230;
 
 
     protected Car(Parcel in) {
@@ -126,14 +127,14 @@ public class Car extends Vehicle implements Parcelable {
         dest.writeString(mType);
     }
 
-    // ...
+    // &#8230;
 
 }
 "</string>
     <string name="manual_code_superclass">"public class Vehicle {
     String mType;
 
-    // ...
+    // &#8230;
 
 }
 "</string>
