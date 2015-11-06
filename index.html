@@ -45,7 +45,7 @@ You only need to add the <code>@PostmanEnabled</code> annotation. And delegate t
 <a id="third-party-classes" class="anchor" href="#third-party-classes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Third-party classes</h3>
 
 <p>You can go all in with Postman, or mix it with hand crafted <code>Parcelable</code> classes.
-Inheritance is not a problem for Postman and it can even handle third-prty classes that are not designed to work with Postman. (See the sample project for some examples.)</p>
+It can even handle third-party classes that are not designed to work with Postman. (See the sample project for some examples.)</p>
 
 <h3>
 <a id="proguard" class="anchor" href="#proguard" aria-hidden="true"><span class="octicon octicon-link"></span></a>ProGuard</h3>
@@ -96,9 +96,15 @@ Inheritance is not a problem for Postman and it can even handle third-prty class
 <li>
 <code>String</code>, <code>String[]</code>, <code>List&lt;String&gt;</code> and <code>ArrayList&lt;String&gt;</code>
 </li>
-<li><code>Parcelable</code></li>
-<li><code>Serializable</code></li>
-<li><code>Bundle</code></li>
+<li>
+<code>Parcelable</code>, <code>Parcelable[]</code>, <code>List&lt;Parcelable&gt;</code> and <code>ArrayList&lt;Parcelable&gt;</code>
+</li>
+<li>
+<code>Serializable</code>, <code>List&lt;Serializable&gt;</code> and <code>ArrayList&lt;Serializable&gt;</code>
+</li>
+<li>
+<code>Bundle</code>, <code>Bundle[]</code>, <code>List&lt;Bundle&gt;</code> and <code>ArrayList&lt;Bundle&gt;</code>
+</li>
 </ul>
 
 <p><code>List</code> will always be returned as <code>ArrayList</code>.</p>
@@ -124,8 +130,8 @@ Inheritance is not a problem for Postman and it can even handle third-prty class
 apply <span class="pl-c1">plugin</span>: <span class="pl-s"><span class="pl-pds">'</span>com.neenbedankt.android-apt<span class="pl-pds">'</span></span>
 
 dependencies {
-  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:0.9.1<span class="pl-pds">'</span></span>
-  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:0.9.1<span class="pl-pds">'</span></span>
+  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:0.9.2<span class="pl-pds">'</span></span>
+  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:0.9.2<span class="pl-pds">'</span></span>
 }</pre></div>
 
 <p>Annotate your model classes and delegate the tedious boilerplate coding to the Postman.</p>
@@ -174,6 +180,7 @@ dependencies {
 
 <ul>
 <li>Support more attribute types.</li>
+<li>Support for user specific types.</li>
 <li>More automated tests.</li>
 </ul>
 
