@@ -131,7 +131,7 @@ public class Car extends Vehicle implements Parcelable {
 
 }
 "</string>
-    <string name="manual_code_superclass">"public class Vehicle {
+    <string name="manual_code_superclass">"class Vehicle {
     String mType;
 
     // &#8230;

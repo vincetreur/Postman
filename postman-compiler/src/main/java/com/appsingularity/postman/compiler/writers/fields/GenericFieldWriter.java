@@ -14,16 +14,14 @@ public class GenericFieldWriter extends AbsCollectedFieldWriter {
     }
 
     @Override
-    public boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
+    public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
         shipMethod.addStatement("dest.writeValue(source.$L)", mElement.getSimpleName().toString());
-        return true;
     }
 
     @Override
-    public boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
+    public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         String attr = mElement.getSimpleName().toString();
         String type = mElement.asType().toString();
         receiveMethod.addStatement("target.$L = ($L) in.readValue($L.class.getClassLoader())", attr, type, type);
-        return true;
     }
 }

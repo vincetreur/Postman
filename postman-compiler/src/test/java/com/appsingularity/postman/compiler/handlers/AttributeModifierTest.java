@@ -12,10 +12,10 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 /**
- * Only public, protected or package defaulf attribtues that are not static or transient should be processed.
+ * Only public, protected or package default attributes that are not static or transient should be processed.
  */
 public class AttributeModifierTest {
-    private JavaFileObject mExpectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
+    private final JavaFileObject mExpectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
             Joiner.on('\n').join(
                     "// Generated code from Postman. Do not modify!",
                     "package test;",

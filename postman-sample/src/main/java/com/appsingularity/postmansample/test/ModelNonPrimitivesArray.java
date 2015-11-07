@@ -32,7 +32,7 @@ public class ModelNonPrimitivesArray extends Model {
     @Override
     public void setup() {
         mBoolean = new Boolean[] {true, false };
-        mChar = new Character[] {Character.valueOf('c'), Character.valueOf('d')};
+        mChar = new Character[] {'c', 'd'};
         mByte = new Byte[] {2, 3};
         mShort = new Short[] {4, 5};
         mInt = new Integer[] {6, 7};

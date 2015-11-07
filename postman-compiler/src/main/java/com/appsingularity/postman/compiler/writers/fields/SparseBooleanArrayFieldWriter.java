@@ -7,23 +7,20 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 
-public class NonPrimitiveDataTypeArrayFieldWriter extends AbsCollectedFieldWriter {
+public class SparseBooleanArrayFieldWriter extends AbsCollectedFieldWriter {
 
-    public NonPrimitiveDataTypeArrayFieldWriter(@NonNull Element element) {
+    public SparseBooleanArrayFieldWriter(@NonNull Element element) {
         super(element);
     }
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String attr = mElement.getSimpleName().toString();
-        shipMethod.addStatement("dest.writeValue(source.$L)", attr);
+        shipMethod.addStatement("dest.writeSparseBooleanArray(source.$L)", mElement.getSimpleName().toString());
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         String attr = mElement.getSimpleName().toString();
-        String type = mElement.asType().toString();
-        receiveMethod.addStatement("target.$L = ($L) in.readValue($L.class.getClassLoader())", attr, type, type);
+        receiveMethod.addStatement("target.$L = in.readSparseBooleanArray()", attr);
     }
-
 }

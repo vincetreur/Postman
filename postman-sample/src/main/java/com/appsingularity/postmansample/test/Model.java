@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.appsingularity.postmansample.R;
 import com.appsingularity.postmansample.util.DrawableHelper;
 
-public abstract class Model implements Parcelable {
+abstract class Model implements Parcelable {
     public static final String KEY = "model";
 
     @NonNull
@@ -20,7 +20,7 @@ public abstract class Model implements Parcelable {
 
     public abstract void showResults(@NonNull Context context, @NonNull ViewGroup layout);
 
-    protected void addNewRow(@NonNull Context context, @NonNull LayoutInflater inflater
+    void addNewRow(@NonNull Context context, @NonNull LayoutInflater inflater
             , @NonNull ViewGroup layout, @NonNull String name, boolean ok) {
         TextView row = (TextView) inflater.inflate(R.layout.row, layout, false);
         row.setText(name);

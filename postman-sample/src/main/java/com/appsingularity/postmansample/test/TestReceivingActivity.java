@@ -27,8 +27,10 @@ public class TestReceivingActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         Model model = extras.getParcelable(Model.KEY);
-        titleView.setText(model.getName());
-        model.showResults(this, resultsLayout);
+        if (model != null) {
+            titleView.setText(model.getName());
+            model.showResults(this, resultsLayout);
+        }
     }
 
 }

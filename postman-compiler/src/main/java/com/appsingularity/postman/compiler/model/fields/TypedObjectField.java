@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.appsingularity.postman.compiler.model.CollectedField;
 import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
-import com.appsingularity.postman.compiler.writers.fields.TypedObjectFieldwriter;
+import com.appsingularity.postman.compiler.writers.fields.TypedObjectFieldWriter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,21 +20,20 @@ public class TypedObjectField implements CollectedField {
     private final Element mElement;
     @NonNull
     final private String mNameCapitalized;
-    private static List<String> mSupportedArgumentTypes;
+    @NonNull
+    private final static List<String> SUPPORTED_ARGUMENT_TYPES;
+
+    static {
+        SUPPORTED_ARGUMENT_TYPES = new ArrayList<>();
+        SUPPORTED_ARGUMENT_TYPES.add("java.lang.String");
+        SUPPORTED_ARGUMENT_TYPES.add("android.util.Size");
+        SUPPORTED_ARGUMENT_TYPES.add("android.util.SizeF");
+        SUPPORTED_ARGUMENT_TYPES.add("android.os.PersistableBundle");
+    }
 
     public static boolean canProcessElement(@NonNull Element element) {
-        if (ModelUtils.isProcessableAttribute(element)) {
-            if (mSupportedArgumentTypes == null) {
-                mSupportedArgumentTypes = new ArrayList<>();
-                mSupportedArgumentTypes.add("java.lang.String");
-                mSupportedArgumentTypes.add("android.util.Size");
-                mSupportedArgumentTypes.add("android.util.SizeF");
-            }
-            if (element.asType().getKind() == TypeKind.DECLARED) {
-                return (mSupportedArgumentTypes.contains(element.asType().toString()));
-            }
-        }
-        return false;
+        return (element.asType().getKind() == TypeKind.DECLARED)
+            && SUPPORTED_ARGUMENT_TYPES.contains(element.asType().toString());
     }
 
     public TypedObjectField(@NonNull Element element) {
@@ -48,7 +47,7 @@ public class TypedObjectField implements CollectedField {
     @NonNull
     @Override
     public CollectedFieldWriter getWriter() {
-        return new TypedObjectFieldwriter(mElement, mNameCapitalized);
+        return new TypedObjectFieldWriter(mElement, mNameCapitalized);
     }
 
 }

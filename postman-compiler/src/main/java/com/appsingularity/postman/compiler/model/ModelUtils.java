@@ -3,6 +3,8 @@ package com.appsingularity.postman.compiler.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.appsingularity.postman.compiler.Logger;
+
 import java.util.List;
 
 import javax.lang.model.element.Element;
@@ -33,13 +35,14 @@ public class ModelUtils {
         return enclosedType;
     }
 
-    public static boolean isProcessableAttribute(@NonNull Element element) {
+    public static boolean isProcessableAttribute(@NonNull Logger logger, @NonNull Element element) {
         // Filter out everything but attributes
         if (element.getKind() != ElementKind.FIELD) {
             return false;
         }
         // Filter out private attributes
         if (element.getModifiers().contains(Modifier.PRIVATE)) {
+            logger.warn(element, "Field could not be processed, it's private.");
             return false;
         }
         // Filter out static attributes
@@ -47,7 +50,11 @@ public class ModelUtils {
             return false;
         }
         // Filter out transient attributes
-        return (!element.getModifiers().contains(Modifier.TRANSIENT));
+        if (element.getModifiers().contains(Modifier.TRANSIENT)) {
+            logger.warn(element, "Field could not be processed, it's transient.");
+            return false;
+        }
+        return true;
     }
 
     @NonNull

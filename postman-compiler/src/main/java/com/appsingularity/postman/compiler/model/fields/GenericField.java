@@ -17,25 +17,24 @@ import javax.lang.model.util.Types;
 public class GenericField implements CollectedField {
     @NonNull
     private final Element mElement;
-    protected static List<String> mSupportedTypes;
+    @NonNull
+    private final static List<String> SUPPORTED_TYPES;
+
+    static {
+        SUPPORTED_TYPES = new ArrayList<>();
+        SUPPORTED_TYPES.add("java.lang.Boolean");
+        SUPPORTED_TYPES.add("java.lang.Character");
+        SUPPORTED_TYPES.add("java.lang.Byte");
+        SUPPORTED_TYPES.add("java.lang.Short");
+        SUPPORTED_TYPES.add("java.lang.Integer");
+        SUPPORTED_TYPES.add("java.lang.Float");
+        SUPPORTED_TYPES.add("java.lang.Long");
+        SUPPORTED_TYPES.add("java.lang.Double");
+        SUPPORTED_TYPES.add("android.os.Bundle");
+    }
 
     public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
-        if (ModelUtils.isProcessableAttribute(element)) {
-            if (mSupportedTypes == null) {
-                mSupportedTypes = new ArrayList<>();
-                mSupportedTypes.add("java.lang.Boolean");
-                mSupportedTypes.add("java.lang.Character");
-                mSupportedTypes.add("java.lang.Byte");
-                mSupportedTypes.add("java.lang.Short");
-                mSupportedTypes.add("java.lang.Integer");
-                mSupportedTypes.add("java.lang.Float");
-                mSupportedTypes.add("java.lang.Long");
-                mSupportedTypes.add("java.lang.Double");
-                mSupportedTypes.add("android.os.Bundle");
-            }
-            return (ModelUtils.isElementOfType(types, elements, element, mSupportedTypes));
-        }
-        return false;
+        return (ModelUtils.isElementOfType(types, elements, element, SUPPORTED_TYPES));
     }
 
     public GenericField(@NonNull Element element) {

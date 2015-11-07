@@ -37,13 +37,18 @@ Right now Postman supports:
 - ```Parcelable```, ```Parcelable[]```, ```List<Parcelable>``` and ```ArrayList<Parcelable>```
 - ```Serializable```, ```List<Serializable>``` and ```ArrayList<Serializable>```
 - ```Bundle```, ```Bundle[]```, ```List<Bundle>``` and ```ArrayList<Bundle>```
+- ```SparseBooleanArray``` and ```SparseArray```
+- ```Map``` and ```HashMap```, for ```Serializable```'s and ```Parcelable```'s
 
 ```List``` will always be returned as ```ArrayList```.
+
+```Map``` will always be returned as ```HashMap```.
 
 
 For Lollipop and higher Postman also supports:
 
-- ```Size``` and ```SizeF```.
+- ```Size``` and ```SizeF```
+- ```PersistableBundle```
 
 
 ##How to use
@@ -73,16 +78,16 @@ import com.appsingularity.postman.Postman;
 import com.appsingularity.postman.annotations.PostmanEnabled;
 
 @PostmanEnabled
-public class Dog implements Parcelable  {
+public class Model implements Parcelable  {
 	// Add your methods and attributes here.
 	
-	protected Dog(Parcel in) {
-		Postman.receive(Dog.class, this, in);
+	protected Model(Parcel in) {
+		Postman.receive(Model.class, this, in);
 	}
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		Postman.ship(Dog.class, this, dest, flags);
+		Postman.ship(Model.class, this, dest, flags);
 	}
 
 	@Override
@@ -90,21 +95,21 @@ public class Dog implements Parcelable  {
 		return 0;
 	}
 
-	public static final Creator<Dog> CREATOR = new Creator<Dog>() {
+	public static final Creator<Model> CREATOR = new Creator<Model>() {
 		@Override
-		public Dog createFromParcel(Parcel in) {
-			return new Dog(in);
+		public Model createFromParcel(Parcel in) {
+			return new Model(in);
 		}
 
 		@Override
-		public Dog[] newArray(int size) {
-			return new Dog[size];
+		public Model[] newArray(int size) {
+			return new Model[size];
 		}
 	};
 }
 ```
 
-Don't foget to setup annotation processing in your ```build.gradle```.
+Don't forget to setup annotation processing in your ```build.gradle```.
 (See the sample project.)
 
 

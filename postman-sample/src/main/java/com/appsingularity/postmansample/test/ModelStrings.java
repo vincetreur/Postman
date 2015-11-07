@@ -23,7 +23,8 @@ public class ModelStrings extends Model {
     public ModelStrings() {
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public String getName() {
         return "Strings";
     }
@@ -32,7 +33,7 @@ public class ModelStrings extends Model {
     @Override
     public void setup() {
         mString = "Some string";
-        mStringArray = new String[] { "string 1", null, "string 3"};
+        mStringArray = new String[]{"string 1", null, "string 3"};
         mStringList = new ArrayList<>();
         mStringList.add("string 1");
         mStringList.add(null);
@@ -47,23 +48,33 @@ public class ModelStrings extends Model {
     public void showResults(@NonNull Context context, @NonNull ViewGroup layout) {
         LayoutInflater inflater = LayoutInflater.from(context);
         addNewRow(context, inflater, layout, "String", "Some string".equals(mString));
-        boolean ok = mStringArray != null;
-        ok = ok & mStringArray.length == 3;
-        ok = ok & "string 1".equals(mStringArray[0]);
-        ok = ok & mStringArray[1] == null;
-        ok = ok & "string 3".equals(mStringArray[2]);
+        boolean ok;
+        if (mStringArray != null) {
+            ok = mStringArray.length == 3;
+            ok = ok & "string 1".equals(mStringArray[0]);
+            ok = ok & mStringArray[1] == null;
+            ok = ok & "string 3".equals(mStringArray[2]);
+        } else {
+            ok = false;
+        }
         addNewRow(context, inflater, layout, "String[]", ok);
-        ok = mStringList != null;
-        ok = ok & mStringList.size() == 3;
-        ok = ok & "string 1".equals(mStringList.get(0));
-        ok = ok & mStringList.get(1) == null;
-        ok = ok & "string 3".equals(mStringList.get(2));
+        if (mStringList != null) {
+            ok = mStringList.size() == 3;
+            ok = ok & "string 1".equals(mStringList.get(0));
+            ok = ok & mStringList.get(1) == null;
+            ok = ok & "string 3".equals(mStringList.get(2));
+        } else {
+            ok = false;
+        }
         addNewRow(context, inflater, layout, "List<String>", ok);
-        ok = mStringArrayList != null;
-        ok = ok & mStringArrayList.size() == 3;
-        ok = ok & "string 1".equals(mStringArrayList.get(0));
-        ok = ok & mStringArrayList.get(1) == null;
-        ok = ok & "string 3".equals(mStringArrayList.get(2));
+        if (mStringArrayList != null) {
+            ok = mStringArrayList.size() == 3;
+            ok = ok & "string 1".equals(mStringArrayList.get(0));
+            ok = ok & mStringArrayList.get(1) == null;
+            ok = ok & "string 3".equals(mStringArrayList.get(2));
+        } else {
+            ok = false;
+        }
         addNewRow(context, inflater, layout, "ArrayList<String>", ok);
     }
 

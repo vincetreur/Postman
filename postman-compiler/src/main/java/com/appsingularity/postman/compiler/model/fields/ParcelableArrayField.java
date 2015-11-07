@@ -3,7 +3,6 @@ package com.appsingularity.postman.compiler.model.fields;
 import android.support.annotation.NonNull;
 
 import com.appsingularity.postman.compiler.model.CollectedField;
-import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
 import com.appsingularity.postman.compiler.writers.fields.ParcelableArrayFieldWriter;
 
@@ -21,14 +20,12 @@ public class ParcelableArrayField implements CollectedField {
     private final Element mElement;
 
     public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
-        if (ModelUtils.isProcessableAttribute(element)) {
-            TypeMirror typeMirror = element.asType();
-            TypeKind typeKind = typeMirror.getKind();
-            if (typeKind == TypeKind.ARRAY) {
-                TypeElement typeElement = elements.getTypeElement(CLASSNAME);
-                ArrayType arrayType = types.getArrayType(typeElement.asType());
-                return (types.isAssignable(element.asType(), arrayType));
-            }
+        TypeMirror typeMirror = element.asType();
+        TypeKind typeKind = typeMirror.getKind();
+        if (typeKind == TypeKind.ARRAY) {
+            TypeElement typeElement = elements.getTypeElement(CLASSNAME);
+            ArrayType arrayType = types.getArrayType(typeElement.asType());
+            return (types.isAssignable(element.asType(), arrayType));
         }
         return false;
     }

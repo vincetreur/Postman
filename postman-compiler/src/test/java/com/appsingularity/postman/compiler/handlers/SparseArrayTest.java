@@ -12,27 +12,26 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 /**
- * Make sure we can process Bundles
+ * Make sure we can process SparseArrays
  */
-public class BundleTest {
+public class SparseArrayTest {
 
 
     @Test
-    public void testBundle() {
+    public void testSparseArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import android.os.Bundle;",
+                        "import android.util.SparseArray;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   Bundle mBundle;",
+                        "   SparseArray mArray;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -72,12 +71,12 @@ public class BundleTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeValue(source.mBundle);",
+                        "      dest.writeSparseArray(source.mArray);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mBundle = (android.os.Bundle) in.readValue(android.os.Bundle.class.getClassLoader());",
+                        "      target.mArray = in.readSparseArray(getClass().getClassLoader());",
                         "   }",
                         "}"
                 ));
@@ -92,21 +91,19 @@ public class BundleTest {
 
 
     @Test
-    public void testBundleArray() {
+    public void testStringArray() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import android.os.Bundle;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   Bundle[] mBundles;",
+                        "   String[] mStrings;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -146,15 +143,12 @@ public class BundleTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeParcelableArray(source.mBundles, flags);",
+                        "      dest.writeStringArray(source.mStrings);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     android.os.Parcelable[] mBundlesCopy = in.readParcelableArray(android.os.Bundle.class.getClassLoader());",
-                        "     if (mBundlesCopy != null) {",
-                        "       target.mBundles = java.util.Arrays.copyOf(mBundlesCopy, mBundlesCopy.length, android.os.Bundle[].class);",
-                        "     }",
+                        "      target.mStrings = in.createStringArray();",
                         "   }",
                         "}"
                 ));
@@ -168,22 +162,20 @@ public class BundleTest {
     }
 
     @Test
-    public void testBundleList() {
+    public void testStringList() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
-                        "import android.os.Bundle;",
                         "import java.util.List;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   List<Bundle> mBundles;",
+                        "   List<String> mStrings;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -219,25 +211,16 @@ public class BundleTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
-                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "     if (source.mBundles != null) {",
-                        "       dest.writeByte((byte) 1);",
-                        "       dest.writeList(source.mBundles);",
-                        "     } else {",
-                        "       dest.writeByte((byte) 0);",
-                        "     }",
+                        "      dest.writeStringList(source.mStrings);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     if (in.readByte() == 1) {",
-                        "       target.mBundles = new ArrayList<>();",
-                        "       in.readList(target.mBundles, android.os.Bundle.class.getClassLoader());",
-                        "     }",
+                        "      target.mStrings = in.createStringArrayList();",
                         "   }",
                         "}"
                 ));
@@ -251,22 +234,20 @@ public class BundleTest {
     }
 
     @Test
-    public void testBundleArrayList() {
+    public void testStringArrayList() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
-                        "import android.os.Bundle;",
                         "import java.util.ArrayList;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   ArrayList<Bundle> mBundles;",
+                        "   ArrayList<String> mStrings;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -302,25 +283,16 @@ public class BundleTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
-                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "     if (source.mBundles != null) {",
-                        "       dest.writeByte((byte) 1);",
-                        "       dest.writeList(source.mBundles);",
-                        "     } else {",
-                        "       dest.writeByte((byte) 0);",
-                        "     }",
+                        "      dest.writeStringList(source.mStrings);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     if (in.readByte() == 1) {",
-                        "       target.mBundles = new ArrayList<>();",
-                        "       in.readList(target.mBundles, android.os.Bundle.class.getClassLoader());",
-                        "     }",
+                        "      target.mStrings = in.createStringArrayList();",
                         "   }",
                         "}"
                 ));

@@ -2,6 +2,7 @@ package com.appsingularity.postman.compiler.model;
 
 import android.support.annotation.NonNull;
 
+import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.writers.CollectedClassWriter;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface CollectedClass {
 
     List<CollectedField> getFields();
 
-    void addChild(@NonNull Types types, @NonNull Elements elements, @NonNull Element child);
+    void addChild(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element child);
 
     CollectedClassWriter getWriter();
 

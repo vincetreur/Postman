@@ -13,8 +13,6 @@ public abstract class Animal implements Parcelable {
 
     public Animal() { }
 
-
-
     protected Animal(Parcel in) {
         Postman.receive(Animal.class, this, in);
     }
