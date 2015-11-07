@@ -64,8 +64,8 @@ buildscript {
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-  compile 'com.appsingularity:postman:0.9.2'
-  apt 'com.appsingularity:postman-compiler:0.9.2'
+  compile 'com.appsingularity:postman:1.0.0'
+  apt 'com.appsingularity:postman-compiler:1.0.0'
 }
 ```
 
