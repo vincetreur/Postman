@@ -3,9 +3,8 @@ package com.appsingularity.postman.compiler.model.fields;
 import android.support.annotation.NonNull;
 
 import com.appsingularity.postman.compiler.model.CollectedField;
-import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
-import com.appsingularity.postman.compiler.writers.fields.NonPrimitiveDataTypeArrayFieldwriter;
+import com.appsingularity.postman.compiler.writers.fields.NonPrimitiveDataTypeArrayFieldWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,25 +15,25 @@ import javax.lang.model.type.TypeKind;
 public class NonPrimitiveDataTypeArrayField implements CollectedField {
     @NonNull
     private final Element mElement;
-    private static List<String> mSupportedArgumentTypes;
+    @NonNull
+    private final static List<String> SUPPORTED_TYPES;
+
+    static {
+        SUPPORTED_TYPES = new ArrayList<>();
+        SUPPORTED_TYPES.add("java.lang.Boolean[]");
+        SUPPORTED_TYPES.add("java.lang.Character[]");
+        SUPPORTED_TYPES.add("java.lang.Byte[]");
+        SUPPORTED_TYPES.add("java.lang.Short[]");
+        SUPPORTED_TYPES.add("java.lang.Integer[]");
+        SUPPORTED_TYPES.add("java.lang.Long[]");
+        SUPPORTED_TYPES.add("java.lang.Float[]");
+        SUPPORTED_TYPES.add("java.lang.Double[]");
+    }
 
     public static boolean canProcessElement(@NonNull Element element) {
-        if (ModelUtils.isProcessableAttribute(element)) {
-            if (mSupportedArgumentTypes == null) {
-                mSupportedArgumentTypes = new ArrayList<>();
-                mSupportedArgumentTypes.add("java.lang.Boolean[]");
-                mSupportedArgumentTypes.add("java.lang.Character[]");
-                mSupportedArgumentTypes.add("java.lang.Byte[]");
-                mSupportedArgumentTypes.add("java.lang.Short[]");
-                mSupportedArgumentTypes.add("java.lang.Integer[]");
-                mSupportedArgumentTypes.add("java.lang.Long[]");
-                mSupportedArgumentTypes.add("java.lang.Float[]");
-                mSupportedArgumentTypes.add("java.lang.Double[]");
-            }
-            if (element.asType().getKind() == TypeKind.ARRAY) {
-                if (mSupportedArgumentTypes.contains(element.asType().toString())) {
-                    return true;
-                }
+        if (element.asType().getKind() == TypeKind.ARRAY) {
+            if (SUPPORTED_TYPES.contains(element.asType().toString())) {
+                return true;
             }
         }
         return false;
@@ -47,7 +46,7 @@ public class NonPrimitiveDataTypeArrayField implements CollectedField {
     @NonNull
     @Override
     public CollectedFieldWriter getWriter() {
-        return new NonPrimitiveDataTypeArrayFieldwriter(mElement);
+        return new NonPrimitiveDataTypeArrayFieldWriter(mElement);
     }
 
 }

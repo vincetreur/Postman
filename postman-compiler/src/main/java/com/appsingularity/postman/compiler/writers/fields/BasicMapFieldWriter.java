@@ -5,22 +5,28 @@ import android.support.annotation.NonNull;
 import com.appsingularity.postman.compiler.writers.AbsCollectedFieldWriter;
 import com.squareup.javapoet.MethodSpec;
 
+import java.util.HashMap;
+
 import javax.lang.model.element.Element;
 
-public class SparseArrayFieldWriter extends AbsCollectedFieldWriter {
+public class BasicMapFieldWriter extends AbsCollectedFieldWriter {
 
-    public SparseArrayFieldWriter(@NonNull Element element) {
+    public BasicMapFieldWriter(@NonNull Element element) {
         super(element);
     }
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        shipMethod.addStatement("dest.writeSparseArray(source.$L)", mElement.getSimpleName().toString());
+        String attr = mElement.getSimpleName().toString();
+        shipMethod.addStatement("dest.writeMap(source.$L)", attr);
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         String attr = mElement.getSimpleName().toString();
-        receiveMethod.addStatement("target.$L = in.readSparseArray(getClass().getClassLoader())", attr);
+        receiveMethod.addStatement("// Reading target.$L", attr);
+        receiveMethod.addStatement("target.$L = new $T<>()", attr, HashMap.class);
+        receiveMethod.addStatement("in.readMap(target.$L, getClass().getClassLoader())", attr);
     }
+
 }

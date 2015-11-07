@@ -8,8 +8,8 @@ import com.squareup.javapoet.MethodSpec;
 
 public interface CollectedFieldWriter {
 
-    boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod);
+    void writeShipMethod(@NonNull MethodSpec.Builder shipMethod);
 
-    boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod);
+    void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod);
 
 }

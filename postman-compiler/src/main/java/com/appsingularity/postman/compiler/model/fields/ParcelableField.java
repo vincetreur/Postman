@@ -3,7 +3,6 @@ package com.appsingularity.postman.compiler.model.fields;
 import android.support.annotation.NonNull;
 
 import com.appsingularity.postman.compiler.model.CollectedField;
-import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
 import com.appsingularity.postman.compiler.writers.fields.ParcelableFieldWriter;
 
@@ -20,17 +19,15 @@ public class ParcelableField implements CollectedField {
     private final Element mElement;
 
     public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
-        if (ModelUtils.isProcessableAttribute(element)) {
-            TypeMirror typeMirror = element.asType();
-            TypeKind typeKind = typeMirror.getKind();
-            if (typeKind == TypeKind.DECLARED) {
-                if (CLASSNAME.equals(element.asType().toString())) {
-                    return true;
-                }
-                // Look for superclasses that implement Parcelable
-                TypeElement typeElement = elements.getTypeElement(CLASSNAME);
-                return (types.isAssignable(element.asType(), typeElement.asType()));
+        TypeMirror typeMirror = element.asType();
+        TypeKind typeKind = typeMirror.getKind();
+        if (typeKind == TypeKind.DECLARED) {
+            if (CLASSNAME.equals(element.asType().toString())) {
+                return true;
             }
+            // Look for superclasses that implement Parcelable
+            TypeElement typeElement = elements.getTypeElement(CLASSNAME);
+            return (types.isAssignable(element.asType(), typeElement.asType()));
         }
         return false;
     }

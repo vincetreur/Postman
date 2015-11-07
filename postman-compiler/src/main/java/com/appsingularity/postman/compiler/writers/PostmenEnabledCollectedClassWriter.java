@@ -23,12 +23,12 @@ import javax.lang.model.util.Elements;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
-public class PostmenEnbaledCollectedClassWriter implements CollectedClassWriter {
+public class PostmenEnabledCollectedClassWriter implements CollectedClassWriter {
     private static final ClassName BASE_PARCELER = ClassName.get("com.appsingularity.postman.internal", "BasePostman");
     private static final TypeVariableName PARCEL_TYPE_NAME = TypeVariableName.get("android.os.Parcel");
     @NonNull private final CollectedClass mCollectedClass;
 
-    public PostmenEnbaledCollectedClassWriter(@NonNull CollectedClass collectedClass) {
+    public PostmenEnabledCollectedClassWriter(@NonNull CollectedClass collectedClass) {
         mCollectedClass = collectedClass;
     }
 
@@ -82,7 +82,7 @@ public class PostmenEnbaledCollectedClassWriter implements CollectedClassWriter 
         CollectedFieldWriter writer;
         for (CollectedField field : fields) {
             writer = field.getWriter();
-            writer.writeReveiveMethod(receiveMethodBuilder);
+            writer.writeReceiveMethod(receiveMethodBuilder);
         }
         return receiveMethodBuilder.build();
     }

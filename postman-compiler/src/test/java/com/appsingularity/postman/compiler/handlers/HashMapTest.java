@@ -12,27 +12,26 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 /**
- * Make sure we can process Bundles
+ * Make sure we can process HashMaps
  */
-public class BundleTest {
+public class HashMapTest {
 
 
     @Test
-    public void testBundle() {
+    public void testRawHashMap() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import android.os.Bundle;",
+                        "import java.util.HashMap;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   Bundle mBundle;",
+                        "   HashMap mMap;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -72,12 +71,163 @@ public class BundleTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeValue(source.mBundle);",
+                        "     dest.writeSerializable(source.mMap);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mBundle = (android.os.Bundle) in.readValue(android.os.Bundle.class.getClassLoader());",
+                        "     target.mMap = (java.util.HashMap) in.readSerializable();",
+                        "   }",
+                        "}"
+                ));
+
+
+        assertAbout(javaSource()).that(source)
+                .processedWith(new PostmanProcessor())
+                .compilesWithoutError()
+                .and()
+                .generatesSources(expectedSource);
+    }
+
+    @Test
+    public void testStringHashMap() {
+        JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
+                Joiner.on('\n').join(
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.Postman;",
+                        "import com.appsingularity.postman.annotations.PostmanEnabled;",
+                        "import java.util.HashMap;",
+                        "import android.os.Parcel;",
+                        "import android.os.Parcelable;",
+                        "",
+                        "@PostmanEnabled",
+                        "public class Model implements Parcelable {",
+                        "   HashMap<String, String> mMap;",
+                        "",
+                        "   protected Model(Parcel in) {",
+                        "     Postman.receive(this, in);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public void writeToParcel(Parcel dest, int flags) {",
+                        "    Postman.ship(this, dest, flags);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public int describeContents() {",
+                        "    return 0;",
+                        "  }",
+                        "",
+                        "  public static final Parcelable.Creator<Model> CREATOR = new Parcelable.Creator<Model>() {",
+                        "    @Override",
+                        "    public Model createFromParcel(Parcel in) {",
+                        "      return new Model(in);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public Model[] newArray(int size) {",
+                        "      return new Model[size];",
+                        "    }",
+                        "  };",
+                        "}"
+                ));
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
+                Joiner.on('\n').join(
+                        "// Generated code from Postman. Do not modify!",
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.internal.BasePostman;",
+                        "import java.lang.Override;",
+                        "import java.util.HashMap;",
+                        "",
+                        "public final class Model$$Postman extends BasePostman<Model> {",
+                        "   @Override",
+                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
+                        "      dest.writeMap(source.mMap);",
+                        "   }",
+                        "",
+                        "   @Override",
+                        "   public void receive(final Model target, final android.os.Parcel in) {",
+                        "     // Reading target.mMap;",
+                        "     target.mMap = new HashMap<>();",
+                        "     in.readMap(target.mMap, getClass().getClassLoader());",
+                        "   }",
+                        "}"
+                ));
+
+
+        assertAbout(javaSource()).that(source)
+                .processedWith(new PostmanProcessor())
+                .compilesWithoutError()
+                .and()
+                .generatesSources(expectedSource);
+    }
+
+    @Test
+    public void testParcelableHashMap() {
+        JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
+                Joiner.on('\n').join(
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.Postman;",
+                        "import com.appsingularity.postman.annotations.PostmanEnabled;",
+                        "import com.appsingularity.postman.compiler.handlers.MyParcelable;",
+                        "import java.util.HashMap;",
+                        "import android.os.Parcel;",
+                        "import android.os.Parcelable;",
+                        "",
+                        "@PostmanEnabled",
+                        "public class Model implements Parcelable {",
+                        "   HashMap<MyParcelable, MyParcelable> mMap;",
+                        "",
+                        "   protected Model(Parcel in) {",
+                        "     Postman.receive(this, in);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public void writeToParcel(Parcel dest, int flags) {",
+                        "    Postman.ship(this, dest, flags);",
+                        "  }",
+                        "",
+                        "  @Override",
+                        "  public int describeContents() {",
+                        "    return 0;",
+                        "  }",
+                        "",
+                        "  public static final Parcelable.Creator<Model> CREATOR = new Parcelable.Creator<Model>() {",
+                        "    @Override",
+                        "    public Model createFromParcel(Parcel in) {",
+                        "      return new Model(in);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public Model[] newArray(int size) {",
+                        "      return new Model[size];",
+                        "    }",
+                        "  };",
+                        "}"
+                ));
+        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
+                Joiner.on('\n').join(
+                        "// Generated code from Postman. Do not modify!",
+                        "package test;",
+                        "",
+                        "import com.appsingularity.postman.internal.BasePostman;",
+                        "import java.lang.Override;",
+                        "import java.util.HashMap;",
+                        "",
+                        "public final class Model$$Postman extends BasePostman<Model> {",
+                        "   @Override",
+                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
+                        "      dest.writeMap(source.mMap);",
+                        "   }",
+                        "",
+                        "   @Override",
+                        "   public void receive(final Model target, final android.os.Parcel in) {",
+                        "     // Reading target.mMap;",
+                        "     target.mMap = new HashMap<>();",
+                        "     in.readMap(target.mMap, getClass().getClassLoader());",
                         "   }",
                         "}"
                 ));
@@ -92,21 +242,21 @@ public class BundleTest {
 
 
     @Test
-    public void testBundleArray() {
+    public void testSerializableHashMap() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import android.os.Bundle;",
+                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
+                        "import java.util.HashMap;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   Bundle[] mBundles;",
+                        "   HashMap<MySerializable, MySerializable> mMap;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(this, in);",
@@ -142,185 +292,19 @@ public class BundleTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.HashMap;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeParcelableArray(source.mBundles, flags);",
+                        "      dest.writeMap(source.mMap);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     android.os.Parcelable[] mBundlesCopy = in.readParcelableArray(android.os.Bundle.class.getClassLoader());",
-                        "     if (mBundlesCopy != null) {",
-                        "       target.mBundles = java.util.Arrays.copyOf(mBundlesCopy, mBundlesCopy.length, android.os.Bundle[].class);",
-                        "     }",
-                        "   }",
-                        "}"
-                ));
-
-
-        assertAbout(javaSource()).that(source)
-                .processedWith(new PostmanProcessor())
-                .compilesWithoutError()
-                .and()
-                .generatesSources(expectedSource);
-    }
-
-    @Test
-    public void testBundleList() {
-        JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
-                Joiner.on('\n').join(
-                        "package test;",
-                        "",
-                        "import com.appsingularity.postman.Postman;",
-                        "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
-                        "import android.os.Bundle;",
-                        "import java.util.List;",
-                        "import android.os.Parcel;",
-                        "import android.os.Parcelable;",
-                        "",
-                        "@PostmanEnabled",
-                        "public class Model implements Parcelable {",
-                        "   List<Bundle> mBundles;",
-                        "",
-                        "   protected Model(Parcel in) {",
-                        "     Postman.receive(this, in);",
-                        "  }",
-                        "",
-                        "  @Override",
-                        "  public void writeToParcel(Parcel dest, int flags) {",
-                        "    Postman.ship(this, dest, flags);",
-                        "  }",
-                        "",
-                        "  @Override",
-                        "  public int describeContents() {",
-                        "    return 0;",
-                        "  }",
-                        "",
-                        "  public static final Parcelable.Creator<Model> CREATOR = new Parcelable.Creator<Model>() {",
-                        "    @Override",
-                        "    public Model createFromParcel(Parcel in) {",
-                        "      return new Model(in);",
-                        "    }",
-                        "",
-                        "    @Override",
-                        "    public Model[] newArray(int size) {",
-                        "      return new Model[size];",
-                        "    }",
-                        "  };",
-                        "}"
-                ));
-        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
-                Joiner.on('\n').join(
-                        "// Generated code from Postman. Do not modify!",
-                        "package test;",
-                        "",
-                        "import com.appsingularity.postman.internal.BasePostman;",
-                        "import java.lang.Override;",
-                        "import java.util.ArrayList;",
-                        "",
-                        "public final class Model$$Postman extends BasePostman<Model> {",
-                        "   @Override",
-                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "     if (source.mBundles != null) {",
-                        "       dest.writeByte((byte) 1);",
-                        "       dest.writeList(source.mBundles);",
-                        "     } else {",
-                        "       dest.writeByte((byte) 0);",
-                        "     }",
-                        "   }",
-                        "",
-                        "   @Override",
-                        "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     if (in.readByte() == 1) {",
-                        "       target.mBundles = new ArrayList<>();",
-                        "       in.readList(target.mBundles, android.os.Bundle.class.getClassLoader());",
-                        "     }",
-                        "   }",
-                        "}"
-                ));
-
-
-        assertAbout(javaSource()).that(source)
-                .processedWith(new PostmanProcessor())
-                .compilesWithoutError()
-                .and()
-                .generatesSources(expectedSource);
-    }
-
-    @Test
-    public void testBundleArrayList() {
-        JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
-                Joiner.on('\n').join(
-                        "package test;",
-                        "",
-                        "import com.appsingularity.postman.Postman;",
-                        "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
-                        "import android.os.Bundle;",
-                        "import java.util.ArrayList;",
-                        "import android.os.Parcel;",
-                        "import android.os.Parcelable;",
-                        "",
-                        "@PostmanEnabled",
-                        "public class Model implements Parcelable {",
-                        "   ArrayList<Bundle> mBundles;",
-                        "",
-                        "   protected Model(Parcel in) {",
-                        "     Postman.receive(this, in);",
-                        "  }",
-                        "",
-                        "  @Override",
-                        "  public void writeToParcel(Parcel dest, int flags) {",
-                        "    Postman.ship(this, dest, flags);",
-                        "  }",
-                        "",
-                        "  @Override",
-                        "  public int describeContents() {",
-                        "    return 0;",
-                        "  }",
-                        "",
-                        "  public static final Parcelable.Creator<Model> CREATOR = new Parcelable.Creator<Model>() {",
-                        "    @Override",
-                        "    public Model createFromParcel(Parcel in) {",
-                        "      return new Model(in);",
-                        "    }",
-                        "",
-                        "    @Override",
-                        "    public Model[] newArray(int size) {",
-                        "      return new Model[size];",
-                        "    }",
-                        "  };",
-                        "}"
-                ));
-        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
-                Joiner.on('\n').join(
-                        "// Generated code from Postman. Do not modify!",
-                        "package test;",
-                        "",
-                        "import com.appsingularity.postman.internal.BasePostman;",
-                        "import java.lang.Override;",
-                        "import java.util.ArrayList;",
-                        "",
-                        "public final class Model$$Postman extends BasePostman<Model> {",
-                        "   @Override",
-                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "     if (source.mBundles != null) {",
-                        "       dest.writeByte((byte) 1);",
-                        "       dest.writeList(source.mBundles);",
-                        "     } else {",
-                        "       dest.writeByte((byte) 0);",
-                        "     }",
-                        "   }",
-                        "",
-                        "   @Override",
-                        "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     if (in.readByte() == 1) {",
-                        "       target.mBundles = new ArrayList<>();",
-                        "       in.readList(target.mBundles, android.os.Bundle.class.getClassLoader());",
-                        "     }",
+                        "     // Reading target.mMap;",
+                        "     target.mMap = new HashMap<>();",
+                        "     in.readMap(target.mMap, getClass().getClassLoader());",
                         "   }",
                         "}"
                 ));

@@ -44,8 +44,8 @@ public class ReceivingFullAutoActivity extends AppCompatActivity {
             if (FullAutoConst.NAME.equals(dog.mName)) {
                 DrawableHelper.setMarker(this, foundAttribute2View, true);
             }
+            Log.i(TAG, "Restored dog with name " + dog.mName + " and has tail " + dog.mHasTail);
         }
-        Log.i(TAG, "Restored dog with name " + dog.mName + " and has tail " + dog.mHasTail);
     }
 
 

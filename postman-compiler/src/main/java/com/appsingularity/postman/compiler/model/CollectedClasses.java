@@ -3,6 +3,7 @@ package com.appsingularity.postman.compiler.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.model.classes.PostmenEnabledCollectedClass;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class CollectedClasses {
     }
 
     @Nullable
-    public static CollectedClass obtain(@NonNull Types types, @NonNull Elements elements, @NonNull Element classElement) {
+    public static CollectedClass obtain(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element classElement) {
         CollectedClass collectedClass = null;
         if (PostmenEnabledCollectedClass.canProcessElement(classElement)) {
             collectedClass = new PostmenEnabledCollectedClass(classElement);
@@ -25,8 +26,10 @@ public class CollectedClasses {
         if (collectedClass != null) {
             List<? extends Element> children = classElement.getEnclosedElements();
             for (Element child : children) {
-                collectedClass.addChild(types, elements, child);
+                collectedClass.addChild(logger, types, elements, child);
             }
+        } else {
+            logger.warn(classElement, "Class file annotated with @PostmanEnabled but it could not be processed.");
         }
         return collectedClass;
     }

@@ -20,14 +20,11 @@ public class SparseBooleanArrayField implements CollectedField {
     protected static List<String> mSupportedTypes;
 
     public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
-        if (ModelUtils.isProcessableAttribute(element)) {
-            if (mSupportedTypes == null) {
-                mSupportedTypes = new ArrayList<>();
-                mSupportedTypes.add("android.util.SparseBooleanArray");
-            }
-            return (ModelUtils.isElementOfType(types, elements, element, mSupportedTypes));
+        if (mSupportedTypes == null) {
+            mSupportedTypes = new ArrayList<>();
+            mSupportedTypes.add("android.util.SparseBooleanArray");
         }
-        return false;
+        return (ModelUtils.isElementOfType(types, elements, element, mSupportedTypes));
     }
 
     public SparseBooleanArrayField(@NonNull Element element) {

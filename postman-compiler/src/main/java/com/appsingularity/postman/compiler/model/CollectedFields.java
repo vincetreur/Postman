@@ -3,7 +3,9 @@ package com.appsingularity.postman.compiler.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.model.fields.BasicListField;
+import com.appsingularity.postman.compiler.model.fields.BasicMapField;
 import com.appsingularity.postman.compiler.model.fields.NonPrimitiveDataTypeArrayField;
 import com.appsingularity.postman.compiler.model.fields.ParcelableArrayField;
 import com.appsingularity.postman.compiler.model.fields.ParcelableField;
@@ -28,7 +30,10 @@ public class CollectedFields {
     }
 
     @Nullable
-    public static CollectedField obtain(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField obtain(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+        if (!ModelUtils.isProcessableAttribute(logger, element)) {
+            return null;
+        }
         CollectedField field = null;
         if (PrimitiveDataTypeField.canProcessElement(element)) {
             field = new PrimitiveDataTypeField(element);
@@ -42,6 +47,8 @@ public class CollectedFields {
             field = new GenericArrayField(element);
         } else if (BasicListField.canProcessElement(types, elements, element)) {
             field = new BasicListField(element);
+        } else if (BasicMapField.canProcessElement(types, elements, element)) {
+            field = new BasicMapField(element);
         } else if (NonPrimitiveDataTypeArrayField.canProcessElement(element)) {
             field = new NonPrimitiveDataTypeArrayField(element);
         } else if (TypedObjectField.canProcessElement(element)) {
@@ -56,6 +63,8 @@ public class CollectedFields {
             field = new ParcelableField(element);
         } else if (SerializableField.canProcessElement(types, elements, element)) {
             field = new SerializableField(element);
+        } else {
+            logger.warn(element, "Nothing can process field. Maybe it's a raw type?");
         }
         return field;
     }

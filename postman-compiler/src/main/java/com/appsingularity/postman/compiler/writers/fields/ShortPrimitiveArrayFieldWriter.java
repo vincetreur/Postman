@@ -7,15 +7,16 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 
-public class ShortPrinitiveArrayFieldWriter extends AbsCollectedFieldWriter {
+public class ShortPrimitiveArrayFieldWriter extends AbsCollectedFieldWriter {
 
-    public ShortPrinitiveArrayFieldWriter(@NonNull Element element) {
+    public ShortPrimitiveArrayFieldWriter(@NonNull Element element) {
         super(element);
     }
 
     @Override
-    public boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
+    public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
         String attr = mElement.getSimpleName().toString();
+        shipMethod.addStatement("// Writing source.$L", attr);
         shipMethod.beginControlFlow("if (source.$L != null)", attr);
         shipMethod.addStatement("dest.writeByte((byte) 1)");
         shipMethod.addStatement("int[] $L_copy = new int[source.$L.length]", attr, attr);
@@ -26,13 +27,12 @@ public class ShortPrinitiveArrayFieldWriter extends AbsCollectedFieldWriter {
         shipMethod.nextControlFlow("else");
         shipMethod.addStatement("dest.writeByte((byte) 0)");
         shipMethod.endControlFlow();
-        return true;
     }
 
     @Override
-    public boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
+    public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         String attr = mElement.getSimpleName().toString();
-        receiveMethod.addStatement("// Read $L", attr);
+        receiveMethod.addStatement("// Reading target.$L", attr);
         receiveMethod.beginControlFlow("if (in.readByte() == 1)");
         receiveMethod.addStatement("int[] $L_copy = in.createIntArray()", attr);
         receiveMethod.addStatement("target.$L = new short[$L_copy.length]", attr, attr);
@@ -40,7 +40,6 @@ public class ShortPrinitiveArrayFieldWriter extends AbsCollectedFieldWriter {
         receiveMethod.addStatement("target.$L[i] = (short) $L_copy[i]", attr, attr);
         receiveMethod.endControlFlow();
         receiveMethod.endControlFlow();
-        return true;
     }
 
 }

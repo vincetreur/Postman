@@ -44,8 +44,8 @@ public class ReceivingManualActivity extends AppCompatActivity {
             if (ManualConst.TYPE.equals(car.mType)) {
                 DrawableHelper.setMarker(this, foundAttribute2View, true);
             }
+            Log.i(TAG, "Restored car with color " + car.mColor + " and type " + car.mType);
         }
-        Log.i(TAG, "Restored car with color " + car.mColor + " and type " + car.mType);
     }
 
 }

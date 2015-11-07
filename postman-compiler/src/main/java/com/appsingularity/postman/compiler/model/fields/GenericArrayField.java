@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.appsingularity.postman.compiler.model.CollectedField;
 import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
-import com.appsingularity.postman.compiler.writers.fields.GenericArrayFieldwriter;
+import com.appsingularity.postman.compiler.writers.fields.GenericArrayFieldWriter;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,25 +21,25 @@ public class GenericArrayField implements CollectedField {
     private final Element mElement;
     @NonNull
     final private String mNameCapitalized;
-    private static List<String> mSupportedArgumentTypes;
+    @NonNull
+    private final static List<String> SUPPORTED_ARGUMENT_TYPES;
+
+    static {
+        SUPPORTED_ARGUMENT_TYPES = new ArrayList<>();
+        SUPPORTED_ARGUMENT_TYPES.add("boolean[]");
+        SUPPORTED_ARGUMENT_TYPES.add("char[]");
+        SUPPORTED_ARGUMENT_TYPES.add("byte[]");
+        SUPPORTED_ARGUMENT_TYPES.add("int[]");
+        SUPPORTED_ARGUMENT_TYPES.add("long[]");
+        SUPPORTED_ARGUMENT_TYPES.add("float[]");
+        SUPPORTED_ARGUMENT_TYPES.add("double[]");
+        SUPPORTED_ARGUMENT_TYPES.add("java.lang.String[]");
+    }
 
     public static boolean canProcessElement(@NonNull Element element) {
-        if (ModelUtils.isProcessableAttribute(element)) {
-            if (mSupportedArgumentTypes == null) {
-                mSupportedArgumentTypes = new ArrayList<>();
-                mSupportedArgumentTypes.add("boolean[]");
-                mSupportedArgumentTypes.add("char[]");
-                mSupportedArgumentTypes.add("byte[]");
-                mSupportedArgumentTypes.add("int[]");
-                mSupportedArgumentTypes.add("long[]");
-                mSupportedArgumentTypes.add("float[]");
-                mSupportedArgumentTypes.add("double[]");
-                mSupportedArgumentTypes.add("java.lang.String[]");
-            }
-            if (element.asType().getKind() == TypeKind.ARRAY) {
-                if (mSupportedArgumentTypes.contains(element.asType().toString())) {
-                    return true;
-                }
+        if (element.asType().getKind() == TypeKind.ARRAY) {
+            if (SUPPORTED_ARGUMENT_TYPES.contains(element.asType().toString())) {
+                return true;
             }
         }
         return false;
@@ -56,7 +56,7 @@ public class GenericArrayField implements CollectedField {
     @NonNull
     @Override
     public CollectedFieldWriter getWriter() {
-        return new GenericArrayFieldwriter(mElement, mNameCapitalized);
+        return new GenericArrayFieldWriter(mElement, mNameCapitalized);
     }
 
 }

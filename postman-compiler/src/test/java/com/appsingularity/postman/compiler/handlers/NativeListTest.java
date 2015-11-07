@@ -67,6 +67,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -82,7 +83,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mBoolean = new java.util.ArrayList<>();",
+                        "       target.mBoolean = new ArrayList<>();",
                         "       in.readList(target.mBoolean, java.lang.Boolean.class.getClassLoader());",
                         "     }",
                         "   }",
@@ -147,6 +148,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -162,7 +164,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mChar = new java.util.ArrayList<>();",
+                        "       target.mChar = new ArrayList<>();",
                         "       in.readList(target.mChar, java.lang.Character.class.getClassLoader());",
                         "     }",
                         "   }",
@@ -227,6 +229,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -242,7 +245,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mByte = new java.util.ArrayList<>();",
+                        "       target.mByte = new ArrayList<>();",
                         "       in.readList(target.mByte, java.lang.Byte.class.getClassLoader());",
                         "     }",
                         "   }",
@@ -307,6 +310,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -322,7 +326,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mShort = new java.util.ArrayList<>();",
+                        "       target.mShort = new ArrayList<>();",
                         "       in.readList(target.mShort, java.lang.Short.class.getClassLoader());",
                         "     }",
                         "   }",
@@ -387,6 +391,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -402,7 +407,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mInt = new java.util.ArrayList<>();",
+                        "       target.mInt = new ArrayList<>();",
                         "       in.readList(target.mInt, java.lang.Integer.class.getClassLoader());",
                         "     }",
                         "   }",
@@ -467,6 +472,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -482,7 +488,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mLong = new java.util.ArrayList<>();",
+                        "       target.mLong = new ArrayList<>();",
                         "       in.readList(target.mLong, java.lang.Long.class.getClassLoader());",
                         "     }",
                         "   }",
@@ -498,7 +504,7 @@ public class NativeListTest {
     }
 
     @Test
-    public void tesFloattList() {
+    public void tesFloatList() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -547,6 +553,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -562,7 +569,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mFloat = new java.util.ArrayList<>();",
+                        "       target.mFloat = new ArrayList<>();",
                         "       in.readList(target.mFloat, java.lang.Float.class.getClassLoader());",
                         "     }",
                         "   }",
@@ -578,7 +585,7 @@ public class NativeListTest {
     }
 
     @Test
-    public void tesDoubletList() {
+    public void tesDoubleList() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
@@ -627,6 +634,7 @@ public class NativeListTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
+                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
@@ -642,7 +650,7 @@ public class NativeListTest {
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
                         "     if (in.readByte() == 1) {",
-                        "       target.mDouble = new java.util.ArrayList<>();",
+                        "       target.mDouble = new ArrayList<>();",
                         "       in.readList(target.mDouble, java.lang.Double.class.getClassLoader());",
                         "     }",
                         "   }",

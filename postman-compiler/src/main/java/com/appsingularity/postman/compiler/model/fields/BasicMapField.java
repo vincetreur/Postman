@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.appsingularity.postman.compiler.model.CollectedField;
 import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
-import com.appsingularity.postman.compiler.writers.fields.StringListFieldWriter;
+import com.appsingularity.postman.compiler.writers.fields.BasicMapFieldWriter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,26 +17,31 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class StringListField implements CollectedField {
+public class BasicMapField implements CollectedField {
     @NonNull
     private final Element mElement;
+    @NonNull
+    private final static List<String> SUPPORTED_TYPES;
     @NonNull
     private final static List<String> SUPPORTED_ARGUMENT_TYPES;
 
     static {
+        SUPPORTED_TYPES = new ArrayList<>();
+        SUPPORTED_TYPES.add("java.util.Map");
+        SUPPORTED_TYPES.add("java.util.HashMap");
         SUPPORTED_ARGUMENT_TYPES = new ArrayList<>();
-        SUPPORTED_ARGUMENT_TYPES.add("java.lang.String");
+        SUPPORTED_ARGUMENT_TYPES.add("android.os.Parcelable");
+        SUPPORTED_ARGUMENT_TYPES.add("java.io.Serializable");
     }
 
     public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         TypeKind typeKind = element.asType().getKind();
-
         if (typeKind == TypeKind.DECLARED) {
             // First check if it is a List or ArrayList
             TypeMirror typeMirror = element.asType();
             DeclaredType declaredType = (DeclaredType) typeMirror;
             Element typeAsElement = declaredType.asElement();
-            if ("java.util.List".equals(typeAsElement.toString()) || "java.util.ArrayList".equals(typeAsElement.toString())) {
+            if (SUPPORTED_TYPES.contains(typeAsElement.toString())) {
                 // Then check the type argument
                 List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
                 if (typeArguments != null && !typeArguments.isEmpty()) {
@@ -46,8 +51,8 @@ public class StringListField implements CollectedField {
                     }
 
                     // Does it implement/extend or is any of the supported argument types?
-                    for (String supportedType : SUPPORTED_ARGUMENT_TYPES) {
-                        TypeElement typeElement = elements.getTypeElement(supportedType);
+                    for (String supportedArgType : SUPPORTED_ARGUMENT_TYPES) {
+                        TypeElement typeElement = elements.getTypeElement(supportedArgType);
                         if (types.isAssignable(typeArgument, typeElement.asType())) {
                             return true;
                         }
@@ -58,13 +63,15 @@ public class StringListField implements CollectedField {
         return false;
     }
 
-    public StringListField(@NonNull Element element) {
+    public BasicMapField(@NonNull Element element) {
         mElement = element;
     }
 
-    @NonNull @Override
+
+    @NonNull
+    @Override
     public CollectedFieldWriter getWriter() {
-        return new StringListFieldWriter(mElement);
+        return new BasicMapFieldWriter(mElement);
     }
 
 }

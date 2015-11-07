@@ -7,14 +7,14 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 
-public class PrinitiveDataTypeFieldWriter extends AbsCollectedFieldWriter {
+public class PrimitiveDataTypeFieldWriter extends AbsCollectedFieldWriter {
 
-    public PrinitiveDataTypeFieldWriter(@NonNull Element element) {
+    public PrimitiveDataTypeFieldWriter(@NonNull Element element) {
         super(element);
     }
 
     @Override
-    public boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
+    public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
         String name = mElement.getSimpleName().toString();
         switch (mElement.asType().getKind()) {
             case BOOLEAN:
@@ -50,13 +50,11 @@ public class PrinitiveDataTypeFieldWriter extends AbsCollectedFieldWriter {
                 break;
 
             default:
-                return false;
         }
-        return true;
     }
 
     @Override
-    public boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
+    public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         String name = mElement.getSimpleName().toString();
         switch (mElement.asType().getKind()) {
             case BOOLEAN:
@@ -92,8 +90,6 @@ public class PrinitiveDataTypeFieldWriter extends AbsCollectedFieldWriter {
                 break;
 
             default:
-                return false;
         }
-        return true;
     }
 }

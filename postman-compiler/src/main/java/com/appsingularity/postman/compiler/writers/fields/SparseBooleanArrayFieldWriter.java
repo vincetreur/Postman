@@ -14,15 +14,13 @@ public class SparseBooleanArrayFieldWriter extends AbsCollectedFieldWriter {
     }
 
     @Override
-    public boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
+    public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
         shipMethod.addStatement("dest.writeSparseBooleanArray(source.$L)", mElement.getSimpleName().toString());
-        return true;
     }
 
     @Override
-    public boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
+    public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         String attr = mElement.getSimpleName().toString();
         receiveMethod.addStatement("target.$L = in.readSparseBooleanArray()", attr);
-        return true;
     }
 }

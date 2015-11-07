@@ -44,8 +44,8 @@ public class ReceivingSemiAutoActivity extends AppCompatActivity {
             if (SemiAutoConst.COLOR.equals(apple.mColor)) {
                 DrawableHelper.setMarker(this, foundAttribute2View, true);
             }
+            Log.i(TAG, "Restored apple with color " + apple.mColor + " and is tasty " + apple.mTasty);
         }
-        Log.i(TAG, "Restored apple with color " + apple.mColor + " and is tasty " + apple.mTasty);
     }
 
 

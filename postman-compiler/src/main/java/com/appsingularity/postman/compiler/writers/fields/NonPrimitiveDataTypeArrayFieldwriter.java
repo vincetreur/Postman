@@ -7,25 +7,23 @@ import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Element;
 
-public class NonPrimitiveDataTypeArrayFieldwriter extends AbsCollectedFieldWriter {
+public class NonPrimitiveDataTypeArrayFieldWriter extends AbsCollectedFieldWriter {
 
-    public NonPrimitiveDataTypeArrayFieldwriter(@NonNull Element element) {
+    public NonPrimitiveDataTypeArrayFieldWriter(@NonNull Element element) {
         super(element);
     }
 
     @Override
-    public boolean writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
+    public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
         String attr = mElement.getSimpleName().toString();
         shipMethod.addStatement("dest.writeValue(source.$L)", attr);
-        return true;
     }
 
     @Override
-    public boolean writeReveiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
+    public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         String attr = mElement.getSimpleName().toString();
         String type = mElement.asType().toString();
         receiveMethod.addStatement("target.$L = ($L) in.readValue($L.class.getClassLoader())", attr, type, type);
-        return true;
     }
 
 }

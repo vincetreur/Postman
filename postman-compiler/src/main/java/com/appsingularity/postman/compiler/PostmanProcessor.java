@@ -24,20 +24,16 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-import static javax.tools.Diagnostic.Kind.ERROR;
-
-import static javax.tools.Diagnostic.Kind.OTHER;
-import static javax.tools.Diagnostic.Kind.WARNING;
-
-
 @AutoService(Processor.class)
 public class PostmanProcessor extends AbstractProcessor {
     private Elements mElements;
     private Types mTypes;
     private Filer mFiler;
+    private Logger mLogger;
 
     @Override public synchronized void init(ProcessingEnvironment env) {
         super.init(env);
+        mLogger = new Logger(env);
         mElements = env.getElementUtils();
         mTypes = env.getTypeUtils();
         mFiler = env.getFiler();
@@ -61,45 +57,24 @@ public class PostmanProcessor extends AbstractProcessor {
         List<CollectedClass> collectedClasses = new ArrayList<>();
         for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(PostmanEnabled.class)) {
             // Filter out everything but the classes
-            CollectedClass collectedClass = CollectedClasses.obtain(mTypes, mElements, annotatedElement);
+            CollectedClass collectedClass = CollectedClasses.obtain(mLogger, mTypes, mElements, annotatedElement);
             if (collectedClass != null) {
                 collectedClasses.add(collectedClass);
             }
         }
         // Generate code
         for (CollectedClass annotatedClass : collectedClasses) {
-            note("Processing type %s", annotatedClass.toString());
+            mLogger.note("Processing type %s", annotatedClass.toString());
             try {
                 CollectedClassWriter writer = annotatedClass.getWriter();
                 writer.writeToFile(mElements, mFiler);
             } catch (IOException e) {
-                error(annotatedClass.getClassElement(), "Unable to write code for type %s: %s", annotatedClass,
+                mLogger.error(annotatedClass.getClassElement(), "Unable to write code for type %s: %s", annotatedClass,
                         e.getMessage());
             }
         }
         return false;
     }
 
-
-    private void error(final Element element, String message, final Object... args) {
-        if (args.length > 0) {
-            message = String.format(message, args);
-        }
-        processingEnv.getMessager().printMessage(ERROR, "Postman: " + message, element);
-    }
-
-    private void warn(String message, final Object... args) {
-        if (args.length > 0) {
-            message = String.format(message, args);
-        }
-        processingEnv.getMessager().printMessage(WARNING, "Postman: " + message);
-    }
-
-    private void note(String message, final Object... args) {
-        if (args.length > 0) {
-            message = String.format(message, args);
-        }
-        processingEnv.getMessager().printMessage(OTHER, "Postman: " + message);
-    }
 
 }
