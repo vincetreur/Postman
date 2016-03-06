@@ -65,6 +65,7 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
   compile 'com.appsingularity:postman:1.0.1'
+  compile 'com.appsingularity:postman-annotations:1.0.1'
   apt 'com.appsingularity:postman-compiler:1.0.1'
 }
 ```
