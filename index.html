@@ -19,7 +19,7 @@
 
         <header>
           <h1>Postman</h1>
-          <h2>Automated Parceling for Android</h2>
+          <h2>Easy Parceling for Android</h2>
         </header>
 
         <section id="downloads" class="clearfix">
@@ -32,9 +32,9 @@
 
         <section id="main_content">
           <h1>
-<a id="postman" class="anchor" href="#postman" aria-hidden="true"><span class="octicon octicon-link"></span></a>Postman</h1>
+<a id="postman" class="anchor" href="#postman" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Postman</h1>
 
-<p>Automated Parceling for Android.</p>
+<p>Easy parceling for Android.</p>
 
 <p>Generate the boilerplate code that is needed for supporting Parcelable.</p>
 
@@ -42,18 +42,18 @@
 You only need to add the <code>@PostmanEnabled</code> annotation. And delegate to the <code>Postman</code> in your own code.</p>
 
 <h3>
-<a id="third-party-classes" class="anchor" href="#third-party-classes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Third-party classes</h3>
+<a id="third-party-classes" class="anchor" href="#third-party-classes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Third-party classes</h3>
 
 <p>You can go all in with Postman, or mix it with hand crafted <code>Parcelable</code> classes.
 It can even handle third-party classes that are not designed to work with Postman. (See the sample project for some examples.)</p>
 
 <h3>
-<a id="proguard" class="anchor" href="#proguard" aria-hidden="true"><span class="octicon octicon-link"></span></a>ProGuard</h3>
+<a id="proguard" class="anchor" href="#proguard" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ProGuard</h3>
 
 <p>Postman plays well with ProGuard. If you use the <code>postman</code>-module you don't need to worry about ProGuard &amp; Postman.</p>
 
 <h3>
-<a id="good-to-know" class="anchor" href="#good-to-know" aria-hidden="true"><span class="octicon octicon-link"></span></a>Good to know</h3>
+<a id="good-to-know" class="anchor" href="#good-to-know" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Good to know</h3>
 
 <ul>
 <li> Attributes must be <code>public</code>, <code>protected</code> or package protected. Private attributes cannot be accessed from the generated code and will not be parcelled.</li>
@@ -64,7 +64,7 @@ It can even handle third-party classes that are not designed to work with Postma
 </ul>
 
 <h2>
-<a id="supported-types" class="anchor" href="#supported-types" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported types</h2>
+<a id="supported-types" class="anchor" href="#supported-types" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported types</h2>
 
 <p>Right now Postman supports:</p>
 
@@ -126,7 +126,7 @@ It can even handle third-party classes that are not designed to work with Postma
 </ul>
 
 <h2>
-<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use</h2>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use</h2>
 
 <p>Configure your <code>build.gradle</code></p>
 
@@ -139,8 +139,8 @@ It can even handle third-party classes that are not designed to work with Postma
 apply <span class="pl-c1">plugin</span>: <span class="pl-s"><span class="pl-pds">'</span>com.neenbedankt.android-apt<span class="pl-pds">'</span></span>
 
 dependencies {
-  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:1.0.0<span class="pl-pds">'</span></span>
-  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:1.0.0<span class="pl-pds">'</span></span>
+  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:1.0.1<span class="pl-pds">'</span></span>
+  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:1.0.1<span class="pl-pds">'</span></span>
 }</pre></div>
 
 <p>Annotate your model classes and delegate the tedious boilerplate coding to the Postman.</p>
@@ -185,7 +185,7 @@ dependencies {
 (See the sample project.)</p>
 
 <h2>
-<a id="yet-to-do" class="anchor" href="#yet-to-do" aria-hidden="true"><span class="octicon octicon-link"></span></a>Yet to do</h2>
+<a id="yet-to-do" class="anchor" href="#yet-to-do" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Yet to do</h2>
 
 <ul>
 <li>Support more attribute types.</li>
@@ -194,9 +194,16 @@ dependencies {
 </ul>
 
 <h1>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h1>
+<a id="version" class="anchor" href="#version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version</h1>
 
-<pre><code>Copyright 2015 Vince M. Treur
+<p>1.0.0 - Initial release</p>
+
+<p>1.0.1 - Fixed issue when used in combination with Dagger</p>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
+
+<pre><code>Copyright 2016 Vince M. Treur
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
