@@ -1,7 +1,7 @@
 Postman
 ============
 
-Automated Parceling for Android.
+Easy parceling for Android.
 
 Generate the boilerplate code that is needed for supporting Parcelable.
 
@@ -64,8 +64,8 @@ buildscript {
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-  compile 'com.appsingularity:postman:1.0.0'
-  apt 'com.appsingularity:postman-compiler:1.0.0'
+  compile 'com.appsingularity:postman:1.0.1'
+  apt 'com.appsingularity:postman-compiler:1.0.1'
 }
 ```
 
@@ -118,9 +118,15 @@ Don't forget to setup annotation processing in your ```build.gradle```.
 - Support for user specific types.
 - More automated tests.
 
+#Version
+
+1.0.0 - Initial release
+
+1.0.1 - Fixed issue when used in combination with Dagger
+
 #License
 
-    Copyright 2015 Vince M. Treur
+    Copyright 2016 Vince M. Treur
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

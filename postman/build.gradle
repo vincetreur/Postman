@@ -21,9 +21,8 @@ android {
 dependencies {
     // Specify the annotations here so our clients don't have to include it.
     compile project(':postman-annotations')
+
     compile deps.supportAnnotations
-
-
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
