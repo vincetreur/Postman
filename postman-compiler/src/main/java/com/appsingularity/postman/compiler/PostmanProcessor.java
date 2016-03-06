@@ -73,7 +73,7 @@ public class PostmanProcessor extends AbstractProcessor {
                         e.getMessage());
             }
         }
-        return false;
+        return true;
     }
 
 
