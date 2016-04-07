@@ -1,1 +1,4 @@
-include ':postman-sample', ':postman-compiler', ':postman-annotations', ":postman"
+include ':postman'
+include ':postman-annotations'
+include ':postman-compiler'
+include ':postman-sample'

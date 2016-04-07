@@ -131,7 +131,19 @@ afterEvaluate { project ->
               name POM_DEVELOPER_NAME
             }
           }
+            // Add dependency to annotations, so the clients don't have to include it
+            dependencies {
+                dependency {
+                    groupId 'com.appsingularity'
+                    artifactId 'postman-annotations'
+                    version VERSION_NAME
+                    scope 'compile'
+                }
+            }
+
         }
+
+
       }
     }
 
@@ -185,6 +197,8 @@ afterEvaluate { project ->
         }
       }
     }
+
+
 
     task sourcesJar(type: Jar, dependsOn:classes) {
       classifier = 'sources'

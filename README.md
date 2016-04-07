@@ -64,8 +64,8 @@ buildscript {
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-  compile 'com.appsingularity:postman:1.0.1'
-  apt 'com.appsingularity:postman-compiler:1.0.1'
+  compile 'com.appsingularity:postman:1.1.0'
+  apt 'com.appsingularity:postman-compiler:1.1.0'
 }
 ```
 
@@ -123,6 +123,9 @@ Don't forget to setup annotation processing in your ```build.gradle```.
 1.0.0 - Initial release
 
 1.0.1 - Fixed issue when used in combination with Dagger
+
+1.1.0 - Postman produces less output
+        Removed the need to import the annotations package
 
 #License
 
