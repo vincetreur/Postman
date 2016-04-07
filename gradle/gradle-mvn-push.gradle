@@ -140,10 +140,7 @@ afterEvaluate { project ->
                     scope 'compile'
                 }
             }
-
         }
-
-
       }
     }
 
