@@ -37,7 +37,7 @@ public class BasicMapField implements CollectedField {
     public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         TypeKind typeKind = element.asType().getKind();
         if (typeKind == TypeKind.DECLARED) {
-            // First check if it is a List or ArrayList
+            // First check if it is a Map or HashMap
             TypeMirror typeMirror = element.asType();
             DeclaredType declaredType = (DeclaredType) typeMirror;
             Element typeAsElement = declaredType.asElement();
