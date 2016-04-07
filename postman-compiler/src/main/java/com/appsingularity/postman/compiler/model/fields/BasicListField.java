@@ -62,7 +62,10 @@ public class BasicListField implements CollectedField {
                             return true;
                         }
                     }
+                    // TODO: Log info
                 }
+            } else {
+                // TODO: Log info
             }
         }
         return false;

@@ -45,6 +45,7 @@ public class BasicMapField implements CollectedField {
                 // Then check the type argument
                 List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
                 if (typeArguments != null && !typeArguments.isEmpty()) {
+                    // TODO: Check second type?
                     TypeMirror typeArgument = typeArguments.get(0);
                     if (SUPPORTED_ARGUMENT_TYPES.contains(typeArgument.toString())) {
                         return true;
@@ -57,6 +58,7 @@ public class BasicMapField implements CollectedField {
                             return true;
                         }
                     }
+                    // TODO: Log info about not processing
                 }
             }
         }
