@@ -40,18 +40,17 @@ public class ModelUtils {
         if (element.getKind() != ElementKind.FIELD) {
             return false;
         }
-        // Filter out private attributes
-        if (element.getModifiers().contains(Modifier.PRIVATE)) {
-            logger.warn(element, "Field could not be processed, it's private.");
-            return false;
-        }
         // Filter out static attributes
         if (element.getModifiers().contains(Modifier.STATIC)) {
             return false;
         }
         // Filter out transient attributes
         if (element.getModifiers().contains(Modifier.TRANSIENT)) {
-            logger.warn(element, "Field could not be processed, it's transient.");
+            return false;
+        }
+        // Filter out private attributes
+        if (element.getModifiers().contains(Modifier.PRIVATE)) {
+            logger.other(element, "Field could not be processed, it's private.");
             return false;
         }
         return true;
