@@ -7,6 +7,7 @@ import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.model.CollectedClass;
 import com.appsingularity.postman.compiler.model.CollectedField;
 import com.appsingularity.postman.compiler.model.CollectedFields;
+import com.appsingularity.postman.compiler.model.FieldProcessingException;
 import com.appsingularity.postman.compiler.writers.CollectedClassWriter;
 import com.appsingularity.postman.compiler.writers.PostmenEnabledCollectedClassWriter;
 
@@ -45,11 +46,21 @@ public class PostmenEnabledCollectedClass implements CollectedClass {
 
 
     @Override
-    public void addChild(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element child) {
-        CollectedField field = CollectedFields.obtain(logger, types, elements, child);
-        if (field != null) {
-            mFields.add(field);
+    public boolean addChild(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element child) {
+        boolean addedWithoutError = true;
+        CollectedField field;
+        try {
+            field = CollectedFields.obtain(types, elements, child);
+            if (field != null) {
+                if (field.hasError()) {
+                    addedWithoutError = false;
+                }
+                mFields.add(field);
+            }
+        } catch (FieldProcessingException fpe) {
+            addedWithoutError = false;
         }
+        return addedWithoutError;
     }
 
     @Override

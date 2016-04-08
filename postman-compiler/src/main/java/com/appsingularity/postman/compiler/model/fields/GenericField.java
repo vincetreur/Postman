@@ -14,7 +14,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class GenericField implements CollectedField {
+public class GenericField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
     @NonNull

@@ -2,8 +2,8 @@ package com.appsingularity.postman.compiler.model.fields;
 
 import android.support.annotation.NonNull;
 
-import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.model.CollectedField;
+import com.appsingularity.postman.compiler.model.FieldProcessingException;
 import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.fields.BasicMapFieldWriter;
 
@@ -27,8 +27,9 @@ public class BasicMapField extends AbsCollectedField {
         SUPPORTED_TYPES.add("java.util.HashMap");
     }
 
-    public static CollectedField canProcessElement(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements,
-                                            @NonNull Element element) throws IllegalArgumentException {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements,
+                                            @NonNull Element element)
+            throws com.appsingularity.postman.compiler.model.FieldProcessingException {
         BasicMapField instance = new BasicMapField(element);
         TypeKind typeKind = element.asType().getKind();
         if (typeKind == TypeKind.DECLARED) {
@@ -42,23 +43,20 @@ public class BasicMapField extends AbsCollectedField {
                 if (typeArguments != null && !typeArguments.isEmpty()) {
                     TypeMirror typeArgument = typeArguments.get(0);
                     if (!ModelUtils.isAssignableTo(types, elements, typeArgument, SupportedTypes.supportedGenerics())) {
-                        logger.warn(element, "Map holds key type that is not Serializable or Parcelable '%s'", typeArgument);
                         instance.setError("Map holds key type that is not Serializable or Parcelable '%s'", typeArgument);
                         return instance;
                     }
                     if (typeArguments.size() < 2) {
-                        throw new IllegalArgumentException();
+                        throw new FieldProcessingException("Map attribute has raw types");
                     }
                     typeArgument = typeArguments.get(1);
                     if (!ModelUtils.isAssignableTo(types, elements, typeArgument, SupportedTypes.supportedGenerics())) {
-                        logger.warn(element, "Map holds value type that is not Serializable or Parcelable '%s'", typeArgument);
                         instance.setError("Map holds value type that is not Serializable or Parcelable '%s'", typeArgument);
                         return instance;
                     }
                     // Types are ok
                     return instance;
                 } else {
-                    logger.warn(element, "Map is a raw type", element.getSimpleName());
                     instance.setError("Map is a raw type");
                     return instance;
                 }

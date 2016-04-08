@@ -14,7 +14,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class ParcelableArrayField implements CollectedField {
+public class ParcelableArrayField extends SimpleCollectedField {
     private static final String CLASSNAME = "android.os.Parcelable";
     @NonNull
     private final Element mElement;

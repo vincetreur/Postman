@@ -3,14 +3,11 @@ package com.appsingularity.postman.compiler.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.model.fields.SupportedTypes;
 
 import java.util.List;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;

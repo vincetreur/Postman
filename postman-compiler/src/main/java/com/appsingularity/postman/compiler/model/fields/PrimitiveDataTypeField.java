@@ -10,7 +10,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
-public class PrimitiveDataTypeField implements CollectedField {
+public class PrimitiveDataTypeField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
 

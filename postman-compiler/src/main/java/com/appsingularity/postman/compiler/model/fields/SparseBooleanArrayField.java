@@ -14,7 +14,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class SparseBooleanArrayField implements CollectedField {
+public class SparseBooleanArrayField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
     protected static List<String> mSupportedTypes;

@@ -17,7 +17,7 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class StringListField implements CollectedField {
+public class StringListField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
     @NonNull

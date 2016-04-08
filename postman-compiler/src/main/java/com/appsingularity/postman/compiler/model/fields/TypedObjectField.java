@@ -15,7 +15,7 @@ import java.util.List;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 
-public class TypedObjectField implements CollectedField {
+public class TypedObjectField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
     @NonNull

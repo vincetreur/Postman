@@ -2,7 +2,6 @@ package com.appsingularity.postman.compiler.model.fields;
 
 import android.support.annotation.NonNull;
 
-import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.model.CollectedField;
 import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.fields.BasicListFieldWriter;
@@ -18,8 +17,8 @@ import javax.lang.model.util.Types;
 
 public class BasicListField extends AbsCollectedField {
 
-    public static CollectedField canProcessElement(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements,
-                                            @NonNull Element element) throws IllegalArgumentException {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements,
+                                            @NonNull Element element) {
         BasicListField instance = new BasicListField(element);
         TypeKind typeKind = element.asType().getKind();
         if (typeKind == TypeKind.DECLARED) {
@@ -37,11 +36,9 @@ public class BasicListField extends AbsCollectedField {
                         return instance;
                     }
 
-                    logger.warn(element, "List holds type that is not Serializable or Parcelable '%s'", typeArgument);
                     instance.setError("List holds type that is not Serializable or Parcelable '%s'", typeArgument);
                     return instance;
                 } else {
-                    logger.warn(element, "List is a raw type", element.getSimpleName());
                     instance.setError("List is a raw type");
                     return instance;
                 }

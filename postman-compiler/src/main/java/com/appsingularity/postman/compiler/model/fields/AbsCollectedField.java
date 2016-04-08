@@ -13,6 +13,7 @@ public abstract class AbsCollectedField implements CollectedField {
     private final Element mElement;
     @NonNull
     private CollectedFieldWriter mWriter;
+    private boolean mHasError = false;
 
 
     public AbsCollectedField(@NonNull Element element, @NonNull CollectedFieldWriter writer) {
@@ -21,6 +22,7 @@ public abstract class AbsCollectedField implements CollectedField {
     }
 
     protected void setError(@NonNull String errorMsg, final Object... args) {
+        mHasError = true;
         String message = errorMsg;
         if (args.length > 0) {
             message = String.format(errorMsg, args);
@@ -32,6 +34,11 @@ public abstract class AbsCollectedField implements CollectedField {
     @Override
     public CollectedFieldWriter getWriter() {
         return mWriter;
+    }
+
+    @Override
+    public boolean hasError() {
+        return mHasError;
     }
 
 }
