@@ -59,8 +59,12 @@ public class BasicListField extends AbsCollectedField {
                         return instance;
                     }
 
-                    logger.warn(element, "Collection holds unsupported type '%s'", typeArgument);
-                    instance.setError("Collection holds unsupported type '%s'", typeArgument);
+                    logger.warn(element, "List holds type that is not Serializable or Parcelable '%s'", typeArgument);
+                    instance.setError("List holds type that is not Serializable or Parcelable '%s'", typeArgument);
+                    return instance;
+                } else {
+                    logger.warn(element, "List is a raw type", element.getSimpleName());
+                    instance.setError("List is a raw type");
                     return instance;
                 }
             }

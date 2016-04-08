@@ -47,8 +47,8 @@ public class BasicMapField extends AbsCollectedField {
                 if (typeArguments != null && !typeArguments.isEmpty()) {
                     TypeMirror typeArgument = typeArguments.get(0);
                     if (!isTypeSupported(types, elements, typeArgument)) {
-                        logger.warn(element, "Collection holds unsupported key type '%s'", typeArgument);
-                        instance.setError("Collection holds unsupported key type '%s'", typeArgument);
+                        logger.warn(element, "Map holds key type that is not Serializable or Parcelable '%s'", typeArgument);
+                        instance.setError("Map holds key type that is not Serializable or Parcelable '%s'", typeArgument);
                         return instance;
                     }
                     if (typeArguments.size() < 2) {
@@ -56,11 +56,15 @@ public class BasicMapField extends AbsCollectedField {
                     }
                     typeArgument = typeArguments.get(1);
                     if (!isTypeSupported(types, elements, typeArgument)) {
-                        logger.warn(element, "Collection holds unsupported value type '%s'", typeArgument);
-                        instance.setError("Collection holds unsupported value type '%s'", typeArgument);
+                        logger.warn(element, "Map holds value type that is not Serializable or Parcelable '%s'", typeArgument);
+                        instance.setError("Map holds value type that is not Serializable or Parcelable '%s'", typeArgument);
                         return instance;
                     }
                     // Types are ok
+                    return instance;
+                } else {
+                    logger.warn(element, "Map is a raw type", element.getSimpleName());
+                    instance.setError("Map is a raw type");
                     return instance;
                 }
             }

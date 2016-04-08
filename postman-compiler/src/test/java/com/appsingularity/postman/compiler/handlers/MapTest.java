@@ -16,8 +16,6 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  */
 public class MapTest {
 
-
-    // TODO: Test for raw type
     @Test
     public void testRawMap() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
@@ -316,7 +314,6 @@ public class MapTest {
                 .generatesSources(expectedSource);
     }
 
-    // TODO: Test for illegal type
     @Test
     public void testIllegalKeyMap() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
@@ -387,7 +384,6 @@ public class MapTest {
                 .generatesSources(expectedSource);
     }
 
-    // TODO: Test for illegal type
     @Test
     public void testIllegalValueMap() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
@@ -458,7 +454,6 @@ public class MapTest {
                 .generatesSources(expectedSource);
     }
 
-    // TODO: Test for illegal type
     @Test
     public void testIllegalKeyValueMap() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",

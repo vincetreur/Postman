@@ -16,8 +16,6 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  */
 public class ArrayListTest {
 
-
-    // TODO: Test for raw type
     @Test
     public void testRawArrayList() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
@@ -246,7 +244,6 @@ public class ArrayListTest {
                 .generatesSources(expectedSource);
     }
 
-    // TODO: Test for illegal type
     @Test
     public void testListWithIllegalType() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
