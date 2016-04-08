@@ -20,16 +20,11 @@ import javax.lang.model.util.Types;
 public class BasicMapField extends AbsCollectedField {
     @NonNull
     private final static List<String> SUPPORTED_TYPES;
-    @NonNull
-    private final static List<String> SUPPORTED_ARGUMENT_TYPES;
 
     static {
         SUPPORTED_TYPES = new ArrayList<>();
         SUPPORTED_TYPES.add("java.util.Map");
         SUPPORTED_TYPES.add("java.util.HashMap");
-        SUPPORTED_ARGUMENT_TYPES = new ArrayList<>();
-        SUPPORTED_ARGUMENT_TYPES.add("android.os.Parcelable");
-        SUPPORTED_ARGUMENT_TYPES.add("java.io.Serializable");
     }
 
     public static CollectedField canProcessElement(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements,
@@ -73,12 +68,12 @@ public class BasicMapField extends AbsCollectedField {
     }
 
     private static boolean isTypeSupported(@NonNull Types types, @NonNull Elements elements, @NonNull TypeMirror typeArgument) {
-        if (SUPPORTED_ARGUMENT_TYPES.contains(typeArgument.toString())) {
+        if (SupportedTypes.supportedGenerics().contains(typeArgument.toString())) {
             return true;
         }
 
         // Does it implement/extend or is any of the supported argument types?
-        return ModelUtils.isAssignableTo(types, elements, typeArgument, SUPPORTED_ARGUMENT_TYPES);
+        return ModelUtils.isAssignableTo(types, elements, typeArgument, SupportedTypes.supportedGenerics());
     }
 
     private BasicMapField(@NonNull Element element) {
