@@ -127,9 +127,10 @@ Version 1.0.1
 - Fixed issue when used in combination with Dagger
 
 Version 1.1.0
-- Postman produces less output
+- Postman produces less output, max 1 line per class
+- Complete logging is now written to the generated class
 - Removed the need to import the annotations package
-- Improved type checking for lists and maps, warnings are also logged in generated class
+- Improved type checking for lists and maps. This may break your build if you use raw types
 
 #License
 
