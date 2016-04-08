@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.appsingularity.postman.compiler.Logger;
+import com.appsingularity.postman.compiler.model.fields.SupportedTypes;
 
 import java.util.List;
 
@@ -83,6 +84,9 @@ public class ModelUtils {
 
     public static boolean isAssignableTo(@NonNull Types types, @NonNull Elements elements,
                                          @NonNull TypeMirror typeArgument, @NonNull List<String> supportedTypes) {
+        if (SupportedTypes.supportedGenerics().contains(typeArgument.toString())) {
+            return true;
+        }
         for (String supportedType : supportedTypes) {
             TypeElement typeElement = elements.getTypeElement(supportedType);
             if (types.isAssignable(typeArgument, typeElement.asType())) {

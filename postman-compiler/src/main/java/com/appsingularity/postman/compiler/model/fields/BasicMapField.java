@@ -41,7 +41,7 @@ public class BasicMapField extends AbsCollectedField {
                 List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
                 if (typeArguments != null && !typeArguments.isEmpty()) {
                     TypeMirror typeArgument = typeArguments.get(0);
-                    if (!isTypeSupported(types, elements, typeArgument)) {
+                    if (!ModelUtils.isAssignableTo(types, elements, typeArgument, SupportedTypes.supportedGenerics())) {
                         logger.warn(element, "Map holds key type that is not Serializable or Parcelable '%s'", typeArgument);
                         instance.setError("Map holds key type that is not Serializable or Parcelable '%s'", typeArgument);
                         return instance;
@@ -50,7 +50,7 @@ public class BasicMapField extends AbsCollectedField {
                         throw new IllegalArgumentException();
                     }
                     typeArgument = typeArguments.get(1);
-                    if (!isTypeSupported(types, elements, typeArgument)) {
+                    if (!ModelUtils.isAssignableTo(types, elements, typeArgument, SupportedTypes.supportedGenerics())) {
                         logger.warn(element, "Map holds value type that is not Serializable or Parcelable '%s'", typeArgument);
                         instance.setError("Map holds value type that is not Serializable or Parcelable '%s'", typeArgument);
                         return instance;
@@ -67,19 +67,8 @@ public class BasicMapField extends AbsCollectedField {
         return null;
     }
 
-    private static boolean isTypeSupported(@NonNull Types types, @NonNull Elements elements, @NonNull TypeMirror typeArgument) {
-        if (SupportedTypes.supportedGenerics().contains(typeArgument.toString())) {
-            return true;
-        }
-
-        // Does it implement/extend or is any of the supported argument types?
-        return ModelUtils.isAssignableTo(types, elements, typeArgument, SupportedTypes.supportedGenerics());
-    }
-
     private BasicMapField(@NonNull Element element) {
         super(element, new BasicMapFieldWriter(element));
     }
-
-
 
 }

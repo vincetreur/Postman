@@ -32,10 +32,6 @@ public class BasicListField extends AbsCollectedField {
                 List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
                 if (typeArguments != null && !typeArguments.isEmpty()) {
                     TypeMirror typeArgument = typeArguments.get(0);
-                    if (SupportedTypes.supportedGenerics().contains(typeArgument.toString())) {
-                        return instance;
-                    }
-
                     // Does it implement/extend or is any of the supported argument types?
                     if (ModelUtils.isAssignableTo(types, elements, typeArgument, SupportedTypes.supportedGenerics())) {
                         return instance;
@@ -57,6 +53,5 @@ public class BasicListField extends AbsCollectedField {
     private BasicListField(@NonNull Element element) {
         super(element, new BasicListFieldWriter(element));
     }
-
 
 }
