@@ -120,12 +120,16 @@ Don't forget to setup annotation processing in your ```build.gradle```.
 
 #Version
 
-1.0.0 - Initial release
+Version 1.0.0
+- Initial release
 
-1.0.1 - Fixed issue when used in combination with Dagger
+Version 1.0.1
+- Fixed issue when used in combination with Dagger
 
-1.1.0 - Postman produces less output
-        Removed the need to import the annotations package
+Version 1.1.0
+- Postman produces less output
+- Removed the need to import the annotations package
+- Improved type checking for lists and maps, warnings are also logged in generated class
 
 #License
 
