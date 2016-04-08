@@ -36,16 +36,16 @@ public class GenericArrayField implements CollectedField {
         SUPPORTED_ARGUMENT_TYPES.add("java.lang.String[]");
     }
 
-    public static boolean canProcessElement(@NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Element element) {
         if (element.asType().getKind() == TypeKind.ARRAY) {
             if (SUPPORTED_ARGUMENT_TYPES.contains(element.asType().toString())) {
-                return true;
+                return new GenericArrayField(element);
             }
         }
-        return false;
+        return null;
     }
 
-    public GenericArrayField(@NonNull Element element) {
+    private GenericArrayField(@NonNull Element element) {
         mElement = element;
         ArrayType arrayType = (ArrayType) element.asType();
         String name = arrayType.getComponentType().toString();

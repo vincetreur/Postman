@@ -18,8 +18,8 @@ public class BasicListFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String attr = mElement.getSimpleName().toString();
-        shipMethod.addStatement("// Writing source.$L", attr);
+        String attr = getElement().getSimpleName().toString();
+        shipMethod.addCode("// Writing source.$L\n", attr);
         shipMethod.beginControlFlow("if (source.$L != null)", attr);
         shipMethod.addStatement("dest.writeByte((byte) 1)");
         shipMethod.addStatement("dest.writeList(source.$L)", attr);
@@ -30,9 +30,9 @@ public class BasicListFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String attr = mElement.getSimpleName().toString();
-        String enclosedType = ModelUtils.getArgument(mElement);
-        receiveMethod.addStatement("// Reading target.$L", attr);
+        String attr = getElement().getSimpleName().toString();
+        String enclosedType = ModelUtils.getArgument(getElement());
+        receiveMethod.addCode("// Reading target.$L\n", attr);
         receiveMethod.beginControlFlow("if (in.readByte() == 1)");
         receiveMethod.addStatement("target.$L = new $T<>()", attr, ArrayList.class);
         receiveMethod.addStatement("in.readList(target.$L, $L.class.getClassLoader())", attr, enclosedType);

@@ -33,11 +33,14 @@ public class GenericField implements CollectedField {
         SUPPORTED_TYPES.add("android.os.Bundle");
     }
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
-        return (ModelUtils.isElementOfType(types, elements, element, SUPPORTED_TYPES));
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+        if (ModelUtils.isElementOfType(types, elements, element, SUPPORTED_TYPES)) {
+            return new GenericField(element);
+        }
+        return null;
     }
 
-    public GenericField(@NonNull Element element) {
+    private GenericField(@NonNull Element element) {
         mElement = element;
     }
 

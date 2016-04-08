@@ -14,18 +14,18 @@ public class ShortPrimitiveArrayField implements CollectedField {
     @NonNull
     private final Element mElement;
 
-    public static boolean canProcessElement(@NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Element element) {
         TypeMirror typeMirror = element.asType();
         TypeKind typeKind = typeMirror.getKind();
         if (typeKind == TypeKind.ARRAY) {
             if ("short[]".equals(element.asType().toString())) {
-                return true;
+                return new ShortPrimitiveArrayField(element);
             }
         }
-        return false;
+        return null;
     }
 
-    public ShortPrimitiveArrayField(@NonNull Element element) {
+    private ShortPrimitiveArrayField(@NonNull Element element) {
         mElement = element;
     }
 

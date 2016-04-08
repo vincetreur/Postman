@@ -15,8 +15,8 @@ public class PrimitiveDataTypeFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String name = mElement.getSimpleName().toString();
-        switch (mElement.asType().getKind()) {
+        String name = getElement().getSimpleName().toString();
+        switch (getElement().asType().getKind()) {
             case BOOLEAN:
                 shipMethod.addStatement("dest.writeByte((byte) (source.$L ? 1 : 0))", name);
                 break;
@@ -55,8 +55,8 @@ public class PrimitiveDataTypeFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String name = mElement.getSimpleName().toString();
-        switch (mElement.asType().getKind()) {
+        String name = getElement().getSimpleName().toString();
+        switch (getElement().asType().getKind()) {
             case BOOLEAN:
                 receiveMethod.addStatement("target.$L = in.readByte() != 0", name);
                 break;

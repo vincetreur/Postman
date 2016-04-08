@@ -17,14 +17,14 @@ public class BasicMapFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String attr = mElement.getSimpleName().toString();
+        String attr = getElement().getSimpleName().toString();
         shipMethod.addStatement("dest.writeMap(source.$L)", attr);
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String attr = mElement.getSimpleName().toString();
-        receiveMethod.addStatement("// Reading target.$L", attr);
+        String attr = getElement().getSimpleName().toString();
+        receiveMethod.addCode("// Reading target.$L\n", attr);
         receiveMethod.addStatement("target.$L = new $T<>()", attr, HashMap.class);
         receiveMethod.addStatement("in.readMap(target.$L, getClass().getClassLoader())", attr);
     }

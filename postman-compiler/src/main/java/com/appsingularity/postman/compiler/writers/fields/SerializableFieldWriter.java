@@ -15,12 +15,12 @@ public class SerializableFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        shipMethod.addStatement("dest.writeSerializable(source.$L)", mElement.getSimpleName().toString());
+        shipMethod.addStatement("dest.writeSerializable(source.$L)", getElement().getSimpleName().toString());
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        receiveMethod.addStatement("target.$L = ($L) in.readSerializable()", mElement.getSimpleName().toString()
-            , mElement.asType().toString());
+        receiveMethod.addStatement("target.$L = ($L) in.readSerializable()", getElement().getSimpleName().toString()
+            , getElement().asType().toString());
     }
 }

@@ -18,13 +18,13 @@ public class TypedObjectFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String attr = mElement.getSimpleName().toString();
+        String attr = getElement().getSimpleName().toString();
         shipMethod.addStatement("dest.write$L(source.$L)", mNameCapitalized, attr);
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String attr = mElement.getSimpleName().toString();
+        String attr = getElement().getSimpleName().toString();
         receiveMethod.addStatement("target.$L = in.read$L()", attr, mNameCapitalized);
     }
 

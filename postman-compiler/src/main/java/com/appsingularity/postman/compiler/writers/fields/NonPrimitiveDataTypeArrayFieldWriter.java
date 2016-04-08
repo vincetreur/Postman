@@ -15,14 +15,14 @@ public class NonPrimitiveDataTypeArrayFieldWriter extends AbsCollectedFieldWrite
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String attr = mElement.getSimpleName().toString();
+        String attr = getElement().getSimpleName().toString();
         shipMethod.addStatement("dest.writeValue(source.$L)", attr);
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String attr = mElement.getSimpleName().toString();
-        String type = mElement.asType().toString();
+        String attr = getElement().getSimpleName().toString();
+        String type = getElement().asType().toString();
         receiveMethod.addStatement("target.$L = ($L) in.readValue($L.class.getClassLoader())", attr, type, type);
     }
 

@@ -19,15 +19,18 @@ public class SparseBooleanArrayField implements CollectedField {
     private final Element mElement;
     protected static List<String> mSupportedTypes;
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         if (mSupportedTypes == null) {
             mSupportedTypes = new ArrayList<>();
             mSupportedTypes.add("android.util.SparseBooleanArray");
         }
-        return (ModelUtils.isElementOfType(types, elements, element, mSupportedTypes));
+        if (ModelUtils.isElementOfType(types, elements, element, mSupportedTypes)) {
+            return new SparseBooleanArrayField(element);
+        }
+        return null;
     }
 
-    public SparseBooleanArrayField(@NonNull Element element) {
+    private SparseBooleanArrayField(@NonNull Element element) {
         mElement = element;
     }
 

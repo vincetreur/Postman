@@ -2,25 +2,22 @@ package com.appsingularity.postman.compiler.model.fields;
 
 import android.support.annotation.NonNull;
 
+import com.appsingularity.postman.compiler.Logger;
 import com.appsingularity.postman.compiler.model.CollectedField;
-import com.appsingularity.postman.compiler.writers.CollectedFieldWriter;
+import com.appsingularity.postman.compiler.model.ModelUtils;
 import com.appsingularity.postman.compiler.writers.fields.BasicListFieldWriter;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class BasicListField implements CollectedField {
-    @NonNull
-    private final Element mElement;
+public class BasicListField extends AbsCollectedField {
     @NonNull
     private final static List<String> SUPPORTED_ARGUMENT_TYPES;
 
@@ -39,7 +36,9 @@ public class BasicListField implements CollectedField {
         SUPPORTED_ARGUMENT_TYPES.add("android.os.Bundle");
     }
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements,
+                                            @NonNull Element element) throws IllegalArgumentException {
+        BasicListField instance = new BasicListField(element);
         TypeKind typeKind = element.asType().getKind();
         if (typeKind == TypeKind.DECLARED) {
             // First check if it is a List or ArrayList
@@ -52,34 +51,26 @@ public class BasicListField implements CollectedField {
                 if (typeArguments != null && !typeArguments.isEmpty()) {
                     TypeMirror typeArgument = typeArguments.get(0);
                     if (SUPPORTED_ARGUMENT_TYPES.contains(typeArgument.toString())) {
-                        return true;
+                        return instance;
                     }
 
                     // Does it implement/extend or is any of the supported argument types?
-                    for (String supportedType : SUPPORTED_ARGUMENT_TYPES) {
-                        TypeElement typeElement = elements.getTypeElement(supportedType);
-                        if (types.isAssignable(typeArgument, typeElement.asType())) {
-                            return true;
-                        }
+                    if (ModelUtils.isAssignableTo(types, elements, typeArgument, SUPPORTED_ARGUMENT_TYPES)) {
+                        return instance;
                     }
-                    // TODO: Log info
+
+                    logger.warn(element, "Collection holds unsupported type '%s'", typeArgument);
+                    instance.setError("Collection holds unsupported type '%s'", typeArgument);
+                    return instance;
                 }
-            } else {
-                // TODO: Log info
             }
         }
-        return false;
+        return null;
     }
 
-    public BasicListField(@NonNull Element element) {
-        mElement = element;
+    private BasicListField(@NonNull Element element) {
+        super(element, new BasicListFieldWriter(element));
     }
 
-
-    @NonNull
-    @Override
-    public CollectedFieldWriter getWriter() {
-        return new BasicListFieldWriter(mElement);
-    }
 
 }

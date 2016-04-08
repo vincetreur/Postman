@@ -19,18 +19,20 @@ public class ParcelableArrayField implements CollectedField {
     @NonNull
     private final Element mElement;
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         TypeMirror typeMirror = element.asType();
         TypeKind typeKind = typeMirror.getKind();
         if (typeKind == TypeKind.ARRAY) {
             TypeElement typeElement = elements.getTypeElement(CLASSNAME);
             ArrayType arrayType = types.getArrayType(typeElement.asType());
-            return (types.isAssignable(element.asType(), arrayType));
+            if (types.isAssignable(element.asType(), arrayType)) {
+                return new ParcelableArrayField(element);
+            }
         }
-        return false;
+        return null;
     }
 
-    public ParcelableArrayField(@NonNull Element element) {
+    private ParcelableArrayField(@NonNull Element element) {
         mElement = element;
     }
 

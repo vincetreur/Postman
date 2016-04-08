@@ -18,13 +18,13 @@ public class GenericArrayFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String attr = mElement.getSimpleName().toString();
+        String attr = getElement().getSimpleName().toString();
         shipMethod.addStatement("dest.write$LArray(source.$L)", mNameCapitalized, attr);
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String attr = mElement.getSimpleName().toString();
+        String attr = getElement().getSimpleName().toString();
         receiveMethod.addStatement("target.$L = in.create$LArray()", attr, mNameCapitalized);
     }
 

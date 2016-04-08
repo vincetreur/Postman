@@ -18,21 +18,23 @@ public class ParcelableField implements CollectedField {
     @NonNull
     private final Element mElement;
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         TypeMirror typeMirror = element.asType();
         TypeKind typeKind = typeMirror.getKind();
         if (typeKind == TypeKind.DECLARED) {
             if (CLASSNAME.equals(element.asType().toString())) {
-                return true;
+                return new ParcelableField(element);
             }
             // Look for superclasses that implement Parcelable
             TypeElement typeElement = elements.getTypeElement(CLASSNAME);
-            return (types.isAssignable(element.asType(), typeElement.asType()));
+            if (types.isAssignable(element.asType(), typeElement.asType())) {
+                return new ParcelableField(element);
+            }
         }
-        return false;
+        return null;
     }
 
-    public ParcelableField(@NonNull Element element) {
+    private ParcelableField(@NonNull Element element) {
         mElement = element;
     }
 

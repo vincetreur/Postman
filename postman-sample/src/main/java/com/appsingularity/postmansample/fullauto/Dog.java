@@ -1,14 +1,22 @@
 package com.appsingularity.postmansample.fullauto;
 
 import android.os.Parcel;
+import android.view.View;
 
 import com.appsingularity.postman.Postman;
 import com.appsingularity.postman.annotations.PostmanEnabled;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @PostmanEnabled
 public class Dog extends Animal {
     boolean mHasTail = false;
+    List<View> mViews = new ArrayList<>();
+    Map<String, View> mViewMap = new HashMap<>();
 
     public Dog() { }
 

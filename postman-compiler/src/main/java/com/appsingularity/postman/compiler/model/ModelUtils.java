@@ -80,4 +80,16 @@ public class ModelUtils {
         }
         return false;
     }
+
+    public static boolean isAssignableTo(@NonNull Types types, @NonNull Elements elements,
+                                         @NonNull TypeMirror typeArgument, @NonNull List<String> supportedTypes) {
+        for (String supportedType : supportedTypes) {
+            TypeElement typeElement = elements.getTypeElement(supportedType);
+            if (types.isAssignable(typeArgument, typeElement.asType())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

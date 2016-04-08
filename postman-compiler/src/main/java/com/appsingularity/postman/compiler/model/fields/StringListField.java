@@ -28,7 +28,7 @@ public class StringListField implements CollectedField {
         SUPPORTED_ARGUMENT_TYPES.add("java.lang.String");
     }
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         TypeKind typeKind = element.asType().getKind();
 
         if (typeKind == TypeKind.DECLARED) {
@@ -42,23 +42,23 @@ public class StringListField implements CollectedField {
                 if (typeArguments != null && !typeArguments.isEmpty()) {
                     TypeMirror typeArgument = typeArguments.get(0);
                     if (SUPPORTED_ARGUMENT_TYPES.contains(typeArgument.toString())) {
-                        return true;
+                        return new StringListField(element);
                     }
 
                     // Does it implement/extend or is any of the supported argument types?
                     for (String supportedType : SUPPORTED_ARGUMENT_TYPES) {
                         TypeElement typeElement = elements.getTypeElement(supportedType);
                         if (types.isAssignable(typeArgument, typeElement.asType())) {
-                            return true;
+                            return new StringListField(element);
                         }
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 
-    public StringListField(@NonNull Element element) {
+    private StringListField(@NonNull Element element) {
         mElement = element;
     }
 
