@@ -36,27 +36,6 @@ public class ModelUtils {
         return enclosedType;
     }
 
-    public static boolean isProcessableAttribute(@NonNull Logger logger, @NonNull Element element) {
-        // Filter out everything but attributes
-        if (element.getKind() != ElementKind.FIELD) {
-            return false;
-        }
-        // Filter out static attributes
-        if (element.getModifiers().contains(Modifier.STATIC)) {
-            return false;
-        }
-        // Filter out transient attributes
-        if (element.getModifiers().contains(Modifier.TRANSIENT)) {
-            return false;
-        }
-        // Filter out private attributes
-        if (element.getModifiers().contains(Modifier.PRIVATE)) {
-            logger.other(element, "Field could not be processed, it's private.");
-            return false;
-        }
-        return true;
-    }
-
     @NonNull
     public static String removePackageName(@NonNull String name) {
         // String package name

@@ -70,12 +70,10 @@ public class ArrayListTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeSerializable(source.mList);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mList = (java.util.ArrayList) in.readSerializable();",
                         "   }",
                         "}"
                 ));

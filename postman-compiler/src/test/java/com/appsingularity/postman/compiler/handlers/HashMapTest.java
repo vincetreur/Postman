@@ -70,12 +70,12 @@ public class HashMapTest {
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "     dest.writeSerializable(source.mMap);",
+                        "     // mMap: Map is a raw type",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     target.mMap = (java.util.HashMap) in.readSerializable();",
+                        "     // mMap: Map is a raw type",
                         "   }",
                         "}"
                 ));

@@ -17,12 +17,16 @@ public class FieldErrorWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        shipMethod.addCode("// $L: $L\n", getElement().getSimpleName(), mMessage);
+        if (!mMessage.trim().isEmpty()) {
+            shipMethod.addCode("// $L: $L\n", getElement().getSimpleName(), mMessage);
+        }
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        receiveMethod.addCode("// $L: $L\n", getElement().getSimpleName(), mMessage);
+        if (!mMessage.trim().isEmpty()) {
+            receiveMethod.addCode("// $L: $L\n", getElement().getSimpleName(), mMessage);
+        }
     }
 
 }

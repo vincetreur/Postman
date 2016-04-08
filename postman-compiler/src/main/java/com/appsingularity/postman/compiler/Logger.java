@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 
-import static javax.tools.Diagnostic.Kind.OTHER;
 import static javax.tools.Diagnostic.Kind.ERROR;
 import static javax.tools.Diagnostic.Kind.NOTE;
 import static javax.tools.Diagnostic.Kind.WARNING;
@@ -43,6 +42,6 @@ public class Logger {
         if (args.length > 0) {
             message = String.format(message, args);
         }
-        mEnv.getMessager().printMessage(OTHER, "Postman: " + message, element);
+        System.out.println("Postman: " + message);
     }
 }

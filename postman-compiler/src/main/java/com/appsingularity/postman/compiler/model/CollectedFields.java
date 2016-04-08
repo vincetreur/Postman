@@ -18,6 +18,8 @@ import com.appsingularity.postman.compiler.model.fields.SparseArrayField;
 import com.appsingularity.postman.compiler.model.fields.SparseBooleanArrayField;
 import com.appsingularity.postman.compiler.model.fields.StringListField;
 import com.appsingularity.postman.compiler.model.fields.TypedObjectField;
+import com.appsingularity.postman.compiler.model.fields.UnprocessableField;
+import com.appsingularity.postman.compiler.model.fields.UnprocessedField;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.util.Elements;
@@ -31,12 +33,12 @@ public class CollectedFields {
 
     @Nullable
     public static CollectedField obtain(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
-        if (!ModelUtils.isProcessableAttribute(logger, element)) {
-            return null;
-        }
         CollectedField field = null;
         try {
-            field = PrimitiveDataTypeField.canProcessElement(element);
+            // Filter out fields that cannot be processed due to private/static/transient/etc
+            field = UnprocessableField.canProcessElement(logger, element);
+            // Try to find a handler for this field
+            field = field == null ? PrimitiveDataTypeField.canProcessElement(element) : field;
             field = field == null ? ShortPrimitiveArrayField.canProcessElement(element) : field;
             field = field == null ? GenericField.canProcessElement(types, elements, element) : field;
             field = field == null ? StringListField.canProcessElement(types, elements, element) : field;
@@ -50,9 +52,8 @@ public class CollectedFields {
             field = field == null ? ParcelableArrayField.canProcessElement(types, elements, element) : field;
             field = field == null ? ParcelableField.canProcessElement(types, elements, element) : field;
             field = field == null ? SerializableField.canProcessElement(types, elements, element) : field;
-            if (field == null) {
-                logger.warn(element, "Nothing can process field. Maybe it's a raw type?");
-            }
+            // Catch all field, that handles all unprocessed fields
+            field = field == null ? UnprocessedField.canProcessElement(logger, element) : field;
         } catch (IllegalArgumentException notProcessableType) {
             // ignore it has already been logged
         }
