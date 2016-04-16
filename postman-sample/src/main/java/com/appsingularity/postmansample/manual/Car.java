@@ -12,7 +12,9 @@ import com.appsingularity.postman.annotations.PostmanEnabled;
 public class Car extends Vehicle implements Parcelable {
     String mColor;
 
-    public Car() { }
+    public Car() {
+        super();
+    }
 
     protected Car(Parcel in) {
         Postman.receive(Car.class, this, in);

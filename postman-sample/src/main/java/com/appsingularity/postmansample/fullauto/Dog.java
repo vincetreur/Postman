@@ -10,9 +10,9 @@ import com.appsingularity.postman.annotations.PostmanEnabled;
 public class Dog extends Animal {
     boolean mHasTail = false;
 
-    public Dog() { }
-
-
+    public Dog() {
+        super();
+    }
 
     protected Dog(Parcel in) {
         // Let the superclass handle it's own parceling
@@ -43,4 +43,5 @@ public class Dog extends Animal {
             return new Dog[size];
         }
     };
+
 }
