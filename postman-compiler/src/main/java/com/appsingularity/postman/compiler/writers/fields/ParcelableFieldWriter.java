@@ -15,12 +15,12 @@ public class ParcelableFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        shipMethod.addStatement("dest.writeParcelable(source.$L, flags)", mElement.getSimpleName().toString());
+        shipMethod.addStatement("dest.writeParcelable(source.$L, flags)", getElement().getSimpleName().toString());
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
         receiveMethod.addStatement("target.$L = in.readParcelable($L.class.getClassLoader())"
-                , mElement.getSimpleName().toString(), mElement.asType().toString());
+                , getElement().getSimpleName().toString(), getElement().asType().toString());
     }
 }

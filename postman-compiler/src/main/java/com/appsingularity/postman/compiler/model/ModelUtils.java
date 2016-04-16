@@ -3,13 +3,11 @@ package com.appsingularity.postman.compiler.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.appsingularity.postman.compiler.Logger;
+import com.appsingularity.postman.compiler.model.fields.SupportedTypes;
 
 import java.util.List;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -33,28 +31,6 @@ public class ModelUtils {
             enclosedType = typeArgument.toString();
         }
         return enclosedType;
-    }
-
-    public static boolean isProcessableAttribute(@NonNull Logger logger, @NonNull Element element) {
-        // Filter out everything but attributes
-        if (element.getKind() != ElementKind.FIELD) {
-            return false;
-        }
-        // Filter out private attributes
-        if (element.getModifiers().contains(Modifier.PRIVATE)) {
-            logger.warn(element, "Field could not be processed, it's private.");
-            return false;
-        }
-        // Filter out static attributes
-        if (element.getModifiers().contains(Modifier.STATIC)) {
-            return false;
-        }
-        // Filter out transient attributes
-        if (element.getModifiers().contains(Modifier.TRANSIENT)) {
-            logger.warn(element, "Field could not be processed, it's transient.");
-            return false;
-        }
-        return true;
     }
 
     @NonNull
@@ -81,4 +57,19 @@ public class ModelUtils {
         }
         return false;
     }
+
+    public static boolean isAssignableTo(@NonNull Types types, @NonNull Elements elements,
+                                         @NonNull TypeMirror typeArgument, @NonNull List<String> supportedTypes) {
+        if (SupportedTypes.supportedGenerics().contains(typeArgument.toString())) {
+            return true;
+        }
+        for (String supportedType : supportedTypes) {
+            TypeElement typeElement = elements.getTypeElement(supportedType);
+            if (types.isAssignable(typeArgument, typeElement.asType())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

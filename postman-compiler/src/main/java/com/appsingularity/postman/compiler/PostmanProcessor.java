@@ -64,7 +64,7 @@ public class PostmanProcessor extends AbstractProcessor {
         }
         // Generate code
         for (CollectedClass annotatedClass : collectedClasses) {
-            mLogger.note("Processing type %s", annotatedClass.toString());
+//            mLogger.other("Processing type %s", annotatedClass.toString());
             try {
                 CollectedClassWriter writer = annotatedClass.getWriter();
                 writer.writeToFile(mElements, mFiler);

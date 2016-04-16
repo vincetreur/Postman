@@ -10,4 +10,6 @@ public interface CollectedField {
     @NonNull
     CollectedFieldWriter getWriter();
 
+    boolean hasError();
+
 }

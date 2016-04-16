@@ -10,11 +10,11 @@ import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
-public class PrimitiveDataTypeField implements CollectedField {
+public class PrimitiveDataTypeField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
 
-    public static boolean canProcessElement(@NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Element element) {
         TypeMirror typeMirror = element.asType();
         TypeKind typeKind = typeMirror.getKind();
         boolean ok = false;
@@ -32,10 +32,13 @@ public class PrimitiveDataTypeField implements CollectedField {
 
             default:
         }
-        return ok;
+        if (ok) {
+            return new PrimitiveDataTypeField(element);
+        }
+        return null;
     }
 
-    public PrimitiveDataTypeField(@NonNull Element element) {
+    private PrimitiveDataTypeField(@NonNull Element element) {
         mElement = element;
     }
 

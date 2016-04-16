@@ -15,12 +15,12 @@ public class SparseArrayFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        shipMethod.addStatement("dest.writeSparseArray(source.$L)", mElement.getSimpleName().toString());
+        shipMethod.addStatement("dest.writeSparseArray(source.$L)", getElement().getSimpleName().toString());
     }
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String attr = mElement.getSimpleName().toString();
+        String attr = getElement().getSimpleName().toString();
         receiveMethod.addStatement("target.$L = in.readSparseArray(getClass().getClassLoader())", attr);
     }
 }

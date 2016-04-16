@@ -15,8 +15,8 @@ public class ShortPrimitiveArrayFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeShipMethod(@NonNull MethodSpec.Builder shipMethod) {
-        String attr = mElement.getSimpleName().toString();
-        shipMethod.addStatement("// Writing source.$L", attr);
+        String attr = getElement().getSimpleName().toString();
+        shipMethod.addCode("// Writing source.$L\n", attr);
         shipMethod.beginControlFlow("if (source.$L != null)", attr);
         shipMethod.addStatement("dest.writeByte((byte) 1)");
         shipMethod.addStatement("int[] $L_copy = new int[source.$L.length]", attr, attr);
@@ -31,8 +31,8 @@ public class ShortPrimitiveArrayFieldWriter extends AbsCollectedFieldWriter {
 
     @Override
     public void writeReceiveMethod(@NonNull MethodSpec.Builder receiveMethod) {
-        String attr = mElement.getSimpleName().toString();
-        receiveMethod.addStatement("// Reading target.$L", attr);
+        String attr = getElement().getSimpleName().toString();
+        receiveMethod.addCode("// Reading target.$L\n", attr);
         receiveMethod.beginControlFlow("if (in.readByte() == 1)");
         receiveMethod.addStatement("int[] $L_copy = in.createIntArray()", attr);
         receiveMethod.addStatement("target.$L = new short[$L_copy.length]", attr, attr);

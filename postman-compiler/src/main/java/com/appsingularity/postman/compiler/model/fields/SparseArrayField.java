@@ -13,22 +13,24 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class SparseArrayField implements CollectedField {
+public class SparseArrayField extends SimpleCollectedField {
     private static final String CLASSNAME = "android.util.SparseArray";
     @NonNull
     private final Element mElement;
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         TypeKind typeKind = element.asType().getKind();
         if (typeKind == TypeKind.DECLARED) {
             TypeElement typeElement = elements.getTypeElement(CLASSNAME);
             DeclaredType declaredType = types.getDeclaredType(typeElement);
-            return (types.isAssignable(element.asType(), declaredType));
+            if (types.isAssignable(element.asType(), declaredType)) {
+                return new SparseArrayField(element);
+            }
         }
-        return false;
+        return null;
     }
 
-    public SparseArrayField(@NonNull Element element) {
+    private SparseArrayField(@NonNull Element element) {
         mElement = element;
     }
 

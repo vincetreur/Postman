@@ -17,8 +17,6 @@ dependencies {
     compile deps.supportAnnotations
     compile deps.android
 
-    testCompile project(":postman")
-    testCompile project(':postman-annotations')
     testCompile deps.junit
     testCompile deps.truth
     testCompile deps.compiletesting

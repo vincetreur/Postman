@@ -36,7 +36,7 @@ public class Postman {
 
     @Nullable
     private BasePostman findPostman(@NonNull final Class clazz) {
-        BasePostman postman = sCache.get(clazz.getName());
+        BasePostman postman = sCache.get(resolveName(clazz));
         if (postman == null) {
             postman = createPostman(clazz);
             if (postman != null) {

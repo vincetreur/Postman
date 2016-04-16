@@ -18,7 +18,7 @@ public interface CollectedClass {
 
     List<CollectedField> getFields();
 
-    void addChild(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element child);
+    boolean addChild(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element child);
 
     CollectedClassWriter getWriter();
 

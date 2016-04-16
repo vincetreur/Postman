@@ -12,26 +12,25 @@ import static com.google.common.truth.Truth.assertAbout;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
 /**
- * Make sure we can process Serializables
+ * Make sure we can process static inner classes
  */
-public class SerializableTest {
-
+public class InnerClassTest {
 
     @Test
-    public void testSerializable() {
+    public void testFailOnNonStaticInnerClass() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
+                        "import java.util.ArrayList;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   MySerializable mMySerializable;",
+                        "   String mString;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(Model.class, this, in);",
@@ -58,53 +57,50 @@ public class SerializableTest {
                         "      return new Model[size];",
                         "    }",
                         "  };",
+                        "",
+                        "  @PostmanEnabled",
+                        "  abstract class Inner implements Parcelable {",
+                        "    protected Inner(Parcel in) {",
+                        "      Postman.receive(Inner.class, this, in);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public void writeToParcel(Parcel dest, int flags) {",
+                        "      Postman.ship(Inner.class, this, dest, flags);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public int describeContents() {",
+                        "      return 0;",
+                        "    }",
+                        "",
+                        "  }",
+                        "",
                         "}"
                 ));
-        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
-                Joiner.on('\n').join(
-                        "// Generated code from Postman. Do not modify!",
-                        "package test;",
-                        "",
-                        "import com.appsingularity.postman.internal.BasePostman;",
-                        "import java.lang.Override;",
-                        "",
-                        "public final class Model$$Postman extends BasePostman<Model> {",
-                        "   @Override",
-                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "      dest.writeSerializable(source.mMySerializable);",
-                        "   }",
-                        "",
-                        "   @Override",
-                        "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "      target.mMySerializable = (com.appsingularity.postman.compiler.handlers.MySerializable) in.readSerializable();",
-                        "   }",
-                        "}"
-                ));
-
 
         assertAbout(javaSource()).that(source)
                 .processedWith(new PostmanProcessor())
-                .compilesWithoutError()
-                .and()
-                .generatesSources(expectedSource);
+                .failsToCompile()
+                .withErrorCount(1)
+                .withErrorContaining("Class 'Inner' is an inner class of 'Model' and is annotated with @PostmanEnabled, but is not static.");
     }
 
     @Test
-    public void testSerializableList() {
+    public void testStaticInnerClass() {
         JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
                 Joiner.on('\n').join(
                         "package test;",
                         "",
                         "import com.appsingularity.postman.Postman;",
                         "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
-                        "import java.util.List;",
+                        "import java.util.ArrayList;",
                         "import android.os.Parcel;",
                         "import android.os.Parcelable;",
                         "",
                         "@PostmanEnabled",
                         "public class Model implements Parcelable {",
-                        "   List<MySerializable> mMySerializableList;",
+                        "   String mString;",
                         "",
                         "   protected Model(Parcel in) {",
                         "     Postman.receive(Model.class, this, in);",
@@ -131,8 +127,41 @@ public class SerializableTest {
                         "      return new Model[size];",
                         "    }",
                         "  };",
+                        "",
+                        "  @PostmanEnabled",
+                        "  static class Inner implements Parcelable {",
+                        "    String mInnerString;",
+                        "",
+                        "    protected Inner(Parcel in) {",
+                        "      Postman.receive(Inner.class, this, in);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public void writeToParcel(Parcel dest, int flags) {",
+                        "      Postman.ship(Inner.class, this, dest, flags);",
+                        "    }",
+                        "",
+                        "    @Override",
+                        "    public int describeContents() {",
+                        "      return 0;",
+                        "    }",
+                        "",
+                        "    public static final Parcelable.Creator<Inner> CREATOR = new Parcelable.Creator<Inner>() {",
+                        "      @Override",
+                        "      public Inner createFromParcel(Parcel in) {",
+                        "        return new Inner(in);",
+                        "      }",
+                        "",
+                        "      @Override",
+                        "      public Inner[] newArray(int size) {",
+                        "        return new Inner[size];",
+                        "      }",
+                        "    };",
+                        "  }",
+                        "",
                         "}"
                 ));
+
         JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
                 Joiner.on('\n').join(
                         "// Generated code from Postman. Do not modify!",
@@ -140,117 +169,44 @@ public class SerializableTest {
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
-                        "import java.util.ArrayList;",
                         "",
                         "public final class Model$$Postman extends BasePostman<Model> {",
                         "   @Override",
                         "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "     if (source.mMySerializableList != null) {",
-                        "       dest.writeByte((byte) 1);",
-                        "       dest.writeList(source.mMySerializableList);",
-                        "     } else {",
-                        "       dest.writeByte((byte) 0);",
-                        "     }",
+                        "      dest.writeString(source.mString);",
                         "   }",
                         "",
                         "   @Override",
                         "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     if (in.readByte() == 1) {",
-                        "       target.mMySerializableList = new ArrayList<>();",
-                        "       in.readList(target.mMySerializableList, com.appsingularity.postman.compiler.handlers.MySerializable.class.getClassLoader());",
-                        "     }",
+                        "      target.mString = in.readString();",
                         "   }",
                         "}"
                 ));
-
-
-        assertAbout(javaSource()).that(source)
-                .processedWith(new PostmanProcessor())
-                .compilesWithoutError()
-                .and()
-                .generatesSources(expectedSource);
-    }
-
-    @Test
-    public void testSerializableArrayList() {
-        JavaFileObject source = JavaFileObjects.forSourceString("test.Model",
-                Joiner.on('\n').join(
-                        "package test;",
-                        "",
-                        "import com.appsingularity.postman.Postman;",
-                        "import com.appsingularity.postman.annotations.PostmanEnabled;",
-                        "import com.appsingularity.postman.compiler.handlers.MySerializable;",
-                        "import java.util.ArrayList;",
-                        "import android.os.Parcel;",
-                        "import android.os.Parcelable;",
-                        "",
-                        "@PostmanEnabled",
-                        "public class Model implements Parcelable {",
-                        "   ArrayList<MySerializable> mMySerializableArrayList;",
-                        "",
-                        "   protected Model(Parcel in) {",
-                        "     Postman.receive(Model.class, this, in);",
-                        "  }",
-                        "",
-                        "  @Override",
-                        "  public void writeToParcel(Parcel dest, int flags) {",
-                        "    Postman.ship(Model.class, this, dest, flags);",
-                        "  }",
-                        "",
-                        "  @Override",
-                        "  public int describeContents() {",
-                        "    return 0;",
-                        "  }",
-                        "",
-                        "  public static final Parcelable.Creator<Model> CREATOR = new Parcelable.Creator<Model>() {",
-                        "    @Override",
-                        "    public Model createFromParcel(Parcel in) {",
-                        "      return new Model(in);",
-                        "    }",
-                        "",
-                        "    @Override",
-                        "    public Model[] newArray(int size) {",
-                        "      return new Model[size];",
-                        "    }",
-                        "  };",
-                        "}"
-                ));
-        JavaFileObject expectedSource = JavaFileObjects.forSourceString("test/Model$$Postman",
+        JavaFileObject expectedSourceInnerClass = JavaFileObjects.forSourceString("test/Model$Inner$$Postman",
                 Joiner.on('\n').join(
                         "// Generated code from Postman. Do not modify!",
                         "package test;",
                         "",
                         "import com.appsingularity.postman.internal.BasePostman;",
                         "import java.lang.Override;",
-                        "import java.util.ArrayList;",
                         "",
-                        "public final class Model$$Postman extends BasePostman<Model> {",
+                        "public final class Model$Inner$$Postman extends BasePostman<Model.Inner> {",
                         "   @Override",
-                        "   public void ship(final Model source, final android.os.Parcel dest, int flags) {",
-                        "     if (source.mMySerializableArrayList != null) {",
-                        "       dest.writeByte((byte) 1);",
-                        "       dest.writeList(source.mMySerializableArrayList);",
-                        "     } else {",
-                        "       dest.writeByte((byte) 0);",
-                        "     }",
+                        "   public void ship(final Model.Inner source, final android.os.Parcel dest, int flags) {",
+                        "      dest.writeString(source.mInnerString);",
                         "   }",
                         "",
                         "   @Override",
-                        "   public void receive(final Model target, final android.os.Parcel in) {",
-                        "     if (in.readByte() == 1) {",
-                        "       target.mMySerializableArrayList = new ArrayList<>();",
-                        "       in.readList(target.mMySerializableArrayList, com.appsingularity.postman.compiler.handlers.MySerializable.class.getClassLoader());",
-                        "     }",
+                        "   public void receive(final Model.Inner target, final android.os.Parcel in) {",
+                        "      target.mInnerString = in.readString();",
                         "   }",
                         "}"
                 ));
-
-
         assertAbout(javaSource()).that(source)
                 .processedWith(new PostmanProcessor())
                 .compilesWithoutError()
                 .and()
-                .generatesSources(expectedSource);
+                .generatesSources(expectedSource, expectedSourceInnerClass);
     }
 
 }

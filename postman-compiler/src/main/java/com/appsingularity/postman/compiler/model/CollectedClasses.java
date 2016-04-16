@@ -18,18 +18,26 @@ public class CollectedClasses {
     }
 
     @Nullable
-    public static CollectedClass obtain(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements, @NonNull Element classElement) {
+    public static CollectedClass obtain(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements,
+                                        @NonNull Element classElement) {
         CollectedClass collectedClass = null;
-        if (PostmenEnabledCollectedClass.canProcessElement(classElement)) {
+        if (PostmenEnabledCollectedClass.canProcessElement(logger, classElement)) {
             collectedClass = new PostmenEnabledCollectedClass(classElement);
         }
         if (collectedClass != null) {
+            boolean hasError = false;
             List<? extends Element> children = classElement.getEnclosedElements();
             for (Element child : children) {
-                collectedClass.addChild(logger, types, elements, child);
+                if (!collectedClass.addChild(logger, types, elements, child)) {
+                    hasError = true;
+                }
             }
-        } else {
-            logger.warn(classElement, "Class file annotated with @PostmanEnabled but it could not be processed.");
+            // Check for errors and log it
+            if (hasError) {
+                logger.other(classElement,
+                        "Not all attributes in '%s' were processed, please check the generated source for details.",
+                        classElement.getSimpleName());
+            }
         }
         return collectedClass;
     }

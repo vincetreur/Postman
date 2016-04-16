@@ -10,9 +10,9 @@ import com.appsingularity.postman.annotations.PostmanEnabled;
 public class Apple extends Fruit {
     boolean mTasty = false;
 
-    public Apple() { }
-
-
+    public Apple() {
+        super();
+    }
 
     protected Apple(Parcel in) {
         // Let the superclass handle it's own parceling (which is hand coded)

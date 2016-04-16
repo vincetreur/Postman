@@ -13,26 +13,28 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-public class SerializableField implements CollectedField {
+public class SerializableField extends SimpleCollectedField {
     private static final String CLASSNAME = "java.io.Serializable";
     @NonNull
     private final Element mElement;
 
-    public static boolean canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Types types, @NonNull Elements elements, @NonNull Element element) {
         TypeMirror typeMirror = element.asType();
         TypeKind typeKind = typeMirror.getKind();
         if (typeKind == TypeKind.DECLARED) {
             if (CLASSNAME.equals(element.asType().toString())) {
-                return true;
+                return new SerializableField(element);
             }
             // Look for superclasses that implement Parcelable
             TypeElement typeElement = elements.getTypeElement(CLASSNAME);
-            return (types.isAssignable(element.asType(), typeElement.asType()));
+            if (types.isAssignable(element.asType(), typeElement.asType())) {
+                return new SerializableField(element);
+            }
         }
-        return false;
+        return null;
     }
 
-    public SerializableField(@NonNull Element element) {
+    private SerializableField(@NonNull Element element) {
         mElement = element;
     }
 

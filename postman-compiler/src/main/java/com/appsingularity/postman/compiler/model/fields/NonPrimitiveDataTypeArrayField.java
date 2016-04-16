@@ -12,7 +12,7 @@ import java.util.List;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 
-public class NonPrimitiveDataTypeArrayField implements CollectedField {
+public class NonPrimitiveDataTypeArrayField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
     @NonNull
@@ -30,16 +30,16 @@ public class NonPrimitiveDataTypeArrayField implements CollectedField {
         SUPPORTED_TYPES.add("java.lang.Double[]");
     }
 
-    public static boolean canProcessElement(@NonNull Element element) {
+    public static CollectedField canProcessElement(@NonNull Element element) {
         if (element.asType().getKind() == TypeKind.ARRAY) {
             if (SUPPORTED_TYPES.contains(element.asType().toString())) {
-                return true;
+                return new NonPrimitiveDataTypeArrayField(element);
             }
         }
-        return false;
+        return null;
     }
 
-    public NonPrimitiveDataTypeArrayField(@NonNull Element element) {
+    private NonPrimitiveDataTypeArrayField(@NonNull Element element) {
         mElement = element;
     }
 

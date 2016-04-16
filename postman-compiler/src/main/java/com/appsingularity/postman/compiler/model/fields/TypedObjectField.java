@@ -15,7 +15,7 @@ import java.util.List;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 
-public class TypedObjectField implements CollectedField {
+public class TypedObjectField extends SimpleCollectedField {
     @NonNull
     private final Element mElement;
     @NonNull
@@ -31,12 +31,15 @@ public class TypedObjectField implements CollectedField {
         SUPPORTED_ARGUMENT_TYPES.add("android.os.PersistableBundle");
     }
 
-    public static boolean canProcessElement(@NonNull Element element) {
-        return (element.asType().getKind() == TypeKind.DECLARED)
-            && SUPPORTED_ARGUMENT_TYPES.contains(element.asType().toString());
+    public static CollectedField canProcessElement(@NonNull Element element) {
+        if (element.asType().getKind() == TypeKind.DECLARED
+            && SUPPORTED_ARGUMENT_TYPES.contains(element.asType().toString())) {
+            return new TypedObjectField(element);
+        }
+        return null;
     }
 
-    public TypedObjectField(@NonNull Element element) {
+    private TypedObjectField(@NonNull Element element) {
         mElement = element;
         String name = element.asType().toString();
         name = ModelUtils.removePackageName(name);
