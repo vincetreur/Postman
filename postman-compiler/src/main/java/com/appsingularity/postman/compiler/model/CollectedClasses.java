@@ -21,7 +21,7 @@ public class CollectedClasses {
     public static CollectedClass obtain(@NonNull Logger logger, @NonNull Types types, @NonNull Elements elements,
                                         @NonNull Element classElement) {
         CollectedClass collectedClass = null;
-        if (PostmenEnabledCollectedClass.canProcessElement(classElement)) {
+        if (PostmenEnabledCollectedClass.canProcessElement(logger, classElement)) {
             collectedClass = new PostmenEnabledCollectedClass(classElement);
         }
         if (collectedClass != null) {
@@ -38,9 +38,6 @@ public class CollectedClasses {
                         "Not all attributes in '%s' were processed, please check the generated source for details.",
                         classElement.getSimpleName());
             }
-        } else {
-            logger.warn(classElement, "File '%s' annotated with @PostmanEnabled but it could not be processed.",
-                    classElement.getSimpleName());
         }
         return collectedClass;
     }
