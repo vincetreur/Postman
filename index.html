@@ -38,14 +38,101 @@
 
 <p>Generate the boilerplate code that is needed for supporting Parcelable.</p>
 
-<p>Postman generates the code that you would normally write in the <code>writeToParcel</code> and constructor methods. 
+<p>Postman generates the code that you would normally write in the <code>writeToParcel</code> and constructor methods.
 You only need to add the <code>@PostmanEnabled</code> annotation. And delegate to the <code>Postman</code> in your own code.</p>
+
+<p>Your code is still your own, so you can add your own code around calls to Postman, just like when you would write the parceling code yourself.</p>
 
 <h3>
 <a id="third-party-classes" class="anchor" href="#third-party-classes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Third-party classes</h3>
 
-<p>You can go all in with Postman, or mix it with hand crafted <code>Parcelable</code> classes.
-It can even handle third-party classes that are not designed to work with Postman. (See the sample project for some examples.)</p>
+<p>If your models extend classes that are not Postman annotated but are <code>Parcelable</code> then you can still use Postman.
+Just call your super class so it can do it's own parceling and let Postman do it's job after that.</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">android.os.Parcel</span>;
+
+<span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.Postman</span>;
+<span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.annotations.PostmanEnabled</span>;
+
+@<span class="pl-smi">PostmanEnabled</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Model</span> <span class="pl-k">extends</span> <span class="pl-e">ParcelableThirdPartyClass</span>  {
+    <span class="pl-c">// Add your methods and attributes here.</span>
+
+    <span class="pl-k">protected</span> <span class="pl-en">Model</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">in</span>) {
+        <span class="pl-v">super</span>(in);
+        <span class="pl-smi">Postman</span><span class="pl-k">.</span>receive(<span class="pl-smi">Model</span><span class="pl-k">.</span>class, <span class="pl-v">this</span>, in);
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">writeToParcel</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">dest</span>, <span class="pl-k">int</span> <span class="pl-v">flags</span>) {
+        <span class="pl-v">super</span><span class="pl-k">.</span>writeToParcel(dest, flags);
+        <span class="pl-smi">Postman</span><span class="pl-k">.</span>ship(<span class="pl-smi">Model</span><span class="pl-k">.</span>class, <span class="pl-v">this</span>, dest, flags);
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">describeContents</span>() {
+        <span class="pl-k">return</span> <span class="pl-c1">0</span>;
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">Creator&lt;<span class="pl-smi">Model</span>&gt;</span> <span class="pl-c1">CREATOR</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">Creator&lt;<span class="pl-smi">Model</span>&gt;</span>() {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-smi">Model</span> <span class="pl-en">createFromParcel</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">in</span>) {
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Model</span>(in);
+        }
+
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Model</span>[] <span class="pl-en">newArray</span>(<span class="pl-k">int</span> <span class="pl-v">size</span>) {
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Model</span>[size];
+        }
+    };
+}</pre></div>
+
+<h3>
+<a id="execute-code-before-or-after-parceling" class="anchor" href="#execute-code-before-or-after-parceling" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Execute code before or after parceling</h3>
+
+<p>When you want to run some code before or after parceling (maybe calculate some derived values) then you can do that easily.
+Just insert your code around the calls to Postman. </p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">android.os.Parcel</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.os.Parcelable</span>;
+
+<span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.Postman</span>;
+<span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.annotations.PostmanEnabled</span>;
+
+@<span class="pl-smi">PostmanEnabled</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Model</span> <span class="pl-k">implements</span> <span class="pl-e">Parcelable</span>  {
+    <span class="pl-c">// Add your methods and attributes here.</span>
+
+    <span class="pl-k">protected</span> <span class="pl-en">Model</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">in</span>) {
+        <span class="pl-c">// Insert some code here if you want to</span>
+        <span class="pl-smi">Postman</span><span class="pl-k">.</span>receive(<span class="pl-smi">Model</span><span class="pl-k">.</span>class, <span class="pl-v">this</span>, in);
+        <span class="pl-c">// Insert some code here if you want to</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">writeToParcel</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">dest</span>, <span class="pl-k">int</span> <span class="pl-v">flags</span>) {
+        <span class="pl-c">// Insert some code here if you want to</span>
+        <span class="pl-smi">Postman</span><span class="pl-k">.</span>ship(<span class="pl-smi">Model</span><span class="pl-k">.</span>class, <span class="pl-v">this</span>, dest, flags);
+        <span class="pl-c">// Insert some code here if you want to</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">int</span> <span class="pl-en">describeContents</span>() {
+        <span class="pl-k">return</span> <span class="pl-c1">0</span>;
+    }
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">Creator&lt;<span class="pl-smi">Model</span>&gt;</span> <span class="pl-c1">CREATOR</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-k">Creator&lt;<span class="pl-smi">Model</span>&gt;</span>() {
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-smi">Model</span> <span class="pl-en">createFromParcel</span>(<span class="pl-smi">Parcel</span> <span class="pl-v">in</span>) {
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Model</span>(in);
+        }
+
+        <span class="pl-k">@Override</span>
+        <span class="pl-k">public</span> <span class="pl-k">Model</span>[] <span class="pl-en">newArray</span>(<span class="pl-k">int</span> <span class="pl-v">size</span>) {
+            <span class="pl-k">return</span> <span class="pl-k">new</span> <span class="pl-smi">Model</span>[size];
+        }
+    };
+}</pre></div>
 
 <h3>
 <a id="proguard" class="anchor" href="#proguard" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ProGuard</h3>
@@ -59,8 +146,14 @@ It can even handle third-party classes that are not designed to work with Postma
 <li> Attributes must be <code>public</code>, <code>protected</code> or package protected. Private attributes cannot be accessed from the generated code and will not be parcelled.</li>
 <li>
 <code>static</code> attributes are ignored since they belong to the class not the instance.</li>
+<li>
+<code>final</code> attributes are ignored since Postman cannot detect if they are already initialized.</li>
 <li>You can also exclude an attribute by marking it as <code>transient</code>.</li>
 <li>Annotation only works on classes, not on interfaces.</li>
+<li>Any attributes that could not be processed are documented in the generated source. </li>
+<li>
+<code>serialVersionUID</code> will be skipped silently.</li>
+<li>Static inner classes are also supported.</li>
 </ul>
 
 <h2>
@@ -139,14 +232,14 @@ It can even handle third-party classes that are not designed to work with Postma
 apply <span class="pl-c1">plugin</span>: <span class="pl-s"><span class="pl-pds">'</span>com.neenbedankt.android-apt<span class="pl-pds">'</span></span>
 
 dependencies {
-  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:1.0.1<span class="pl-pds">'</span></span>
-  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-annotations:1.0.1<span class="pl-pds">'</span></span>
-  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:1.0.1<span class="pl-pds">'</span></span>
+  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:1.1.0<span class="pl-pds">'</span></span>
+  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:1.1.0<span class="pl-pds">'</span></span>
 }</pre></div>
 
 <p>Annotate your model classes and delegate the tedious boilerplate coding to the Postman.</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">android.os.Parcel</span>;
+<span class="pl-k">import</span> <span class="pl-smi">android.os.Parcelable</span>;
 
 <span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.Postman</span>;
 <span class="pl-k">import</span> <span class="pl-smi">com.appsingularity.postman.annotations.PostmanEnabled</span>;
@@ -190,16 +283,34 @@ dependencies {
 
 <ul>
 <li>Support more attribute types.</li>
-<li>Support for user specific types.</li>
 <li>More automated tests.</li>
 </ul>
 
 <h1>
 <a id="version" class="anchor" href="#version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version</h1>
 
-<p>1.0.0 - Initial release</p>
+<p>Version 1.0.0</p>
 
-<p>1.0.1 - Fixed issue when used in combination with Dagger</p>
+<ul>
+<li>Initial release.</li>
+</ul>
+
+<p>Version 1.0.1</p>
+
+<ul>
+<li>Fixed issue when used in combination with Dagger.</li>
+</ul>
+
+<p>Version 1.1.0</p>
+
+<ul>
+<li>Added support for static inner classes.</li>
+<li>Improved type checking for lists and maps. This may break your build in some cases.</li>
+<li>Removed the need to specify the annotations package as dependency.</li>
+<li>Added more tests.</li>
+<li>Postman produces less console output, max 1 line per class.</li>
+<li>Complete logging is now written (as comments) into the generated class, so you can read it at any time.</li>
+</ul>
 
 <h1>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
