@@ -158,8 +158,8 @@ buildscript {
 apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
-  compile 'com.appsingularity:postman:1.1.0'
-  apt 'com.appsingularity:postman-compiler:1.1.0'
+  compile 'com.appsingularity:postman:1.1.1'
+  apt 'com.appsingularity:postman-compiler:1.1.1'
 }
 ```
 
@@ -227,6 +227,9 @@ Version 1.1.0
 - Added more tests.
 - Postman produces less console output, max 1 line per class.
 - Complete logging is now written (as comments) into the generated class, so you can read it at any time.
+
+Version 1.1.1
+- Processing now also works for tests.
 
 #License
 
