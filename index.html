@@ -232,8 +232,8 @@ Just insert your code around the calls to Postman. </p>
 apply <span class="pl-c1">plugin</span>: <span class="pl-s"><span class="pl-pds">'</span>com.neenbedankt.android-apt<span class="pl-pds">'</span></span>
 
 dependencies {
-  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:1.1.0<span class="pl-pds">'</span></span>
-  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:1.1.0<span class="pl-pds">'</span></span>
+  compile <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman:1.1.1<span class="pl-pds">'</span></span>
+  apt <span class="pl-s"><span class="pl-pds">'</span>com.appsingularity:postman-compiler:1.1.1<span class="pl-pds">'</span></span>
 }</pre></div>
 
 <p>Annotate your model classes and delegate the tedious boilerplate coding to the Postman.</p>
@@ -310,6 +310,12 @@ dependencies {
 <li>Added more tests.</li>
 <li>Postman produces less console output, max 1 line per class.</li>
 <li>Complete logging is now written (as comments) into the generated class, so you can read it at any time.</li>
+</ul>
+
+<p>Version 1.1.1</p>
+
+<ul>
+<li>Processing now also works for tests.</li>
 </ul>
 
 <h1>
