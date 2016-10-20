@@ -34,7 +34,7 @@ stage('Package') {
 
 stage('Archive') {
 	node {
-		archive 'postman-*/build/libs/*.jar, postman/build/*.aar'
+		archive 'postman-*/build/libs/*.jar, postman/build/**/*.aar'
 	}
 }
 
