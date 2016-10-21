@@ -13,8 +13,11 @@ stage('Build') {
 
 stage('Test') {
 	node {
- 		gradle 'test'
-		junit '*/build/**/TEST*.xml'
+		try {
+ 			gradle 'test'
+		} finally {
+			junit '*/build/**/TEST*.xml'
+		}
 	}
 }
 
